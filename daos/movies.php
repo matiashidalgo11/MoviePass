@@ -11,36 +11,26 @@
             $this->file_name = dirname(__DIR__)."/data/movies.json";
         }
 
-        //No sabria si el filtro de que si existe va en el daos o en el controllers
         public function Add(\models\Movie $movie)
         {
             $this->RetrieveData();
             
-            if(!$this->exist($movie)){
-               
-                array_push($this->movies_list, $movie);
-                return $this->SaveData();
-            }
+            array_push($this->movies_list, $movie);
             
-            return false;
-
-            
+            return $this->SaveData();
+  
         }
 
-        //Guardar las peliculas en el arreglo por el id ?)
-        public function AddArray($movieArray){
+        public function UpdateList(){
            
             $this->RetrieveData();
+            $api_new_list = $this->ListFromApi();
 
-            foreach($movieArray as $movie){
-
-                if(!$this->exist($movie)){
-                    array_push($this->movies_list, $movie);
-                }
+            foreach($api_new_list as $new_movie){
                 
+                //falta terminar funcion para comparar 
             }
 
-            return $this->SaveData();
         }
 
         public function GetAll()
@@ -70,6 +60,7 @@
                 $valuesArray["vote_average"] = $movie->getVote_average();
                 $valuesArray["overview"] = $movie->getOverview();
                 $valuesArray["release_date"] = $movie->getRelease_date();
+                $valuesArray["enabled"] = $movie->getEnabled();
                 
 
                 array_push($arrayToEncode, $valuesArray);
@@ -107,6 +98,7 @@
                     $movie->setVote_average($valuesArray["vote_average"]);
                     $movie->setOverview($valuesArray["overview"]);
                     $movie->setRelease_date($valuesArray["release_date"]);
+                    $movie->setEnabled($valuesArray["enabled"]);
                     
 
                     array_push($this->movies_list, $movie);
@@ -114,20 +106,78 @@
             }
         }
 
-        //Esta la funcion in_array tambien.
-        private function exist(\models\Movie $movie){
+        
+        private function ListFromApi(){
+
+            $api_url = "https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=" . KEY_TMDB;
+            $api_json = file_get_contents($api_url);
+            $api_array = ($api_json) ? json_decode($api_json, true) : array();
+
+            $new_movie_list = array();
+
+            foreach($api_array as $valuesArray)
+                {
+                    $movie = new \models\Movie();
+                    $movie->setPopularity($valuesArray["popularity"]);
+                    $movie->setVote_count($valuesArray["vote_count"]);
+                    $movie->setVideo($valuesArray["video"]);
+                    $movie->setPoster_path($valuesArray["poster_path"]);
+                    $movie->setId($valuesArray["id"]);
+                    $movie->setAdult($valuesArray["adult"]);
+                    $movie->setBackdrop_path($valuesArray["backdrop_path"]);
+                    $movie->setOriginal_language($valuesArray["original_language"]);
+                    $movie->setOriginal_title($valuesArray["original_title"]);
+                 
+                    $movie->setTitle($valuesArray["title"]);
+                    $movie->setVote_average($valuesArray["vote_average"]);
+                    $movie->setOverview($valuesArray["overview"]);
+                    $movie->setRelease_date($valuesArray["release_date"]);
+                    $movie->setEnabled(true);
+                    
+                    $movie->setGenre_ids($this->genreConverter($valuesArray["genre_ids"]));
+                    
+                    array_push($new_movie_list, $movie);
+                }
+
+
+            return $new_movie_list;
+        }
+
+        private function genreConverter($array_genre_ids){
             
-            foreach($this->movies_list as $aux){
-               
-                if($aux->getId() == $movie->getId() && $aux->getTitle() == $movie->getTitle()){
-                   
-                    return true;
+            $genre_list = $this->GenreFromApi();
+            $generos = array();
+
+            foreach($array_genre_ids as $id){
+                if(array_key_exists($genre_list, $id)){
+
+                    array_push($generos,$genre_list[$id]);
                 }
             }
 
-            return false;
+            return $generos;
         }
 
+        private function GenreFromApi(){
+            $api_url = "https://api.themoviedb.org/3/genre/movie/list?api_key=" . KEY_TMDB . "&language=en-US" ;
+            $api_json = file_get_contents($api_url);
+            $api_array = ($api_json) ? json_decode($api_json, true) : array();
+
+            $genre_list = array();
+
+            foreach($api_array as $valuesArray)
+                {
+                    $genre = new \models\Genre();
+                    
+                    $genre->setId($valuesArray["id"]);
+                    $genre->setName($valuesArray["name"]);
+                    
+                    $genre_list[$genre->getId()] = $genre; 
+                }
+
+
+            return $genre_list;
+        }
 
     }
 

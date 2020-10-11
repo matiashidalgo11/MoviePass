@@ -1,6 +1,6 @@
 <?php namespace models;
 
-    class Movie{
+    class Movie {
 
         private $popularity;
         private $vote_count;
@@ -16,10 +16,11 @@
         private $vote_average;
         private $overview;
         private $release_date;
+        private $enabled;
 
 
         public function __construct($popularity = "", $vote_count = "", $video = "", $poster_path = "", $id = "", $adult = "", $backdrop_path = "",
-         $original_language = "",$original_title = "", $genre_ids = "", $title = "", $vote_average = "", $overview = "", $release_date = "")
+         $original_language = "",$original_title = "", $genre_ids = "", $title = "", $vote_average = "", $overview = "", $release_date = "", $enabled = true)
         {
             $this->popularity = $popularity;
             $this->vote_count = $vote_count;
@@ -35,6 +36,7 @@
             $this->vote_average = $vote_average;
             $this->overview = $overview;
             $this->release_date = $release_date;
+            $this->enabled = $enabled;
         }
         
 
@@ -314,6 +316,26 @@
         public function setRelease_date($release_date)
         {
                 $this->release_date = $release_date;
+
+                return $this;
+        }
+
+        /**
+         * Get the value of enabled
+         */ 
+        public function getEnabled()
+        {
+                return $this->enabled;
+        }
+
+        /**
+         * Set the value of enabled
+         *
+         * @return  self
+         */ 
+        public function setEnabled($enabled)
+        {
+                $this->enabled = $enabled;
 
                 return $this;
         }

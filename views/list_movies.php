@@ -1,5 +1,5 @@
 
-<?php $list_movies = $movies_dao->GetAll(); ?>
+<?php $list_movies = $this->movies_dao->GetAll(); ?>
 
 <?php foreach($list_movies as $movie){ ?>
 

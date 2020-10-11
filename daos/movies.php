@@ -11,13 +11,20 @@
             $this->file_name = dirname(__DIR__)."/data/movies.json";
         }
 
+        //No sabria si el filtro de que si existe va en el daos o en el controllers
         public function Add(\models\Movie $movie)
         {
             $this->RetrieveData();
             
-            array_push($this->movies_list, $movie);
+            if(!$this->exist($movie)){
+               
+                array_push($this->movies_list, $movie);
+                return $this->SaveData();
+            }
+            
+            return false;
 
-            return $this->SaveData();
+            
         }
 
         //Guardar las peliculas en el arreglo por el id ?)
@@ -27,7 +34,10 @@
 
             foreach($movieArray as $movie){
 
-                array_push($this->movies_list, $movie);
+                if(!$this->exist($movie)){
+                    array_push($this->movies_list, $movie);
+                }
+                
             }
 
             return $this->SaveData();
@@ -103,6 +113,22 @@
                 }
             }
         }
+
+        //Esta la funcion in_array tambien.
+        private function exist(\models\Movie $movie){
+            
+            foreach($this->movies_list as $aux){
+               
+                if($aux->getId() == $movie->getId() && $aux->getTitle() == $movie->getTitle()){
+                   
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+
     }
 
 

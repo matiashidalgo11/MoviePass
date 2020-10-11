@@ -1,5 +1,6 @@
 <?php namespace daos;
 
+    //Se puede eliminar esta clase y directamente pasarle el arreglo con las peliculas al daos de movies
     class Tmdb {
 
        private $movies_list = array();
@@ -65,7 +66,6 @@
 
             $api_url = "https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=" . KEY_TMDB;
             $api_json = file_get_contents($api_url);
-            //$api_array = json_decode($api_json);
 
             return file_put_contents($this->file_name, $api_json);
 

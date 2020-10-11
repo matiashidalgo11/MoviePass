@@ -2,19 +2,39 @@
 
     class Cine {
 
+        private $id;
         private $nombre_cine;
         private $capacidad_total;
         private $direccion;
         private $valor_entrada;
 
-        public function __construct( $nombre_cine = "", $capacidad_total = "", $direccion = "", $valor_entrada = ""){
+        public function __construct( $id = "", $nombre_cine = "", $capacidad_total = "", $direccion = "", $valor_entrada = ""){
+            $this->id = $id;
             $this->nombre_cine = $nombre_cine;
             $this->capacidad_total = $capacidad_total;
             $this->direccion = $direccion;
             $this->valor_entrada = $valor_entrada;
         }
 
-        
+        /**
+         * Get the value of id
+         */ 
+        public function getId()
+        {
+                return $this->id;
+        }
+
+        /**
+         * Set the value of id
+         *
+         * @return  self
+         */ 
+        public function setId($id)
+        {
+                $this->id = $id;
+
+                return $this;
+        }
 
         /**
          * Get the value of nombre_cine
@@ -95,4 +115,5 @@
 
                 return $this;
         }
+
 }

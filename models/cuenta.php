@@ -9,11 +9,11 @@ class Cuenta
 	private $password;
 	private $privilegios;
 
-	function __construct ($id="",$email="", $pass="", $privilegios="") {
+	function __construct ($id="",$email="", $password="", $privilegios="") {
 
 		$this->id = $id;
 		$this->email = $email;
-		$this->password = $pass;
+		$this->password = $password;
 		$this->privilegios = $privilegios;
     }
 

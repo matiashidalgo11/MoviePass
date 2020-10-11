@@ -10,12 +10,6 @@
             $this->cuentas_dao = new DaoCuentas();
         }
         
-
-
-
-
-
-
         public function verificar($email="",$password=""){
             
             DaoCuentas::verificar($email,$password);

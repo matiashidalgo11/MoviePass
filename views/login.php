@@ -6,7 +6,7 @@
     
     </form>
 
-    <form action="<?= FRONT_ROOT ?>/Movies/updateList" method="POST">
+    <form action="<?= FRONT_ROOT ?>/Cuentas/verificar" method="POST">
 
     <button type="submit">Actualizar Lista</button>
 

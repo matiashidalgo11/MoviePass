@@ -1,7 +1,7 @@
 <?php
 namespace models;
 
-class classCuenta
+class Cuenta
 {
 
 	private $id;
@@ -14,7 +14,7 @@ class classCuenta
 		$this->id = $id;
 		$this->email = $email;
 		$this->password = $pass;
-		$this->privilegios= $privilegios;
+		$this->privilegios = $privilegios;
     }
 
 	/**

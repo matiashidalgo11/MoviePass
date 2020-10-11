@@ -2,7 +2,7 @@
 
     use models\Cuenta as Cuenta;
 
-    class Cuentas {
+    class DaoCuentas {
        
        private $cuentas_list = array();
        private $file_name; 
@@ -83,21 +83,10 @@
                 foreach($arrayToDecode as $valuesArray)
                 {
                     $cuenta = new Cuenta();
-                    $cuenta->setPopularity($valuesArray["popularity"]);
-                    $cuenta->setVote_count($valuesArray["vote_count"]);
-                    $cuenta->setVideo($valuesArray["video"]);
-                    $cuenta->setPoster_path($valuesArray["poster_path"]);
                     $cuenta->setId($valuesArray["id"]);
-                    $cuenta->setAdult($valuesArray["adult"]);
-                    $cuenta->setBackdrop_path($valuesArray["backdrop_path"]);
-                    $cuenta->setOriginal_language($valuesArray["original_language"]);
-                    $cuenta->setOriginal_title($valuesArray["original_title"]);
-                    $cuenta->setGenre_ids($valuesArray["genre_ids"]);
-                    $cuenta->setTitle($valuesArray["title"]);
-                    $cuenta->setVote_average($valuesArray["vote_average"]);
-                    $cuenta->setOverview($valuesArray["overview"]);
-                    $cuenta->setRelease_date($valuesArray["release_date"]);
-                    
+                    $cuenta->setEmail($valuesArray["email"]);
+                    $cuenta->setPassword($valuesArray["password"]);
+                    $cuenta->setPrivilegios($valuesArray["privilegios"]);
 
                     array_push($this->cuentas_list, $cuenta);
                 }
@@ -105,11 +94,11 @@
         }
 
         //Esta la funcion in_array tambien.
-        private function exist(\models\cuenta $cuenta){
+        private function exist(Cuenta $cuenta){
             
             foreach($this->cuentas_list as $aux){
                
-                if($aux->getId() == $cuenta->getId() && $aux->getTitle() == $cuenta->getTitle()){
+                if($aux->getId() == $cuenta->getId() && $aux->getEmail() == $cuenta->getEmail()){
                    
                     return true;
                 }
@@ -118,8 +107,20 @@
             return false;
         }
 
+        public function verificar($email, $password)
+      {
+        $cuentaVerificada;
 
-    }
+        $this->RetrieveData();
 
+        foreach ($this->cuentas_list as $aux){
+            if($aux->getEmail() == $cuenta->getEmail() && $aux->getPassword() == $cuenta->getPassword()){
+                   $cuentaVerificada = $aux;
+            }
+        }
+        if isset($cuentaVerificada) {
+            $_SESSION['cuenta']= new Cuenta($cuentaVerificada['id'],$cuentaVerificada['email'],$cuentaVerificada['password'],$cuentaVerificada['privilegios']);
+        }
+      }
 
-?>
+    }?>

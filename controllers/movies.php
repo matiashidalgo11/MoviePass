@@ -19,17 +19,25 @@
             //Se crea un lista de peliculas que provienen de tmdb y luego se los agrega al archivo movies.json
             $new_list_movie = $tmdb_dao->GetAll();
             
+            
 
-            if($this->movies_dao->AddArray($new_list_movie)){
-                
-                include ROOT .  VIEWS_PATH . 'list_movies.php';
-
-            } else {
-
-                include ROOT . VIEWS_PATH . 'login.php';
-            } 
+            
 
 
+        }
+
+        //Esta la funcion in_array tambien.
+        private function exist(\models\Movie $movie){
+            
+            foreach($this->movies_list as $aux){
+               
+                if($aux->getId() == $movie->getId() && $aux->getTitle() == $movie->getTitle()){
+                   
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         

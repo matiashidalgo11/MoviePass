@@ -6,8 +6,9 @@
     
     </form>
 
-    <form action="<?= FRONT_ROOT ?>/Movies/updateList" method="POST">
+    <form action="<?= FRONT_ROOT ?>/Cuentas/verificar" method="POST">
 
+    <a href=<?php echo FRONT_ROOT.'registrarse' ?> >Crear usuario</a>
     <button type="submit">Actualizar Lista</button>
 
     </form>

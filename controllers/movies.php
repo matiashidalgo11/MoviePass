@@ -12,16 +12,9 @@
 
         public function updateList(){
 
-            //Se instancia el dao de tmdb y luego se actualizan las peliculas del archivo tmdb.json
-            $tmdb_dao = new \daos\Tmdb();
-            $tmdb_dao->UpdateData();
+            $this->movies_dao->UpdateList();
 
-            //Se crea un lista de peliculas que provienen de tmdb y luego se los agrega al archivo movies.json
-            $new_list_movie = $tmdb_dao->GetAll();
-            
-            
-
-            
+            include(ROOT . '/views/list_movies.php');
 
 
         }

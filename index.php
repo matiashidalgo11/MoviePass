@@ -27,4 +27,8 @@
 
 	$request = new Request();
 
+	require_once(VIEWS_PATH . "header.php");
+
 	Router::direccionar($request);
+
+	require_once(VIEWS_PATH . "footer.php");

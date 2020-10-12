@@ -21,6 +21,33 @@
   
         }
 
+        public function Delete(\models\Movie $m){
+           
+            $this->RetrieveData();
+            
+            //Probar
+            if (($clave = array_search($m, $this->movies_list)) != false) {
+            
+                unset($this->movies_list[$clave]);
+                
+            }
+    
+            return $this->SaveData();
+        }
+
+        public function Read(int $id){
+           
+            $this->RetrieveData();
+
+            foreach($this->movies_list as $movie){
+                if($movie->getId() == $id){
+                    return $movie;
+                }
+            }
+
+            return false;
+        }
+
         public function UpdateList(){
            
             unset($this->movies_list);

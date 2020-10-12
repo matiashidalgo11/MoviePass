@@ -17,13 +17,13 @@
             
 
             if(empty($ArregloUrl)) {
-                $this->controlador = 'Login';
+                $this->controlador = 'Movies';
             } else {
                 $this->controlador = array_shift($ArregloUrl);
             }
 
             if(empty($ArregloUrl)) {
-                $this->metodo = 'init';
+                $this->metodo = 'listMovies';
             } else {
                 $this->metodo = array_shift($ArregloUrl);
             }            

@@ -19,6 +19,13 @@
 
         }
 
+        public function listMovies(){
+            
+            $this->movies_dao->GetAll();
+            
+            include(ROOT . '/views/list_movies.php');
+        }
+
         //Esta la funcion in_array tambien.
         private function exist(\models\Movie $movie){
             

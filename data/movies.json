@@ -10,15 +10,16 @@
         "original_language": "en",
         "original_title": "Mulan",
         "genre_ids": [
-            28,
-            12,
-            18,
-            14
+            "Action",
+            "Adventure",
+            "Drama",
+            "Fantasy"
         ],
         "title": "Mulan",
         "vote_average": 7.3,
         "overview": "When the Emperor of China issues a decree that one man per family must serve in the Imperial Chinese Army to defend the country from Huns, Hua Mulan, the eldest daughter of an honored warrior, steps in to take the place of her ailing father. She is spirited, determined and quick on her feet. Disguised as a man by the name of Hua Jun, she is tested every step of the way and must harness her innermost strength and embrace her true potential.",
-        "release_date": "2020-09-04"
+        "release_date": "2020-09-04",
+        "enabled": true
     },
     {
         "popularity": 933.603,
@@ -31,12 +32,13 @@
         "original_language": "en",
         "original_title": "Money Plane",
         "genre_ids": [
-            28
+            "Action"
         ],
         "title": "Money Plane",
         "vote_average": 6.1,
         "overview": "A professional thief with $40 million in debt and his family's life on the line must commit one final heist - rob a futuristic airborne casino filled with the world's most dangerous criminals.",
-        "release_date": "2020-09-29"
+        "release_date": "2020-09-29",
+        "enabled": true
     },
     {
         "popularity": 837.048,
@@ -49,15 +51,16 @@
         "original_language": "en",
         "original_title": "Ava",
         "genre_ids": [
-            28,
-            80,
-            18,
-            53
+            "Action",
+            "Crime",
+            "Drama",
+            "Thriller"
         ],
         "title": "Ava",
         "vote_average": 5.9,
         "overview": "A black ops assassin is forced to fight for her own survival after a job goes dangerously wrong.",
-        "release_date": "2020-07-02"
+        "release_date": "2020-07-02",
+        "enabled": true
     },
     {
         "popularity": 700.868,
@@ -70,14 +73,15 @@
         "original_language": "ko",
         "original_title": "\ubc18\ub3c4",
         "genre_ids": [
-            28,
-            27,
-            53
+            "Action",
+            "Horror",
+            "Thriller"
         ],
         "title": "Peninsula",
         "vote_average": 7.1,
         "overview": "A soldier and his team battle hordes of post-apocalyptic zombies in the wastelands of the Korean Peninsula.",
-        "release_date": "2020-07-15"
+        "release_date": "2020-07-15",
+        "enabled": true
     },
     {
         "popularity": 566.1,
@@ -90,13 +94,14 @@
         "original_language": "en",
         "original_title": "Cats & Dogs 3: Paws Unite",
         "genre_ids": [
-            28,
-            35
+            "Action",
+            "Comedy"
         ],
         "title": "Cats & Dogs 3: Paws Unite",
         "vote_average": 6.7,
         "overview": "It's been ten years since the creation of the Great Truce, an elaborate joint-species surveillance system designed and monitored by cats and dogs to keep the peace when conflicts arise. But when a tech-savvy villain hacks into wireless networks to use frequencies only heard by cats and dogs, he manipulates them into conflict and the worldwide battle between cats and dogs is BACK ON. Now, a team of inexperienced and untested agents will have to use their old-school animal instincts to restore order and peace between cats and dogs everywhere.",
-        "release_date": "2020-10-02"
+        "release_date": "2020-10-02",
+        "enabled": true
     },
     {
         "popularity": 403.476,
@@ -109,13 +114,14 @@
         "original_language": "en",
         "original_title": "2067",
         "genre_ids": [
-            878,
-            53
+            "Science Fiction",
+            "Thriller"
         ],
         "title": "2067",
         "vote_average": 5.8,
         "overview": "A lowly utility worker is called to the future by a mysterious radio signal, he must leave his dying wife to embark on a journey that will force him to face his deepest fears in an attempt to change the fabric of reality and save humankind from its greatest environmental crisis yet.",
-        "release_date": "2020-10-01"
+        "release_date": "2020-10-01",
+        "enabled": true
     },
     {
         "popularity": 373.458,
@@ -128,13 +134,14 @@
         "original_language": "en",
         "original_title": "After We Collided",
         "genre_ids": [
-            18,
-            10749
+            "Drama",
+            "Romance"
         ],
         "title": "After We Collided",
         "vote_average": 6.6,
         "overview": "Tessa finds herself struggling with her complicated relationship with Hardin; she faces a dilemma that could change their lives forever.",
-        "release_date": "2020-09-02"
+        "release_date": "2020-09-02",
+        "enabled": true
     },
     {
         "popularity": 341.764,
@@ -147,17 +154,18 @@
         "original_language": "en",
         "original_title": "Trolls World Tour",
         "genre_ids": [
-            12,
-            16,
-            35,
-            14,
-            10402,
-            10751
+            "Adventure",
+            "Animation",
+            "Comedy",
+            "Fantasy",
+            "Music",
+            "Family"
         ],
         "title": "Trolls World Tour",
         "vote_average": 7.6,
         "overview": "Queen Poppy and Branch make a surprising discovery \u2014 there are other Troll worlds beyond their own, and their distinct differences create big clashes between these various tribes. When a mysterious threat puts all of the Trolls across the land in danger, Poppy, Branch, and their band of friends must embark on an epic quest to create harmony among the feuding Trolls to unite them against certain doom.",
-        "release_date": "2020-03-12"
+        "release_date": "2020-03-12",
+        "enabled": true
     },
     {
         "popularity": 236.834,
@@ -170,13 +178,14 @@
         "original_language": "ja",
         "original_title": "\u50d5\u306e\u30d2\u30fc\u30ed\u30fc\u30a2\u30ab\u30c7\u30df\u30a2 THE MOVIE \u30d2\u30fc\u30ed\u30fc\u30ba\uff1a\u30e9\u30a4\u30b8\u30f3\u30b0",
         "genre_ids": [
-            28,
-            16
+            "Action",
+            "Animation"
         ],
         "title": "My Hero Academia: Heroes Rising",
         "vote_average": 8.6,
         "overview": "Class 1-A visits Nabu Island where they finally get to do some real hero work. The place is so peaceful that it's more like a vacation \u2026 until they're attacked by a villain with an unfathomable Quirk! His power is eerily familiar, and it looks like Shigaraki had a hand in the plan. But with All Might retired and citizens' lives on the line, there's no time for questions. Deku and his friends are the next generation of heroes, and they're the island's only hope.",
-        "release_date": "2019-12-20"
+        "release_date": "2019-12-20",
+        "enabled": true
     },
     {
         "popularity": 226.762,
@@ -189,15 +198,16 @@
         "original_language": "en",
         "original_title": "The Outpost",
         "genre_ids": [
-            28,
-            18,
-            36,
-            10752
+            "Action",
+            "Drama",
+            "History",
+            "War"
         ],
         "title": "The Outpost",
         "vote_average": 6.7,
         "overview": "A small unit of U.S. soldiers, alone at the remote Combat Outpost Keating, located deep in the valley of three mountains in Afghanistan, battles to defend against an overwhelming force of Taliban fighters in a coordinated attack. The Battle of Kamdesh, as it was known, was the bloodiest American engagement of the Afghan War in 2009 and Bravo Troop 3-61 CAV became one of the most decorated units of the 19-year conflict.",
-        "release_date": "2020-06-24"
+        "release_date": "2020-06-24",
+        "enabled": true
     },
     {
         "popularity": 211.052,
@@ -210,14 +220,15 @@
         "original_language": "en",
         "original_title": "The Owners",
         "genre_ids": [
-            28,
-            27,
-            53
+            "Action",
+            "Horror",
+            "Thriller"
         ],
         "title": "The Owners",
         "vote_average": 5.7,
         "overview": "A group of friends think they found the perfect easy score - an empty house with a safe full of cash. But when the elderly couple that lives there comes home early, the tables are suddenly turned. As a deadly game of cat and mouse ensues, the would-be thieves must fight to save themselves from a nightmare they could never have imagined.",
-        "release_date": "2020-08-27"
+        "release_date": "2020-08-27",
+        "enabled": true
     },
     {
         "popularity": 209.925,
@@ -230,12 +241,13 @@
         "original_language": "en",
         "original_title": "Antebellum",
         "genre_ids": [
-            27
+            "Horror"
         ],
         "title": "Antebellum",
         "vote_average": 6,
         "overview": "Successful author Veronica finds herself trapped in a horrifying reality and must uncover the mind-bending mystery before it's too late.",
-        "release_date": "2020-09-02"
+        "release_date": "2020-09-02",
+        "enabled": true
     },
     {
         "popularity": 203.148,
@@ -248,15 +260,16 @@
         "original_language": "it",
         "original_title": "Pinocchio",
         "genre_ids": [
-            12,
-            18,
-            14,
-            10751
+            "Adventure",
+            "Drama",
+            "Fantasy",
+            "Family"
         ],
         "title": "Pinocchio",
         "vote_average": 6.8,
         "overview": "In this live-action adaptation of the beloved fairytale, old woodcarver Geppetto fashions a wooden puppet, Pinocchio, who magically comes to life. Pinocchio longs for adventure and is easily led astray, encountering magical beasts, fantastical spectacles, while making friends and foes along his journey. However, his dream is to become a real boy, which can only come true if he finally changes his ways.",
-        "release_date": "2019-12-19"
+        "release_date": "2019-12-19",
+        "enabled": true
     },
     {
         "popularity": 200.679,
@@ -269,14 +282,15 @@
         "original_language": "en",
         "original_title": "Bill & Ted Face the Music",
         "genre_ids": [
-            12,
-            35,
-            878
+            "Adventure",
+            "Comedy",
+            "Science Fiction"
         ],
         "title": "Bill & Ted Face the Music",
         "vote_average": 6.4,
         "overview": "Yet to fulfill their rock and roll destiny, the now middle-aged best friends Bill and Ted set out on a new adventure when a visitor from the future warns them that only their song can save life as we know it. Along the way, they are helped by their daughters, a new batch of historical figures and a few music legends\u2014to seek the song that will set their world right and bring harmony to the universe.",
-        "release_date": "2020-08-27"
+        "release_date": "2020-08-27",
+        "enabled": true
     },
     {
         "popularity": 190.926,
@@ -289,13 +303,14 @@
         "original_language": "en",
         "original_title": "Lost Girls & Love Hotels",
         "genre_ids": [
-            18,
-            53
+            "Drama",
+            "Thriller"
         ],
         "title": "Lost Girls & Love Hotels",
         "vote_average": 5.2,
         "overview": "Searching for escape in Tokyo's back alleys, a haunted English teacher explores love and lust with a dashing Yakuza, as their tumultuous affair takes her on a journey through the city's dive bars and three-hour love hotels.",
-        "release_date": "2020-09-18"
+        "release_date": "2020-09-18",
+        "enabled": true
     },
     {
         "popularity": 180.853,
@@ -308,14 +323,15 @@
         "original_language": "en",
         "original_title": "Bad Education",
         "genre_ids": [
-            35,
-            18,
-            10770
+            "Comedy",
+            "Drama",
+            "TV Movie"
         ],
         "title": "Bad Education",
         "vote_average": 6.9,
         "overview": "A superintendent of a school district works for the betterment of the student\u2019s education when an embezzlement scheme is discovered, threatening to destroy everything.",
-        "release_date": "2020-09-23"
+        "release_date": "2020-09-23",
+        "enabled": true
     },
     {
         "popularity": 175.275,
@@ -328,14 +344,15 @@
         "original_language": "en",
         "original_title": "Tenet",
         "genre_ids": [
-            28,
-            878,
-            53
+            "Action",
+            "Science Fiction",
+            "Thriller"
         ],
         "title": "Tenet",
         "vote_average": 7.5,
         "overview": "Armed with only one word - Tenet - and fighting for the survival of the entire world, the Protagonist journeys through a twilight world of international espionage on a mission that will unfold in something beyond real time.",
-        "release_date": "2020-08-22"
+        "release_date": "2020-08-22",
+        "enabled": true
     },
     {
         "popularity": 173.161,
@@ -348,14 +365,15 @@
         "original_language": "en",
         "original_title": "The Devil All the Time",
         "genre_ids": [
-            80,
-            18,
-            53
+            "Crime",
+            "Drama",
+            "Thriller"
         ],
         "title": "The Devil All the Time",
         "vote_average": 7.4,
         "overview": "In Knockemstiff, Ohio and its neighboring backwoods, sinister characters converge around young Arvin Russell as he fights the evil forces that threaten him and his family.",
-        "release_date": "2020-09-11"
+        "release_date": "2020-09-11",
+        "enabled": true
     },
     {
         "popularity": 163.355,
@@ -368,13 +386,14 @@
         "original_language": "en",
         "original_title": "Monsoon",
         "genre_ids": [
-            18,
-            10749
+            "Drama",
+            "Romance"
         ],
         "title": "Monsoon",
         "vote_average": 4.8,
         "overview": "Kit can\u2019t remember much of his native Vietnam. When he returns to the Land of the Golden Star for the first time in over thirty years, he takes in his local surroundings as any Western tourist would, and the environment is as exotic as the language is incomprehensible. The aim of Kit\u2019s travels \u2013 to find a place to scatter his parents\u2019 ashes \u2013 thus becomes part of a journey back to his roots and to the discovery of his identity, which external circumstances have rendered ambiguous and complex.",
-        "release_date": "2020-09-25"
+        "release_date": "2020-09-25",
+        "enabled": true
     },
     {
         "popularity": 152.213,
@@ -387,12 +406,13 @@
         "original_language": "en",
         "original_title": "The King of Staten Island",
         "genre_ids": [
-            35,
-            18
+            "Comedy",
+            "Drama"
         ],
         "title": "The King of Staten Island",
         "vote_average": 6.8,
         "overview": "Scott has been a case of arrested development ever since his firefighter father died when he was seven. He\u2019s now reached his mid-20s having achieved little, chasing a dream of becoming a tattoo artist that seems far out of reach. As his ambitious younger sister heads off to college, Scott is still living with his exhausted ER nurse mother and spends his days smoking weed, hanging with the guys \u2014 Oscar, Igor and Richie \u2014 and secretly hooking up with his childhood friend Kelsey. But when his mother starts dating a loudmouth firefighter named Ray, it sets off a chain of events that will force Scott to grapple with his grief and take his first tentative steps toward moving forward in life.",
-        "release_date": "2020-07-22"
+        "release_date": "2020-07-22",
+        "enabled": true
     }
 ]

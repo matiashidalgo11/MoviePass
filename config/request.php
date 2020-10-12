@@ -17,7 +17,7 @@
             
 
             if(empty($ArregloUrl)) {
-                $this->controlador = 'Login';
+                $this->controlador = 'LoginController';
             } else {
                 $this->controlador = array_shift($ArregloUrl);
             }

@@ -22,10 +22,7 @@
                 array_push($this->cuentas_list, $cuenta);
                 return $this->SaveData();
             }
-            
             return false;
-
-            
         }
 
         //Guardar las peliculas en el arreglo por el id ?)
@@ -109,18 +106,15 @@
 
         public function verificar($email, $password)
       {
-        $cuentaVerificada;
 
         $this->RetrieveData();
 
         foreach ($this->cuentas_list as $aux){
-            if($aux->getEmail() == $cuenta->getEmail() && $aux->getPassword() == $cuenta->getPassword()){
-                   $cuentaVerificada = $aux;
+            if($aux->getEmail() == $email && $aux->getPassword() == $password){
+                   $_SESSION['cuenta'] = $aux;
+
+                   //hay que incluir pantalla y los nav segun privilegios
             }
         }
-        if isset($cuentaVerificada) {
-            $_SESSION['cuenta']= new Cuenta($cuentaVerificada['id'],$cuentaVerificada['email'],$cuentaVerificada['password'],$cuentaVerificada['privilegios']);
-        }
-      }
-
-    }?>
+    }
+ }?>

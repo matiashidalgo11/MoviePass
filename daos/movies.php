@@ -21,15 +21,40 @@
   
         }
 
-        public function UpdateList(){
+        public function Delete(\models\Movie $m){
            
             $this->RetrieveData();
-            $api_new_list = $this->ListFromApi();
-
-            foreach($api_new_list as $new_movie){
+            
+            //Probar
+            if (($clave = array_search($m, $this->movies_list)) != false) {
+            
+                unset($this->movies_list[$clave]);
                 
-                //falta terminar funcion para comparar 
             }
+    
+            return $this->SaveData();
+        }
+
+        public function Read(int $id){
+           
+            $this->RetrieveData();
+
+            foreach($this->movies_list as $movie){
+                if($movie->getId() == $id){
+                    return $movie;
+                }
+            }
+
+            return false;
+        }
+
+        public function UpdateList(){
+           
+            unset($this->movies_list);
+
+            $this->movies_list = $this->ListFromApi();
+
+            $this->SaveData();
 
         }
 
@@ -43,9 +68,10 @@
         private function SaveData()
         {
             $arrayToEncode = array();
-
+            echo 'estoy en save data';
             foreach($this->movies_list as $movie)
             {
+                
                 $valuesArray["popularity"] = $movie->getPopularity();
                 $valuesArray["vote_count"] = $movie->getVote_count();
                 $valuesArray["video"] = $movie->getVideo();
@@ -113,11 +139,13 @@
             $api_json = file_get_contents($api_url);
             $api_array = ($api_json) ? json_decode($api_json, true) : array();
 
+            
             $new_movie_list = array();
 
-            foreach($api_array as $valuesArray)
+            foreach($api_array['results'] as $valuesArray)
                 {
                     $movie = new \models\Movie();
+
                     $movie->setPopularity($valuesArray["popularity"]);
                     $movie->setVote_count($valuesArray["vote_count"]);
                     $movie->setVideo($valuesArray["video"]);
@@ -149,12 +177,13 @@
             $generos = array();
 
             foreach($array_genre_ids as $id){
-                if(array_key_exists($genre_list, $id)){
 
-                    array_push($generos,$genre_list[$id]);
+                if(array_key_exists($id,$genre_list)){
+
+                    array_push($generos,$genre_list[$id]->getName());
                 }
             }
-
+        
             return $generos;
         }
 
@@ -165,7 +194,7 @@
 
             $genre_list = array();
 
-            foreach($api_array as $valuesArray)
+            foreach($api_array["genres"] as $valuesArray)
                 {
                     $genre = new \models\Genre();
                     

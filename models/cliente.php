@@ -9,12 +9,12 @@ class Cliente extends Cuenta{
 	private $apellido;
 	private $domicilio;
     private $telefono;
-    private $entradas[];
+    private $entradas = [];
 
     function __construct ($id = "", $email = "", $password = "", $privilegios = "",$nombre = "",
                             $apellido = "",$domicilio = "",$telefono = "", $entradas = []) {
 
-        super($id,$email,$password,$privilegios);
+		parent::__construct($id,$email,$password,$privilegios);
 		$this->nombre = $nombre;
 		$this->apellido = $apellido;
 		$this->domicilio = $domicilio;
@@ -22,25 +22,6 @@ class Cliente extends Cuenta{
         $this->entradas = $entradas;
 
     }
-	/**
-	 * Get the value of id
-	 */ 
-	public function getId()
-	{
-		return $this->id;
-	}
-
-	/**
-	 * Set the value of id
-	 *
-	 * @return  self
-	 */ 
-	public function setId($id)
-	{
-		$this->id = $id;
-
-		return $this;
-	}
 
 	/**
 	 * Get the value of nombre

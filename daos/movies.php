@@ -204,7 +204,6 @@
                     $genre_list[$genre->getId()] = $genre; 
                 }
 
-
             return $genre_list;
         }
 

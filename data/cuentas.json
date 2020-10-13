@@ -10,5 +10,11 @@
         "email": "asd@asd",
         "password": "asd",
         "privilegios": 1
+    },
+    {
+        "id": 1,
+        "email": "aaa@aaa",
+        "password": "aaa",
+        "privilegios": 1
     }
 ]

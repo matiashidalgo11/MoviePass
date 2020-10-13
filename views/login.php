@@ -5,7 +5,7 @@
         <button type="submit">Log in</button>
     </form>
 
-    <form action="<?= FRONT_ROOT ?>/CuentasController/verificar" method="GET">
+    <form action="<?= FRONT_ROOT ?>/CuentasController/verificar" method="POST">
 
     <a href="<?= FRONT_ROOT ?>/CuentasController/registrarse" >Crear usuario</a>
     <button type="submit">Actualizar Lista</button>

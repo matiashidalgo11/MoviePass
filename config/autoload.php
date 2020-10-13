@@ -4,7 +4,7 @@
 
         public static function start() {
 
-            echo '<br>Estoy en autoload<br>';
+
 
             spl_autoload_register(function($classPath) {
 

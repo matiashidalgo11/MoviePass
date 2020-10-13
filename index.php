@@ -19,7 +19,7 @@
 	use config\Autoload 	as Autoload;
 	use config\Router 	as Router;
 	use config\Request 	as Request;
-	echo 'Paso por index.php';
+
 	/**
 	 * Flujo de ejecución
 	 */

@@ -4,5 +4,11 @@
         "email": "asdfgagfd@asdkjf",
         "password": "papaya",
         "privilegios": 1
+    },
+    {
+        "id": 1,
+        "email": "asd@asd",
+        "password": "asd",
+        "privilegios": 1
     }
 ]

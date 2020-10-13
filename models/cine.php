@@ -7,7 +7,7 @@
         private $capacidad_total;
         private $direccion;
         private $valor_entrada;
-        private $peliculas[];
+        private $peliculas = [];
 
         public function __construct( $id = "", $nombre_cine = "", $capacidad_total = "", $direccion = "", $valor_entrada = "", $peliculas = []){
             $this->id = $id;

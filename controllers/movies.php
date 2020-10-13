@@ -1,13 +1,17 @@
 <?php namespace controllers;
 
+    use daos\Movies as moviesDao;
 
     class Movies {
 
         private $movies_dao;
+        private $list_movies;
+
         
         function __construct()
         {
-            $this->movies_dao = new \daos\Movies();
+            $this->movies_dao = new MoviesDao();
+            $this->list_movies = array();
         }
 
         public function updateList(){
@@ -21,7 +25,7 @@
 
         public function listMovies(){
             
-            $this->movies_dao->GetAll();
+            $this->list_movies = $this->movies_dao->GetAll();
             
             include(ROOT . '/views/list_movies.php');
         }

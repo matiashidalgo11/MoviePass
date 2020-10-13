@@ -106,23 +106,15 @@
 
         public function verificar($email, $password)
       {
-        $cuentaVerificada = "";
 
         $this->RetrieveData();
 
         foreach ($this->cuentas_list as $aux){
             if($aux->getEmail() == $email && $aux->getPassword() == $password){
-                   $cuentaVerificada = $aux;
-                   var_dump($cuentaVerificada);
+                   $_SESSION['cuenta'] = $aux;
+
+                   //hay que incluir pantalla y los nav segun privilegios
             }
         }
-        if (!empty($cuentaVerificada)) {
-            
-            $aux = new Cuenta($cuentaVerificada['id'],$cuentaVerificada['email'],$cuentaVerificada['password'],$cuentaVerificada['privilegios']);
-            var_dump($aux);
-            $_SESSION['cuenta'] = $aux;
-        }
-        
-      }
-
-    }?>
+    }
+ }?>

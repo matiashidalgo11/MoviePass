@@ -9,28 +9,34 @@
        
         public function __construct()
         {
-           
+           $this->RetrieveData();
         }
 
         public function Add($cine)
         {
-          //  $this->RetrieveData();
-            
-            $cine->setId(count($cines_list) + 1);
             array_push($this->cines_list, $cine);
-
-            return $cine->getId();
+            $this->SaveData();
   
         }
 
         public function GetById($id){
-            $cineResult = new cine();
             foreach($cines_list as $cine){
                 if($id==$cine->getId()){
-                    $cineResult=$cine;
+                    return $cine;
                 }
             }
-            return $cineResult;
+            return null;
+        }
+
+        public function modify($cine){
+            foreach($this->cine as $i => $c){
+                if($c->getId()== $cine->getId()){
+                    $this->cines_list[$i] = $cine;
+                    $this->SaveData();
+                    return true;
+                }
+            }
+            return false;
         }
 
         public function Update($cineInput){
@@ -44,131 +50,61 @@
         public function Delete($id){
             $arrayCine = array();
             
-            foreach($cines_list as $cine){
-                if($id!=$cine->getId()){
-                    array_push($arrayCine, $cine);
+            foreach($this->cines_list as $i => $cine){
+                if($id==$cine->getId()){
+                    unset($this->cine[$i]);
+                    $this->SaveData();
+                    return true;
                 }
             }
-
-            $this->cines_list=$arrayCine;
-
+            return false;
         }
 
         public function GetAll()
         {
-           // $this->RetrieveData();
             return $this->cines_list;
         }
-
-
-     /*   public function Delete(\models\cine $m){
-           
-            $this->RetrieveData();
-            
-            //Probar
-            if (($clave = array_search($m, $this->cines_list)) != false) {
-            
-                unset($this->cines_list[$clave]);
-                
-            }
-    
-            return $this->SaveData();
-        }*/
-
-    /*    public function Read(int $id){
-           
-            $this->RetrieveData();
-
-            foreach($this->cines_list as $cine){
-                if($cine->getId() == $id){
-                    return $cine;
-                }
-            }
-
-            return false;
-        }*/
-
-       /* public function UpdateList(){
-           
-            unset($this->cines_list);
-
-            $this->cines_list = $this->ListFromApi();
-
-            $this->SaveData();
-
-        }*/
-       /* private function SaveData()
+        
+       private function SaveData()
         {
             $arrayToEncode = array();
-            echo 'estoy en save data';
             foreach($this->cines_list as $cine)
             {
-                private $id;
-        private $nombre_cine;
-        private $capacidad_total;
-        private $direccion;
-        private $valor_entrada;
-        private $peliculas = [];
+                $valuesArray['id'] = $cine->getId();
+                $valuesArray['nombre_cine'] = $cine->getNombre_Cine();
+                $valuesArray['capacidad_total'] = $cine->getCapacidad_Total();
+                $valuesArray['direccion'] = $cine->getDireccion();
+                $valuesArray['valor_entrada'] = $cine->getValor_Entrada();
                 
-                $valuesArray["popularity"] = $cine->getPopularity();
-                $valuesArray["vote_count"] = $cine->getVote_count();
-                $valuesArray["video"] = $cine->getVideo();
-                $valuesArray["poster_path"] = $cine->getPoster_path();
-                $valuesArray["id"] = $cine->getId();
-                $valuesArray["adult"] = $cine->getAdult();
-                $valuesArray["backdrop_path"] = $cine->getBackdrop_path();
-                $valuesArray["original_language"] = $cine->getOriginal_language();
-                $valuesArray["original_title"] = $cine->getOriginal_title();
-                $valuesArray["genre_ids"] = $cine->getGenre_ids();
-                $valuesArray["title"] = $cine->getTitle();
-                $valuesArray["vote_average"] = $cine->getVote_average();
-                $valuesArray["overview"] = $cine->getOverview();
-                $valuesArray["release_date"] = $cine->getRelease_date();
-                $valuesArray["enabled"] = $cine->getEnabled();
-                
-
                 array_push($arrayToEncode, $valuesArray);
             }
 
             $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
             
-            return file_put_contents($this->file_name, $jsonContent);
-        }*/
+            file_put_contents(self::FILE_NAME, $jsonContent);
+        }
 
-      /*  private function RetrieveData()
+        private function RetrieveData()
         {
-            $this->cines_list = array();
 
             if(file_exists($this->file_name))
             {
-                $jsonContent = file_get_contents($this->file_name);
+                $jsonContent = file_get_contents(self::FILE_NAME);
 
                 $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
 
                 foreach($arrayToDecode as $valuesArray)
                 {
-                    $cine = new \models\cine();
-                    $cine->setPopularity($valuesArray["popularity"]);
-                    $cine->setVote_count($valuesArray["vote_count"]);
-                    $cine->setVideo($valuesArray["video"]);
-                    $cine->setPoster_path($valuesArray["poster_path"]);
                     $cine->setId($valuesArray["id"]);
-                    $cine->setAdult($valuesArray["adult"]);
-                    $cine->setBackdrop_path($valuesArray["backdrop_path"]);
-                    $cine->setOriginal_language($valuesArray["original_language"]);
-                    $cine->setOriginal_title($valuesArray["original_title"]);
-                    $cine->setGenre_ids($valuesArray["genre_ids"]);
-                    $cine->setTitle($valuesArray["title"]);
-                    $cine->setVote_average($valuesArray["vote_average"]);
-                    $cine->setOverview($valuesArray["overview"]);
-                    $cine->setRelease_date($valuesArray["release_date"]);
-                    $cine->setEnabled($valuesArray["enabled"]);
+                    $cine->setNombre_Cine($valuesArray['nombre_cine']);
+                    $cine->setCapacidad_Total($valuesArray['capacidad_total']);
+                    $cine->setDireccion($valuesArray['direccion']);
+                    $cine->setValor_Entrada($valuesArray['valor_entrada']);
                     
-
                     array_push($this->cines_list, $cine);
                 }
             }
-        }*/
+        }
 
         
      /*   private function ListFromApi(){

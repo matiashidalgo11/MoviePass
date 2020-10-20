@@ -3,19 +3,13 @@
     use daos\Cine as cineDao;
     use models\Cine as Cine;
 
-    class CuentasController
+    class CineController
     {
         private $cineDao;
 
         function __construct(){
             $this->cineDao = new cineDao();
         }
-        /*private $id;
-        private $nombre_cine;
-        private $capacidad_total;
-        private $direccion;
-        private $valor_entrada;
-        private $peliculas = [];*/
 
         public function add( $nombre_cine, $capacidad_total, $direccion, $valor_entrada){
 

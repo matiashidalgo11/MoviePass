@@ -9,10 +9,10 @@ class Cliente extends Cuenta{
 	private $apellido;
 	private $domicilio;
     private $telefono;
-    private $entradas = [];
+    private $entradas;
 
     function __construct ($id = "", $email = "", $password = "", $privilegios = "",$nombre = "",
-                            $apellido = "",$domicilio = "",$telefono = "", $entradas = []) {
+                            $apellido = "",$domicilio = "",$telefono = "", $entradas = array()) {
 
 		parent::__construct($id,$email,$password,$privilegios);
 		$this->nombre = $nombre;
@@ -104,4 +104,24 @@ class Cliente extends Cuenta{
 	}
 
 	
+
+    /**
+     * Get the value of entradas
+     */ 
+    public function getEntradas()
+    {
+        return $this->entradas;
+    }
+
+    /**
+     * Set the value of entradas
+     *
+     * @return  self
+     */ 
+    public function setEntradas($entradas)
+    {
+        $this->entradas = $entradas;
+
+        return $this;
+    }
 }

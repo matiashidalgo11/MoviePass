@@ -15,7 +15,6 @@
             $this->capacidad_total = $capacidad_total;
             $this->direccion = $direccion;
             $this->valor_entrada = $valor_entrada;
-            $this->peliculas = $peliculas;
         }
 
         /**
@@ -118,24 +117,4 @@
                 return $this;
         }
 
-
-            /**
-             * Get the value of peliculas
-             */ 
-            public function getPeliculas()
-            {
-                        return $this->peliculas;
-            }
-
-            /**
-             * Set the value of peliculas
-             *
-             * @return  self
-             */ 
-            public function setPeliculas($peliculas)
-            {
-                        $this->peliculas = $peliculas;
-
-                        return $this;
-            }
 }

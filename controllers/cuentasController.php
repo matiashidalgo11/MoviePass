@@ -13,7 +13,9 @@
         
         public function verificar($email="",$password=""){
             
+            
             $this->cuentas_dao->verificar($email,$password);
+            
             if(isset($_SESSION['cuenta']))
             {
             require_once "views/template.php";

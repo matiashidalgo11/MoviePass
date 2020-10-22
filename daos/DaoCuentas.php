@@ -1,120 +1,156 @@
 <?php namespace daos;
 
-    use models\Cuenta as Cuenta;
+use \Exception as Exception;
+use daos\Connection as Connection;
+use models\Cuenta as Cuenta;
 
     class DaoCuentas {
        
-       private $cuentas_list = array();
-       private $file_name; 
-       
-        public function __construct()
-        {
-            $this->file_name = dirname(__DIR__)."/data/cuentas.json";
-        }
-
-        //No sabria si el filtro de que si existe va en el daos o en el controllers
+       private $connection;
+       private $tableName = "cuentas";
+    
+        
         public function Add(Cuenta $cuenta)
         {
-            $this->RetrieveData();
+           try
+           {
+            $query = "INSERT INTO ". $this->tableName."(email , password , privilegios) VALUES (:email , :password , :privilegios );";
             
-            if(!$this->exist($cuenta)){
-               
-                array_push($this->cuentas_list, $cuenta);
-                return $this->SaveData();
-            }
-            return false;
+            $parameters["email"] = $cuenta->getEmail();
+            $parameters["password"] = $cuenta->getPassword();
+            $parameters["privilegios"] = $cuenta->getPrivilegios();
+
+            $this->connection = Connection::GetInstance();
+
+            $this->connection->ExecuteNonQuery($query, $parameters);
+           }
+           catch(Exception $ex) 
+           {
+                throw $ex;
+           }
+            
         }
 
-        //Guardar las peliculas en el arreglo por el id ?)
-        public function AddArray($cuentaArray){
-           
-            $this->RetrieveData();
 
-            foreach($cuentaArray as $cuenta){
-
-                if(!$this->exist($cuenta)){
-                    array_push($this->cuentas_list, $cuenta);
-                }
-                
-            }
-
-            return $this->SaveData();
-        }
 
         public function GetAll()
         {
-            $this->RetrieveData();
-
-            return $this->cuentas_list;
-        }
-
-        private function SaveData()
-        {
-            $arrayToEncode = array();
-
-            foreach($this->cuentas_list as $cuenta)
+            try
             {
-                $valuesArray["id"] = $cuenta->getId();
-                $valuesArray["email"] = $cuenta->getEmail();
-                $valuesArray["password"] = $cuenta->getPassword();
-                $valuesArray["privilegios"] = $cuenta->getPrivilegios();                
+                $cuentaList = array();
 
-                array_push($arrayToEncode, $valuesArray);
-            }
+                $query = "SELECT * FROM ". $this->tableName;
 
-            $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-            
-            return file_put_contents($this->file_name, $jsonContent);
-        }
+                $this->connection = Connection::GetInstance();
 
-        private function RetrieveData()
-        {
-            $this->cuentas_list = array();
+                $resultSet = $this->connection->Execute($query);
 
-            if(file_exists($this->file_name))
-            {
-                $jsonContent = file_get_contents($this->file_name);
+                foreach($resultSet as $row){
 
-                $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
+                    $cuenta = $this->mapeo($row);
 
-                foreach($arrayToDecode as $valuesArray)
-                {
-                    $cuenta = new Cuenta();
-                    $cuenta->setId($valuesArray["id"]);
-                    $cuenta->setEmail($valuesArray["email"]);
-                    $cuenta->setPassword($valuesArray["password"]);
-                    $cuenta->setPrivilegios($valuesArray["privilegios"]);
+                    array_push($cuentaList, $cuenta);
 
-                    array_push($this->cuentas_list, $cuenta);
                 }
+
+                return $cuentaList;
+
+            }
+            catch(Exception $ex)
+            {
+                throw $ex;
             }
         }
 
-        //Esta la funcion in_array tambien.
-        private function exist(Cuenta $cuenta){
+        public function getById($id){
+            try{
+                
+                $query = "SELECT * FROM". $this->tableName. "WHERE idCuenta = ". $id;
+
+                $this->connection = Connection::GetInstance();
+
+                $result = $this->connection->Execute($query);
+
+                return $this->mapeo($result);
+
+            }
+            catch(Exception $ex)
+            {
+                throw $ex;
+            }
+        }
+
+        public function getByEmail($email){
+            try{
+                
+                $query = " SELECT * FROM ". $this->tableName. " WHERE email = ". "'" .$email."'";
+
+                $this->connection = Connection::GetInstance();
+
+                $result = $this->connection->Execute($query);
+
+                return $this->mapeo($result);
+
+            }
+            catch(Exception $ex)
+            {
+                throw $ex;
+            }
+        }
+       
+       
+        public function mapeo($dato){
             
-            foreach($this->cuentas_list as $aux){
+            $value = $dato[0];
+
+            if(is_array($value) && array_key_exists('password', $value)){
+                
+                $cuenta = new Cuenta();
                
-                if($aux->getId() == $cuenta->getId() && $aux->getEmail() == $cuenta->getEmail()){
-                   
-                    return true;
-                }
+                $cuenta->setId($value["idCuenta"]);
+                $cuenta->setEmail($value["email"]);
+                $cuenta->setPassword($value["password"]);
+                $cuenta->setPrivilegios($value["privilegios"]);
+
+                return $cuenta;
             }
 
             return false;
+        }
+    
+        public function exist($email){
+            try{
+
+                $query = "SELECT EXISTS ( SELECT * FROM ". $this->tableName. " WHERE email = ". "'" .$email."'" . ");";
+
+                $this->connection = Connection::GetInstance();
+
+                $result = $this->connection->Execute($query);
+
+                if($result[0][0] != 1) return false;
+                else return true;
+    
+            }
+            catch(Exception $ex)
+            {
+                throw $ex;
+            }
         }
 
         public function verificar($email, $password)
       {
 
-        $this->RetrieveData();
+            if($this->exist($email)){
 
-        foreach ($this->cuentas_list as $aux){
-            if($aux->getEmail() == $email && $aux->getPassword() == $password){
-                   $_SESSION['cuenta'] = $aux;
+                $cuenta = $this->getByEmail($email);
 
-                   //hay que incluir pantalla y los nav segun privilegios
+                if($cuenta != false){
+                    if($cuenta->getPassword() == $password){
+                     $_SESSION['cuenta'] = $cuenta;
+                    }
+                }
+              
             }
-        }
+
     }
- }?>
+ }

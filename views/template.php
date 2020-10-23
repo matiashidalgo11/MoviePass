@@ -18,6 +18,7 @@
 			if ($_SESSION['cuenta']->getPrivilegios()==0)
 			{
 				require_once 'navAdm.php';
+				
 			}else if ($_SESSION['cuenta']->getPrivilegios()==2)
 			{
 				require_once "navCliente.php";

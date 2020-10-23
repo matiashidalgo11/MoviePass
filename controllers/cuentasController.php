@@ -13,7 +13,9 @@
         
         public function verificar($email="",$password=""){
             
+            
             $this->cuentas_dao->verificar($email,$password);
+            
             if(isset($_SESSION['cuenta']))
             {
             require_once "views/template.php";
@@ -25,16 +27,23 @@
 
         public function registrarse(){
 
-            require_once "views/registrarse.php";
+            require_once "views/register.php";
         }
 
-        public function crear($email, $password, $nombre, $apellido, $telefono, $domicilio){
+        public function crear($email, $password, $rPassword , $nombre, $apellido, $telefono, $domicilio){
 
-            $cuenta = new Cliente(1,$email, $password,1, $nombre, $apellido, $telefono, $domicilio);
+            if($password == $rPassword){
 
-            $this->cuentas_dao->add($cuenta);
+                $cuenta = new Cliente(1,$email, $password,1, $nombre, $apellido, $telefono, $domicilio);
 
-            var_dump($cuenta);
+                $this->cuentas_dao->add($cuenta);
+
+                require_once VIEWS_PATH . "login.php";
+            }else {
+                
+                require_once "views/register.php";
+            }
+            
         }
     }
 

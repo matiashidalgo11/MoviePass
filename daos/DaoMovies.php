@@ -1,7 +1,7 @@
 <?php namespace daos;
 
 
-    class Movies {
+    class DaoMovies implements IDao {
        
        private $movies_list = array();
        private $file_name; 
@@ -11,7 +11,7 @@
             $this->file_name = dirname(__DIR__)."/data/movies.json";
         }
 
-        public function Add(\models\Movie $movie)
+        public function Add($movie)
         {
             $this->RetrieveData();
             
@@ -21,12 +21,12 @@
   
         }
 
-        public function Delete(\models\Movie $m){
+        public function Delete($movie){
            
             $this->RetrieveData();
             
             //Probar
-            if (($clave = array_search($m, $this->movies_list)) != false) {
+            if (($clave = array_search($movie, $this->movies_list)) != false) {
             
                 unset($this->movies_list[$clave]);
                 

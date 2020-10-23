@@ -19,7 +19,7 @@
 	use config\Autoload 	as Autoload;
 	use config\Router 	as Router;
 	use config\Request 	as Request;
-	echo 'Paso por index.php';
+
 	/**
 	 * Flujo de ejecución
 	 */
@@ -28,6 +28,7 @@
 	$request = new Request();
 
 	require_once(VIEWS_PATH . "header.php");
+	require_once(VIEWS_PATH . "nav-bar.php");
 
 	Router::direccionar($request);
 

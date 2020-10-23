@@ -24,3 +24,14 @@ constraint fk_idCuenta foreign key (idCuenta) references cuentas(idCuenta),
 constraint uniq_email unique (dni)
 );
 #drop table clientes;
+
+create table cines(
+    idCine int not null auto_increment,
+    nombre varchar(30) not null,
+    capacidad int not null,
+    direccion varchar(30) not null,
+    precioXentrada int not null,
+    constraint pkCine primary key (idCine)
+
+);
+#drop table cines;

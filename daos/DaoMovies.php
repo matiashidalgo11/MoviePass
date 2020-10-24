@@ -1,17 +1,31 @@
 <?php namespace daos;
 
+    use \Exception as Exception;
+    use daos\Connection as Connection;
+    use models\Movie as Movie;
 
-    class DaoMovies implements IDao {
+    class DaoMovies {
        
-       private $movies_list = array();
-       private $file_name; 
+       private $connection;
+       private $tableName = "movies"; 
        
-        public function __construct()
-        {
-            $this->file_name = dirname(__DIR__)."/data/movies.json";
-        }
+       //variables con los nombres de los atributos de las tablas
+       private $popularityT = "popularity";
+       private $videoT = "video";
+       private $poster_pathT = "posterPath";
+       private $idT = "idMovie";
+       private $adultT = "adult";
+       private $originalLeanguageT = "originalLenguage";
+       private $genreIdsT = "genres";
+       private $titleT = "title";
+       private $overviewT = "overview";
+       private $releaseDataT = "releaseData";
+       private $enabledT = "enabled";
 
-        public function Add($movie)
+       //agregar variables para traer de la base de datos y mapear
+
+
+        public function Add(Movie $movie)
         {
             $this->RetrieveData();
             

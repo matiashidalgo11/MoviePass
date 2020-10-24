@@ -24,3 +24,13 @@ constraint fk_idCuenta foreign key (idCuenta) references cuentas(idCuenta),
 constraint uniq_email unique (dni)
 );
 #drop table clientes;
+
+create table generos(
+idGenero int not null,
+nombre varchar(50),
+primary key (idGenero),
+constraint uniq_nombre unique (nombre)
+);
+
+#truncate table generos;
+#select * from generos;

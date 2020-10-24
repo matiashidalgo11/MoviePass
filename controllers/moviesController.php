@@ -1,8 +1,10 @@
 <?php namespace controllers;
 
-    use daos\DaoMovies as daoMovies;
+use daos\DaoGenre;
+use daos\DaoMovies as daoMovies;
+use models\Genre;
 
-    class MoviesController {
+class MoviesController {
 
         private $movies_dao;
         private $list_movies;
@@ -28,6 +30,20 @@
             $this->list_movies = $this->movies_dao->GetAll();
             
             include(ROOT . '/views/list_movies.php');
+        }
+
+        //Falta tratar excepciones cuando se quieren insertar repetidos
+        public function testGenre(){
+
+            $daoGenre = new DaoGenre();
+
+            $generoFromApi = $daoGenre->genresFromApi();
+
+            foreach($generoFromApi as $genre){
+                $daoGenre->Add($genre);
+            }
+
+            var_dump($daoGenre->GetAll());
         }
 
         

@@ -10,11 +10,24 @@ class DaoGenre
 {
 
     private $connection;
-    private $tableName = "generos";
+    private $tableName = null;
+    private static $instance = null;
 
-    public $idGenreDB = "idGenero";
-    public $nombreDB = "nombre";
+    public static $idGenreDB = "idGenero";
+    public static $nombreDB = "nombre";
 
+    private function __construct()
+    {     
+        $this->tableName = "generos";
+    }
+
+    public static function GetInstance()
+    {
+        if(self::$instance == null)
+            self::$instance = new DaoGenre();
+
+        return self::$instance;
+    }
 
     public function GetAll()
     {
@@ -30,19 +43,17 @@ class DaoGenre
             $genreList = $this->mapeo($resultSet);
 
             return $genreList;
-
         } catch (Exception $ex) {
             throw $ex;
         }
     }
 
- 
 
     public function exist($nombre)
     {
         try {
 
-            $query = "SELECT EXISTS ( SELECT * FROM " . $this->tableName . " WHERE " . $this->nombreDB . " = " . "'" . $nombre . "'" . ");";
+            $query = "SELECT EXISTS ( SELECT * FROM " . $this->tableName . " WHERE " . DaoGenre::$nombreDB . " = " . "'" . $nombre . "'" . ");";
 
             $this->connection = Connection::GetInstance();
 
@@ -55,14 +66,52 @@ class DaoGenre
         }
     }
 
-    //falta adaptar la funcion para agregar un arreglo de generos
+    public function getById(int $id)
+    {
+
+        try {
+            $query = "SELECT * FROM " . $this->tableName . " WHERE " . DaoGenre::$idGenreDB . " = " . "'" . $id . "'" . " ;";
+
+            $this->connection = Connection::GetInstance();
+
+            $resultSet = $this->connection->Execute($query);
+
+            $array = $this->mapeo($resultSet);
+
+            $array = !empty($array) ? $array[0] : [];
+
+            return $array;
+
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function arrayToGenre(array $genreIds){
+        
+        $arregloGeneros = array();
+
+        foreach($genreIds as $id){
+            if($id instanceof int){
+
+                $object = $this->getById($id);
+
+                if(!empty($object)){
+                    array_push($arregloGeneros, $object);
+                }
+            }
+        }
+
+        return $arregloGeneros;
+    }
+
     public function Add(Genre $genre)
     {
         try {
             $query = "INSERT INTO " . $this->tableName . " ( idGenero , nombre ) VALUES ( :idGenero , :nombre ) ;";
 
-            $parameters[$this->idGenreDB] = $genre->getId();
-            $parameters[$this->nombreDB] = $genre->getName();
+            $parameters[DaoGenre::$idGenreDB] = $genre->getId();
+            $parameters[DaoGenre::$nombreDB] = $genre->getName();
 
 
             $this->connection = Connection::GetInstance();
@@ -72,48 +121,6 @@ class DaoGenre
             throw $ex;
         }
     }
-
-    /* public function AddFromArray($array)
-    {
-
-        if (is_array($array) && $array[0] instanceof Genre) {
-
-
-            try{
-                    
-                $query = "INSERT INTO " . $this->tableName . "( idGenero , nombre ) VALUES ( ? , ?)";
-
-                for ($i = 1; $i < count($array); $i++) {
-
-                    $query .= " , ( ? , ? ) ";
-                }
-                $query .= " ; ";
-
-                echo $query;
-
-                $parameters = array();
-
-                foreach($array as $genre){
-
-                    array_push($parameters, $genre->getId());
-                    array_push($parameters, $genre->getName());
-                }
-
-                echo "<br>";
-
-                var_dump($parameters);
-
-                $this->connection = Connection::GetInstance();
-
-                $this->connection->ExecuteNonQuery($query, $parameters); 
-
-            } catch (Exception $ex) {
-                throw $ex;
-            }
-
-        }
-
-    } */
 
 
     public function genresFromApi()
@@ -136,24 +143,20 @@ class DaoGenre
         return $genre_list;
     }
 
-    
-    private function mapeo($value){
+
+    public static function mapeo($value)
+    {
 
         $value = is_array($value) ? $value : [];
 
         $resp = array_map(
-            function($p){
-                 return new Genre($p[$this->idGenreDB], $p[$this->nombreDB]);
-            }
-            , $value);
+            function ($p) {
+                return new Genre($p[DaoGenre::$idGenreDB], $p[DaoGenre::$nombreDB]);
+            },
+            $value
+        );
 
 
         return $resp;
-
     }
- 
-
-  
-
-    
 }

@@ -31,6 +31,28 @@ nombre varchar(50),
 primary key (idGenero),
 constraint uniq_nombre unique (nombre)
 );
-
 #truncate table generos;
-#select * from generos;
+
+create table movies(
+idMovie int not null,
+popularity double not null,
+video varchar(50) not null,
+posterPath varchar(50) not null,
+originalLanguage varchar(30) not null,
+title varchar(50) not null,
+overview text not null,
+releaseData date not null,
+enabled boolean,
+primary key(idMovie)
+);
+#select * from movies;
+
+create table moviesxgeneros(
+idMovie int not null,
+idGenero int not null,
+primary key(idMovie , idGenero),
+constraint fk_idMovie foreign key (idMovie) references movies(idMovie),
+constraint fk_idGenero foreign key (idGenero) references generos(idGenero)
+);
+
+

@@ -6,7 +6,6 @@
         private $video;
         private $poster_path;
         private $id;
-        private $adult;
         private $original_language;
         private $genre_ids;
         private $title;
@@ -15,16 +14,15 @@
         private $enabled;
 
 
-        public function __construct($popularity = "", $video = "", $poster_path = "", $id = "", $adult = "",
-         $original_language = "", $genre_ids = "", $title = "", $overview = "", $release_date = "", $enabled = true)
+        public function __construct($popularity = "", $video = "", $poster_path = "", $id = "",
+         $original_language = "", $title = "", $overview = "", $release_date = "", $enabled = true)
         {
             $this->popularity = $popularity;
             $this->video = $video;
             $this->poster_path = $poster_path;
             $this->id = $id;
-            $this->adult = $adult;
             $this->original_language = $original_language;
-            $this->genre_ids = $genre_ids;
+            $this->genre_ids = array();
             $this->title = $title;
             $this->overview = $overview;
             $this->release_date = $release_date;
@@ -112,25 +110,6 @@
                 return $this;
         }
 
-        /**
-         * Get the value of adult
-         */ 
-        public function getAdult()
-        {
-                return $this->adult;
-        }
-
-        /**
-         * Set the value of adult
-         *
-         * @return  self
-         */ 
-        public function setAdult($adult)
-        {
-                $this->adult = $adult;
-
-                return $this;
-        }
 
         /**
          * Get the value of original_language

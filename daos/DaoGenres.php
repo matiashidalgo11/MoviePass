@@ -6,35 +6,45 @@ use \Exception as Exception;
 use daos\Connection as Connection;
 use models\Genre as Genre;
 
-class DaoGenre
+class DaoGenres implements IDao
 {
 
     private $connection;
-    private $tableName = null;
     private static $instance = null;
 
-    public static $idGenreDB = "idGenero";
-    public static $nombreDB = "nombre";
+    //Info db
+    const TABLENAME = "generos";
+    const TABLE_IDGENRE = "idGenero";
+    const TABLE_NOMBRE = "nombre";
 
-    private function __construct()
-    {     
-        $this->tableName = "generos";
+    private function __construct(){
+        
     }
 
     public static function GetInstance()
     {
-        if(self::$instance == null)
-            self::$instance = new DaoGenre();
+        if (self::$instance == null)
+            self::$instance = new DaoGenres();
 
         return self::$instance;
     }
 
-    public function GetAll()
+    public function delete($dato)
+    {
+        //desarrollar
+    }
+
+    //Funcion que retorna todas las peliculas por el idGenero
+    public function genreMovies($idGenre){
+
+    }
+
+    public function getAll()
     {
         try {
             $genreList = array();
 
-            $query = "SELECT * FROM " . $this->tableName;
+            $query = "SELECT * FROM " . DaoGenres::TABLENAME;
 
             $this->connection = Connection::GetInstance();
 
@@ -43,6 +53,7 @@ class DaoGenre
             $genreList = $this->mapeo($resultSet);
 
             return $genreList;
+
         } catch (Exception $ex) {
             throw $ex;
         }
@@ -53,7 +64,7 @@ class DaoGenre
     {
         try {
 
-            $query = "SELECT EXISTS ( SELECT * FROM " . $this->tableName . " WHERE " . DaoGenre::$nombreDB . " = " . "'" . $nombre . "'" . ");";
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoGenres::TABLENAME . " WHERE " . DaoGenres::TABLE_NOMBRE . " = " . "'" . $nombre . "'" . ");";
 
             $this->connection = Connection::GetInstance();
 
@@ -61,16 +72,17 @@ class DaoGenre
 
             if ($result[0][0] != 1) return false;
             else return true;
+            
         } catch (Exception $ex) {
             throw $ex;
         }
     }
 
-    public function getById(int $id)
+    public function getById(int $idGenre)
     {
 
         try {
-            $query = "SELECT * FROM " . $this->tableName . " WHERE " . DaoGenre::$idGenreDB . " = " . "'" . $id . "'" . " ;";
+            $query = "SELECT * FROM " . DaoGenres::TABLENAME . " WHERE " . DaoGenres::TABLE_IDGENRE . " = " . "'" . $idGenre . "'" . " ;";
 
             $this->connection = Connection::GetInstance();
 
@@ -87,16 +99,17 @@ class DaoGenre
         }
     }
 
-    public function arrayToGenre(array $genreIds){
-        
+    public function arrayToGenre(array $genreIds)
+    {
+
         $arregloGeneros = array();
 
-        foreach($genreIds as $id){
-            if($id instanceof int){
+        foreach ($genreIds as $id) {
+            if ($id instanceof int) {
 
                 $object = $this->getById($id);
 
-                if(!empty($object)){
+                if (!empty($object)) {
                     array_push($arregloGeneros, $object);
                 }
             }
@@ -105,24 +118,29 @@ class DaoGenre
         return $arregloGeneros;
     }
 
-    public function Add(Genre $genre)
+    public function add($genre)
     {
-        try {
-            $query = "INSERT INTO " . $this->tableName . " ( idGenero , nombre ) VALUES ( :idGenero , :nombre ) ;";
-
-            $parameters[DaoGenre::$idGenreDB] = $genre->getId();
-            $parameters[DaoGenre::$nombreDB] = $genre->getName();
+        if ($genre instanceof Genre) {
 
 
-            $this->connection = Connection::GetInstance();
+            try {
+                $query = "INSERT INTO " . DaoGenres::TABLENAME . " ( " . DaoGenres::TABLE_IDGENRE ." , " . DaoGenres::TABLE_NOMBRE . " )  VALUES ( " . ":" . DaoGenres::TABLE_IDGENRE ." , " . ":" . DaoGenres::TABLE_NOMBRE ." ) ;";
 
-            $this->connection->ExecuteNonQuery($query, $parameters);
-        } catch (Exception $ex) {
-            throw $ex;
+                $parameters[DaoGenres::TABLE_IDGENRE] = $genre->getId();
+                $parameters[DaoGenres::TABLE_NOMBRE] = $genre->getName();
+
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+            } catch (Exception $ex) {
+                throw $ex;
+            }
         }
     }
 
-
+    //Devuelve un arreglo de Genre que vienen de la API
     public function genresFromApi()
     {
         $api_url = "https://api.themoviedb.org/3/genre/movie/list?api_key=" . KEY_TMDB . "&language=en-US";
@@ -144,14 +162,14 @@ class DaoGenre
     }
 
 
-    public static function mapeo($value)
+    public function mapeo($value)
     {
 
         $value = is_array($value) ? $value : [];
 
         $resp = array_map(
             function ($p) {
-                return new Genre($p[DaoGenre::$idGenreDB], $p[DaoGenre::$nombreDB]);
+                return new Genre($p[DaoGenres::TABLE_IDGENRE], $p[DaoGenres::TABLE_NOMBRE]);
             },
             $value
         );

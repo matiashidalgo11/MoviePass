@@ -4,7 +4,7 @@
 
 <div class="row row-cols-1 row-cols-md-4">
 
-<?php foreach($this->list_movies as $movie){ ?>
+<?php foreach($moviesList as $movie){ ?>
 
     <div class="card bg-dark text-white mb-3" >
     

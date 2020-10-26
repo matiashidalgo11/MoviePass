@@ -5,16 +5,12 @@
 
     class CuentasController
     {
-        private $cuentas_dao;
 
-        function __construct(){
-            $this->cuentas_dao = new DaoCuentas();
-        }
-        
         public function verificar($email="",$password=""){
             
+            $DaoCuentas = DaoCuentas::GetInstance();
             
-            $this->cuentas_dao->verificar($email,$password);
+            $DaoCuentas->verificar($email,$password);
             
             if(isset($_SESSION['cuenta']))
             {
@@ -36,7 +32,9 @@
 
                 $cuenta = new Cliente(1,$email, $password,1, $nombre, $apellido, $telefono, $domicilio);
 
-                $this->cuentas_dao->add($cuenta);
+                $DaoCuentas = DaoCuentas::GetInstance();
+
+                $DaoCuentas->add($cuenta);
 
                 require_once VIEWS_PATH . "login.php";
             }else {

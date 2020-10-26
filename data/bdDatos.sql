@@ -6,10 +6,14 @@ insert into cuentas(email,password,privilegios) values
 ('pepe@pepe', 'pepe',1);
 
 select * from cuentas;
-select exists (select * from cuentas where email = 'matias@matias');
+select exists (select * from cuentas where email = 'a@a');
+SELECT EXISTS (SELECT * FROM cuentas WHERE email = 'a@a');
+
 
 insert into clientes(idCuenta, dni, nombre, apellido, telefono) values
 (2,1234,'Matias', 'Hidalgo', 1111),
 (3,4321,'Pepe', 'Pep', 2222);
 
 select * from clientes;
+SELECT * from movies;
+select * from generos;

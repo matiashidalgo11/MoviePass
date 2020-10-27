@@ -1,24 +1,102 @@
 <?php namespace daos;
 
     use models\Cine as cine;
+    use daos\Connection as Connection; 
 
 
-    class cines {
+    class DaoCines {
+
+        
        
-       private $cines_list = array();
+    private $cines_list = array();
+    private $connection;
+    const TABLENAME = "cines";
+    const TABLE_IDCINE = "idCine";
+    const TABLE_NOMBRE = "nombre";
+    const TABLE_CAPACIDAD ="capacidad";
+    const TABLE_DIRECCION = "direccion";
+    const TABLE_PRECIOXENTRADA = "precioXentrada";
+
        
         public function __construct()
         {
-           $this->RetrieveData();
+           /*$this->RetrieveData();*/
         }
 
-        public function Add($cine)
+        public function Add(Cine $cine)
         {
-            array_push($this->cines_list, $cine);
-            $this->SaveData();
-  
-        }
 
+            $sql = "insert into" . DaoCines::TABLENAME  . "(id,nombre, capacidad, direccion, precioXentrada) values (:id, :nombre,:capacidad,:direccion,:precioXentrada)";
+
+            $parameters['id'] =  $cine->getId();
+            $parameters['nombre'] =  $cine->getNombre_cine();
+            $parameters['capacidad'] =  $cine->getCapacidad_total();
+            $parameters['direccion'] =  $cine->getDireccion();
+            $parameters['precioXentrada'] =  $cine->getValor_entrada();
+
+           /* array_push($this->cines_list, $cine);
+            $this->SaveData();*/
+            try { 
+            $this->connection = Connection::GetInstance(); 
+    
+            return $this->connection->ExecuteNonQuery($sql,$parameters);
+
+
+        } catch (Exception $ex) { 
+            throw $ex; 
+        } 
+    } 
+
+    public function getById(int $id){ 
+        
+        try { 
+            $sql = "SELECT * FROM " . DaoCines::TABLENAME . " WHERE " . $this->idCineDB . " = " . "'" . $id . "'" . " ;"; 
+
+            $parameters['id'] = $id;
+ 
+            $this->connection = Connection::GetInstance();
+ 
+            $resultSet = $this->connection->Execute($sql, $parameters);
+ 
+            if(!empty($resultSet) && $object instanceof Cine){ 
+ 
+                 return $this->mapeo($resultSet);   
+            }
+            else{
+                return false;
+            }
+ 
+ 
+        } catch (Exception $ex) { 
+            throw $ex; 
+        } 
+       } 
+
+       //Si el resultado del execute no termina dando un Cine, el mapeo lo transforma en uno
+       public function mapeo($value) 
+    { 
+ 
+        $value = is_array($value) ? $value : []; 
+ 
+        $resp = array_map( 
+            function ($p) { 
+ 
+                $objet =  new Cine( 
+                    $p[DaoCines::TABLE_IDCINE], 
+                    $p[DaoCines::TABLE_NOMBRE], 
+                    $p[DaoCines::TABLE_CAPACIDAD], 
+                    $p[DaoCines::TABLE_DIRECCION], 
+                    $p[DaoCines::TABLE_PRECIOXENTRADA], 
+                ); 
+ 
+                return $objet; 
+            }, 
+            $value 
+        ); 
+        return count($resp) > 1 ? $resp : $resp['0']; 
+    } 
+
+ /*
         public function GetById($id){
             foreach($cines_list as $cine){
                 if($id==$cine->getId()){
@@ -27,7 +105,7 @@
             }
             return null;
         }
-
+*/
         public function modify($cine){
             foreach($this->cine as $i => $c){
                 if($c->getId()== $cine->getId()){
@@ -39,14 +117,32 @@
             return false;
         }
 
-        public function Update($cineInput){
+        public function Update($cine){
+            $sql = "UPDATE " . DaoCines::TABLENAME . "(" . TABLE_IDCINE . "," . TABLE_NOMBRE . "," . TABLE_CAPACIDAD . "," . TABLE_DIRECCION . "," . TABLE_PRECIOXENTRADA . ")";
+            
+            
+            $parameters[DaoCines::TABLE_IDCINE] = $cine->getId(); 
+            $parameters[DaoCines::TABLE_NOMBRE] = $cine->getNombre_Cine(); 
+            $parameters[DaoCines::TABLE_CAPACIDAD] = $cine->getCapacidad_Total(); 
+            $parameters[DaoCines::TABLE_DIRECCION] = $cine->getDireccion(); 
+            $parameters[DaoCines::TABLE_PRECIOXENTRADA] = $cine->getValor_Entrada(); 
+        
+            try{
+                $this->connection = Connection::GetInstance(); 
+                return $this->connection->ExecuteNonQuery($sql, $parameters); 
+            } catch (Exception $ex) { 
+                throw $ex; 
+            }
+        }
+
+       /* public function Update($cineInput){
             foreach($cines_list as $cine){
                 if($cineInput->getId()==$cine->getId()){
                     $cine=$cineInput;
                 }
             }
-        }
-
+        }*/
+/*
         public function Delete($id){
             $arrayCine = array();
             
@@ -58,12 +154,36 @@
                 }
             }
             return false;
-        }
+        }*/
 
+        public function getAll(){
+            $sql = "select from " . DaoCines::TABLENAME;
+
+            try{
+                $this->connection = Connection::GetInstance();
+ 
+                $resultSet = $this->connection->Execute($sql);
+     
+                if(!empty($resultSet) && $object instanceof Cine){ 
+     
+                     return $this->mapeo($resultSet);   
+                }
+                else{
+                    return false;
+                }
+     
+     
+            } catch (Exception $ex) { 
+                throw $ex; 
+            } 
+
+        }
+        
+/*
         public function GetAll()
         {
             return $this->cines_list;
-        }
+        }*/
         
        private function SaveData()
         {

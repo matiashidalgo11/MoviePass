@@ -1,6 +1,6 @@
 <?php namespace controllers;
 
-    use daos\Cine as cineDao;
+    use daos\DaoCines as cineDao;
     use models\Cine as Cine;
 
     class CineController

@@ -2,20 +2,17 @@
 
     use models\Cine as cine;
     use daos\Connection as Connection; 
+    // Arreglar el Modify
 
 
     class DaoCines {
-
-        
        
     private $cines_list = array();
     private $connection;
     const TABLENAME = "cines";
     const TABLE_IDCINE = "idCine";
     const TABLE_NOMBRE = "nombre";
-    const TABLE_CAPACIDAD ="capacidad";
     const TABLE_DIRECCION = "direccion";
-    const TABLE_PRECIOXENTRADA = "precioXentrada";
 
        
         public function __construct()
@@ -26,13 +23,11 @@
         public function Add(Cine $cine)
         {
 
-            $sql = "insert into" . DaoCines::TABLENAME  . "(id,nombre, capacidad, direccion, precioXentrada) values (:id, :nombre,:capacidad,:direccion,:precioXentrada)";
+            $sql = "insert into" . DaoCines::TABLENAME  . "(id,nombre, direccion ) values (:id, :nombre,:direccion)";
 
             $parameters['id'] =  $cine->getId();
             $parameters['nombre'] =  $cine->getNombre_cine();
-            $parameters['capacidad'] =  $cine->getCapacidad_total();
             $parameters['direccion'] =  $cine->getDireccion();
-            $parameters['precioXentrada'] =  $cine->getValor_entrada();
 
            /* array_push($this->cines_list, $cine);
             $this->SaveData();*/
@@ -50,7 +45,7 @@
     public function getById(int $id){ 
         
         try { 
-            $sql = "SELECT * FROM " . DaoCines::TABLENAME . " WHERE " . $this->idCineDB . " = " . "'" . $id . "'" . " ;"; 
+            $sql = "SELECT * FROM " . DaoCines::TABLENAME . " WHERE " . DaoCines::TABLE_IDCINE . " = " . "'" . $id . "'" . " ;"; 
 
             $parameters['id'] = $id;
  
@@ -105,7 +100,7 @@
             }
             return null;
         }
-*/
+*//*
         public function modify($cine){
             foreach($this->cine as $i => $c){
                 if($c->getId()== $cine->getId()){
@@ -115,7 +110,7 @@
                 }
             }
             return false;
-        }
+        }*/
 
         public function Update($cine){
             $sql = "UPDATE " . DaoCines::TABLENAME . "(" . TABLE_IDCINE . "," . TABLE_NOMBRE . "," . TABLE_CAPACIDAD . "," . TABLE_DIRECCION . "," . TABLE_PRECIOXENTRADA . ")";
@@ -184,7 +179,7 @@
         {
             return $this->cines_list;
         }*/
-        
+        /*
        private function SaveData()
         {
             $arrayToEncode = array();
@@ -202,8 +197,8 @@
             $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
             
             file_put_contents(self::FILE_NAME, $jsonContent);
-        }
-
+        }*/
+/*
         private function RetrieveData()
         {
 
@@ -225,7 +220,7 @@
                 }
             }
         }
-
+*/
         
      /*   private function ListFromApi(){
 

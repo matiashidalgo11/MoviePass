@@ -4,17 +4,12 @@
 
         private $id;
         private $nombre_cine;
-        private $capacidad_total;
         private $direccion;
-        private $valor_entrada;
-        private $peliculas;
 
-        public function __construct( $id = "", $nombre_cine = "", $capacidad_total = "", $direccion = "", $valor_entrada = "", $peliculas = array()){
+        public function __construct( $nombre_cine = "",  $direccion = ""){
             $this->id = $id;
             $this->nombre_cine = $nombre_cine;
-            $this->capacidad_total = $capacidad_total;
             $this->direccion = $direccion;
-            $this->valor_entrada = $valor_entrada;
         }
 
         /**
@@ -58,26 +53,6 @@
         }
 
         /**
-         * Get the value of capacidad_total
-         */ 
-        public function getCapacidad_total()
-        {
-                return $this->capacidad_total;
-        }
-
-        /**
-         * Set the value of capacidad_total
-         *
-         * @return  self
-         */ 
-        public function setCapacidad_total($capacidad_total)
-        {
-                $this->capacidad_total = $capacidad_total;
-
-                return $this;
-        }
-
-        /**
          * Get the value of direccion
          */ 
         public function getDireccion()
@@ -93,26 +68,6 @@
         public function setDireccion($direccion)
         {
                 $this->direccion = $direccion;
-
-                return $this;
-        }
-
-        /**
-         * Get the value of valor_entrada
-         */ 
-        public function getValor_entrada()
-        {
-                return $this->valor_entrada;
-        }
-
-        /**
-         * Set the value of valor_entrada
-         *
-         * @return  self
-         */ 
-        public function setValor_entrada($valor_entrada)
-        {
-                $this->valor_entrada = $valor_entrada;
 
                 return $this;
         }

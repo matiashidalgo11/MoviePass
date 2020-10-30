@@ -11,30 +11,27 @@
             $this->cineDao = new cineDao();
         }
 
-        public function add( $nombre_cine, $capacidad_total, $direccion, $valor_entrada){
+        public function add( $nombre,  $direccion, $room){
 
-            $cine = new Cine($nombre_cine, $capacidad_total, $direccion, $valor_entrada);
+            $cinema = new Cine($nombre,  $direccion, $room);
 
-            $this->cineDao->add($cine);
+            $this->cineDao->add($cinema);
 
-            var_dump($cine);
         }
 
         public function GetAll(){
-            $cine_list = $this->cineDao->GetAll();
-            include(ROOT . '/views/list_cines.php');
+            return  $this->cineDao->GetAll();
             
         }
 
         public function GetById($id){
-            $cine = $this->cineDao->GetById($id);
-            include(ROOT . '/views/cine.php');
+            return $this->cineDao->GetById($id);
             
         }
 
-        public function Update($id,$nombre_cine, $capacidad_total, $direccion, $valor_entrada){
+        public function Update($id,$nombre, $capacidad_total, $direccion, $valor_entrada){
             
-            $cine = new Cine($id,$nombre_cine, $capacidad_total, $direccion, $valor_entrada);
+            $cine = new Cine($id,$nombre, $capacidad_total, $direccion, $valor_entrada);
 
             $this->cineDao->Update($cine);
 
@@ -47,5 +44,14 @@
 
         }
 
+        public function showList(){
+            
+            $arrayCine = $this->cineDao->getAll();
+            require_once(VIEWS_PATH."list_cine.php");
+        }
+
+        public function showAdd(){
+            require_once(VIEWS_PATH."addCine.php");
+        }
 
     }

@@ -1,22 +1,26 @@
 <?php
 namespace controllers;
 use daos\DaoRooms as DaoRoom;
-use daos\DaoCines as DaoCine;
 use models\room as Room;
 
 class RoomController{
-    private $DaosRoom;
+    private $DaoRoom;
 
     public function __construct(){
-        $this->DaosRoom = new DaoRoom();
-        $this->DaoCine = new DaoCines();
+        $this->DaoRoom = new DaoRoom();
     }
 
-    public function getByCine($idCine){
-        echo json_encode($this->DaosRoom->getByCine($idCine));
+    public function add($room,$idCine){
+        $this->DaoRoom->add($room,$idCine);
+    }
+
+    public function getById($id){
+        return $this->DaoRoom->getById($id);
+    }
+
+    public function getArrayByCinemaId($cinemaId){
+        return $this->roomDao->getArrayByCinemaId($cinemaId);
     }
 
 }
-
-
 ?>

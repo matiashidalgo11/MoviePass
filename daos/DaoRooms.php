@@ -8,7 +8,6 @@ use daos\Connection as Connection;
 class DaoRooms {
 
     private $connection;
-    private $room_list = array();
     const TABLE_NAME = "room";
     const TABLE_IDROOM = "idRoom";
     const TABLE_NOMBRE = "nombre";
@@ -20,7 +19,7 @@ class DaoRooms {
               
     }
 
-    public function Add(Room $room)
+    public function Add($room, $idCine)
         {
 
             $sql = "insert into rooms (nombre, capacidad, precio,idCine) values ( :nombre,:capacidad,:precio,:idCine)";
@@ -28,7 +27,7 @@ class DaoRooms {
             $parameters['nombre'] =  $room->getNombre();
             $parameters['capacidad'] =  $room->getCapacidad();
             $parameters['precio'] =  $room->getPrecio();
-            $parameters['idCine'] =  $room->getIdCine();
+            $parameters['idCine'] =  $idCine;
 
            /* array_push($this->cines_list, $cine);
             $this->SaveData();*/
@@ -46,7 +45,7 @@ class DaoRooms {
     public function getById(int $id){ 
         
         try { 
-            $sql = "SELECT * FROM  rooms WHERE " . DaoRooms::TABLE_IDROOM . " = " . "'" . $id . "'" . " ;"; 
+            $sql = "SELECT * FROM  rooms WHERE " . DaoRooms::TABLE_IDROOM . " = '" . $id . "';"; 
 
             $parameters['id'] = $id;
  
@@ -147,6 +146,27 @@ class DaoRooms {
         } 
         return $roomList;
 
+    }
+
+    public function getArrayByIdCine($idCine){
+
+        $roomList=array();
+
+        try{
+            $sql="SELECT * from rooms where" .  DaoRooms::TABLE_IDCINE . " = '" . $idCine . "';";
+            $this->connection=Connection::getInstance();
+            $resultSet=$this->connection->execute($sql);
+            foreach ($resultSet as $room) {
+                $roomList[]=new Room($room["id"],
+                    $room["nombre"],
+                    $room["capacidad"],
+                    $room["precio"],
+                    $room["idCine"]);
+            }
+            return $roomList;
+        }catch(Exception $ex){
+            throw $ex;
+        }
     }
        
 

@@ -7,12 +7,12 @@
 
     class DaoCines {
        
-    private $cines_list = array();
+    
     private $connection;
-    const TABLENAME = "cines";
     const TABLE_IDCINE = "idCine";
     const TABLE_NOMBRE = "nombre";
     const TABLE_DIRECCION = "direccion";
+    const TABLE_ROOM = "room";
 
        
         public function __construct()
@@ -20,17 +20,17 @@
            /*$this->RetrieveData();*/
         }
 
-        public function Add(Cine $cine)
+        public function Add($cine)
         {
+            /* array_push($this->cines_list, $cine);
+             $this->SaveData();*/
 
-            $sql = "insert into" . DaoCines::TABLENAME  . "(id,nombre, direccion ) values (:id, :nombre,:direccion)";
+            $sql = "insert into cines (nombre, direccion,room ) values ( :nombre,:direccion, :room)";
 
-            $parameters['id'] =  $cine->getId();
-            $parameters['nombre'] =  $cine->getNombre_cine();
+            $parameters['nombre'] =  $cine->getNombre();
             $parameters['direccion'] =  $cine->getDireccion();
+            $parameters['room'] =  $cine->getRoom();
 
-           /* array_push($this->cines_list, $cine);
-            $this->SaveData();*/
             try { 
             $this->connection = Connection::GetInstance(); 
     
@@ -42,16 +42,16 @@
         } 
     } 
 
-    public function getById(int $id){ 
+    public function getById($id){ 
         
         try { 
-            $sql = "SELECT * FROM " . DaoCines::TABLENAME . " WHERE " . DaoCines::TABLE_IDCINE . " = " . "'" . $id . "'" . " ;"; 
+            $sql = "SELECT * FROM  cines WHERE idCine=id"; 
 
             $parameters['id'] = $id;
  
             $this->connection = Connection::GetInstance();
  
-            $resultSet = $this->connection->Execute($sql, $parameters);
+            $resultSet = $this->connection->Execute($sql);
  
             if(!empty($resultSet) && $object instanceof Cine){ 
  
@@ -79,9 +79,8 @@
                 $objet =  new Cine( 
                     $p[DaoCines::TABLE_IDCINE], 
                     $p[DaoCines::TABLE_NOMBRE], 
-                    $p[DaoCines::TABLE_CAPACIDAD], 
                     $p[DaoCines::TABLE_DIRECCION], 
-                    $p[DaoCines::TABLE_PRECIOXENTRADA], 
+                    $p[DaoCines::TABLE_ROOM], 
                 ); 
  
                 return $objet; 
@@ -91,6 +90,53 @@
         return count($resp) > 1 ? $resp : $resp['0']; 
     } 
 
+
+        public function Update($cine){
+            $sql = "UPDATE  cines (" . TABLE_NOMBRE . "," . TABLE_DIRECCION . "," . TABLE_ROOM  . ")";
+            
+            
+            $parameters[DaoCines::TABLE_NOMBRE] = $cine->getNombre(); 
+            $parameters[DaoCines::TABLE_DIRECCION] = $cine->getDireccion(); 
+            $parameters[DaoCines::TABLE_ROOM] = $cine->getRoom(); 
+        
+            try{
+                $this->connection = Connection::GetInstance(); 
+                return $this->connection->ExecuteNonQuery($sql, $parameters); 
+            } catch (Exception $ex) { 
+                throw $ex; 
+            }
+        }
+
+
+        public function getAll(){
+            $sql = "select from " . DaoCines::TABLENAME;
+
+            $cineList = array();
+
+            try{
+                $this->connection = Connection::GetInstance();
+ 
+                $resultSet = $this->connection->Execute($sql);
+     
+                if(!empty($resultSet) && $object instanceof Cine){ 
+     
+                    foreach ($resultSet as $value) {
+                        $aux = $this->mapeo($value);
+                        array_push($cineList,$aux);
+                    }  
+                }
+                else{
+                    return false;
+                }
+     
+     
+            } catch (Exception $ex) { 
+                throw $ex; 
+            } 
+            return $cineList;
+
+        }
+        
  /*
         public function GetById($id){
             foreach($cines_list as $cine){
@@ -111,25 +157,6 @@
             }
             return false;
         }*/
-
-        public function Update($cine){
-            $sql = "UPDATE " . DaoCines::TABLENAME . "(" . TABLE_IDCINE . "," . TABLE_NOMBRE . "," . TABLE_CAPACIDAD . "," . TABLE_DIRECCION . "," . TABLE_PRECIOXENTRADA . ")";
-            
-            
-            $parameters[DaoCines::TABLE_IDCINE] = $cine->getId(); 
-            $parameters[DaoCines::TABLE_NOMBRE] = $cine->getNombre_Cine(); 
-            $parameters[DaoCines::TABLE_CAPACIDAD] = $cine->getCapacidad_Total(); 
-            $parameters[DaoCines::TABLE_DIRECCION] = $cine->getDireccion(); 
-            $parameters[DaoCines::TABLE_PRECIOXENTRADA] = $cine->getValor_Entrada(); 
-        
-            try{
-                $this->connection = Connection::GetInstance(); 
-                return $this->connection->ExecuteNonQuery($sql, $parameters); 
-            } catch (Exception $ex) { 
-                throw $ex; 
-            }
-        }
-
        /* public function Update($cineInput){
             foreach($cines_list as $cine){
                 if($cineInput->getId()==$cine->getId()){
@@ -150,30 +177,6 @@
             }
             return false;
         }*/
-
-        public function getAll(){
-            $sql = "select from " . DaoCines::TABLENAME;
-
-            try{
-                $this->connection = Connection::GetInstance();
- 
-                $resultSet = $this->connection->Execute($sql);
-     
-                if(!empty($resultSet) && $object instanceof Cine){ 
-     
-                     return $this->mapeo($resultSet);   
-                }
-                else{
-                    return false;
-                }
-     
-     
-            } catch (Exception $ex) { 
-                throw $ex; 
-            } 
-
-        }
-        
 /*
         public function GetAll()
         {

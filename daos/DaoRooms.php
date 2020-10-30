@@ -7,7 +7,7 @@ use daos\Connection as Connection;
 
 class DaoRooms {
 
-    
+    private $connection;
     private $room_list = array();
     const TABLE_NAME = "room";
     const TABLE_IDROOM = "idRoom";
@@ -23,9 +23,8 @@ class DaoRooms {
     public function Add(Room $room)
         {
 
-            $sql = "insert into" . DaoRooms::TABLE_NAME  . "(idRoom,nombre, capacidad, precio,idCine) values (:idRoom, :nombre,:capacidad,:precio,:idCine)";
+            $sql = "insert into rooms (nombre, capacidad, precio,idCine) values ( :nombre,:capacidad,:precio,:idCine)";
 
-            $parameters['idRoom'] =  $room->getId();
             $parameters['nombre'] =  $room->getNombre();
             $parameters['capacidad'] =  $room->getCapacidad();
             $parameters['precio'] =  $room->getPrecio();
@@ -47,7 +46,7 @@ class DaoRooms {
     public function getById(int $id){ 
         
         try { 
-            $sql = "SELECT * FROM " . DaoRooms::TABLE_NAME . " WHERE " . DaoRooms::TABLE_IDROOM . " = " . "'" . $id . "'" . " ;"; 
+            $sql = "SELECT * FROM  rooms WHERE " . DaoRooms::TABLE_IDROOM . " = " . "'" . $id . "'" . " ;"; 
 
             $parameters['id'] = $id;
  
@@ -104,14 +103,13 @@ class DaoRooms {
     }*/
 
     public function Update($room){
-        $sql = "UPDATE " . DaoRooms::TABLE_NAME . "(" . TABLE_IDROOM . "," . TABLE_NOMBRE . "," . TABLE_CAPACIDAD . "," . TABLE_PRECIO . "," . TABLE_IDCINE . ")";
+        $sql = "UPDATE " . DaoRooms::TABLE_NAME . "(" . TABLE_NOMBRE . "," . TABLE_CAPACIDAD . "," . TABLE_PRECIO . "," . TABLE_IDCINE . ")";
         
         
-        $parameters[DaoRooms::TABLE_IDCINE] = $room->getId(); 
         $parameters[DaoRooms::TABLE_NOMBRE] = $room->getNombre(); 
         $parameters[DaoRooms::TABLE_CAPACIDAD] = $room->getCapacidad(); 
-        $parameters[DaoRooms::TABLE_DIRECCION] = $room->getPrecio(); 
-        $parameters[DaoRooms::TABLE_PRECIOXENTRADA] = $room->getIdCine(); 
+        $parameters[DaoRooms::TABLE_PRECIO] = $room->getPrecio(); 
+        $parameters[DaoRooms::TABLE_IDCINE] = $room->getIdCine(); 
     
         try{
             $this->connection = Connection::GetInstance(); 
@@ -125,6 +123,8 @@ class DaoRooms {
     public function getAll(){
         $sql = "select from " . DaoRooms::TABLE_NAME;
 
+        $roomList = array();
+
         try{
             $this->connection = Connection::GetInstance();
 
@@ -132,7 +132,10 @@ class DaoRooms {
  
             if(!empty($resultSet) && $object instanceof Room){ 
  
-                 return $this->mapeo($resultSet);   
+                foreach ($resultSet as $value) {
+                    $aux = $this->mapeo($value);
+                    array_push($roomList,$aux);
+                }    
             }
             else{
                 return false;
@@ -142,6 +145,7 @@ class DaoRooms {
         } catch (Exception $ex) { 
             throw $ex; 
         } 
+        return $roomList;
 
     }
        

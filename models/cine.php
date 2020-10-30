@@ -3,28 +3,21 @@
     class Cine {
 
         private $id;
-        private $nombre_cine;
+        private $nombre;
         private $direccion;
+        private $room;
 
-        public function __construct( $nombre_cine = "",  $direccion = ""){
+        public function __construct( $nombre = "",  $direccion = "", $room = ""){
             $this->id = $id;
             $this->nombre_cine = $nombre_cine;
             $this->direccion = $direccion;
         }
 
-        /**
-         * Get the value of id
-         */ 
         public function getId()
         {
                 return $this->id;
         }
 
-        /**
-         * Set the value of id
-         *
-         * @return  self
-         */ 
         public function setId($id)
         {
                 $this->id = $id;
@@ -32,44 +25,42 @@
                 return $this;
         }
 
-        /**
-         * Get the value of nombre_cine
-         */ 
-        public function getNombre_cine()
+        public function getNombre()
         {
-                return $this->nombre_cine;
+                return $this->nombre;
         }
 
-        /**
-         * Set the value of nombre_cine
-         *
-         * @return  self
-         */ 
-        public function setNombre_cine($nombre_cine)
+        public function setNombre($nombre)
         {
-                $this->nombre_cine = $nombre_cine;
+                $this->nombre = $nombre;
 
                 return $this;
         }
 
-        /**
-         * Get the value of direccion
-         */ 
         public function getDireccion()
         {
                 return $this->direccion;
         }
 
-        /**
-         * Set the value of direccion
-         *
-         * @return  self
-         */ 
         public function setDireccion($direccion)
         {
                 $this->direccion = $direccion;
 
                 return $this;
+        }
+
+        public function getRoom(){
+
+                return $this->room;
+
+        }
+
+        public function setRoom($room){
+
+                $this->room=$room;
+
+                return $this;
+                
         }
 
 }

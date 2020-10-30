@@ -101,12 +101,10 @@ class DaoGenres implements IDao
 
     public function arrayToGenre(array $genreIds)
     {
-
         $arregloGeneros = array();
 
         foreach ($genreIds as $id) {
-            if ($id instanceof int) {
-
+            if (is_int($id)) {
                 $object = $this->getById($id);
 
                 if (!empty($object)) {

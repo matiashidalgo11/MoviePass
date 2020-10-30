@@ -2,6 +2,8 @@ create database MoviePass;
 
 use MoviePass;
 
+#drop database moviepass;
+
 create table cuentas(
 idCuenta int not null auto_increment ,
 email varchar(50) not null,
@@ -54,5 +56,9 @@ primary key(idMovie , idGenero),
 constraint fk_idMovie foreign key (idMovie) references movies(idMovie),
 constraint fk_idGenero foreign key (idGenero) references generos(idGenero)
 );
+
+
+#drop table moviesxgeneros;
+#drop table movies;
 
 

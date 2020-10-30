@@ -39,8 +39,86 @@ class DaoMovies implements IDao
         return self::$instance;
     }
 
-    public function delete($dato)
+    public function update($movie){
+       
+        if($movie instanceof Movie){
+            
+            if($this->exist($movie)){
+
+                try{
+
+                $query = "UPDATE " . DaoMovies::TABLENAME .
+                " SET " . DaoMovies::TABLE_POPULARITY . " = :" . DaoMovies::TABLE_POPULARITY . " , ".
+                DaoMovies::TABLE_VIDEO . " = :" . DaoMovies::TABLE_VIDEO . " , ".
+                DaoMovies::TABLE_POSTERPATH . " = :". DaoMovies::TABLE_POSTERPATH . " , ".
+                DaoMovies::TABLE_ORIGINALLANGUAGE . " = :" . DaoMovies::TABLE_ORIGINALLANGUAGE . " , ".
+                DaoMovies::TABLE_TITLE . " = :" . DaoMovies::TABLE_TITLE . " , ".
+                DaoMovies::TABLE_OVERVIEW . " = :" . DaoMovies::TABLE_OVERVIEW . " , ".
+                DaoMovies::TABLE_RELEASEDATA . " = :" . DaoMovies::TABLE_RELEASEDATA . " , ".
+                DaoMovies::TABLE_ENABLED . " = :" . DaoMovies::TABLE_ENABLED.
+                " WHERE " . DaoMovies::TABLE_IDMOVIE . " = " . $movie->getId() . " ;";
+
+                $parameters = $this->toArray($movie,1);
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+                $this->deleteGenresMovie($movie->getId());
+
+                $this->addGenreMovie($movie->getGenre_ids(), $movie->getId());
+
+                }
+                catch (Exception $ex) {
+                    throw $ex;
+                }
+
+            }
+        }
+    }
+
+    private function deleteGenresMovie($idMovie){
+       
+        try{
+        $query = "DELETE FROM moviesxgeneros 
+        WHERE " . DaoMovies::TABLE_IDMOVIE ." = " . $idMovie ." ; ";
+
+        $this->connection = Connection::GetInstance();
+
+        $this->connection->ExecuteNonQuery($query);
+        }
+
+        catch (Exception $ex) {
+            throw $ex;
+        }
+
+    }
+
+    //Falta testear
+    public function delete($object)
     {
+        if($object instanceof Movie){
+
+            if($this->exist($object)){
+                try{
+
+                $this->deleteGenresMovie($object->getId());
+
+                $query = "DELETE FROM ". DaoMovies::TABLENAME . 
+                " WHERE " . DaoMovies::TABLE_IDMOVIE ." = " . $object->getId() . " AND " . DaoMovies::TABLE_TITLE . " = " . $object->getTitle() ." ; ";
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query);
+
+                
+
+            }
+            catch (Exception $ex) {
+                throw $ex;
+            }
+            }
+        }
         //desarrollar
     }
 
@@ -103,22 +181,14 @@ class DaoMovies implements IDao
                 $query = "INSERT INTO " . DaoMovies::TABLENAME . "( " . DaoMovies::TABLE_IDMOVIE . " , " . DaoMovies::TABLE_POPULARITY . " , " . DaoMovies::TABLE_VIDEO . " , " . DaoMovies::TABLE_POSTERPATH . " , "  . DaoMovies::TABLE_ORIGINALLANGUAGE . " , " . DaoMovies::TABLE_TITLE . " , " . DaoMovies::TABLE_OVERVIEW . " , " . DaoMovies::TABLE_RELEASEDATA . " , " . DaoMovies::TABLE_ENABLED . " ) " .
                     " VALUES ( " . ":" . DaoMovies::TABLE_IDMOVIE . " , " . ":" . DaoMovies::TABLE_POPULARITY . " , " . ":" . DaoMovies::TABLE_VIDEO . " , " . ":" . DaoMovies::TABLE_POSTERPATH . " , " . ":" . DaoMovies::TABLE_ORIGINALLANGUAGE . " , " . ":" . DaoMovies::TABLE_TITLE . " , " . ":" . DaoMovies::TABLE_OVERVIEW . " , " . ":" . DaoMovies::TABLE_RELEASEDATA . " , " . ":" . DaoMovies::TABLE_ENABLED . " ) ; ";
 
-                $parameters[DaoMovies::TABLE_IDMOVIE] = $movie->getId();
-                $parameters[DaoMovies::TABLE_POPULARITY] = $movie->getPopularity();
-                $parameters[DaoMovies::TABLE_VIDEO] = $movie->getVideo();
-                $parameters[DaoMovies::TABLE_POSTERPATH] = $movie->getPoster_path();
-                $parameters[DaoMovies::TABLE_ORIGINALLANGUAGE] = $movie->getOriginal_language();
-                $parameters[DaoMovies::TABLE_TITLE] = $movie->getTitle();
-                $parameters[DaoMovies::TABLE_OVERVIEW] = $movie->getOverview();
-                $parameters[DaoMovies::TABLE_RELEASEDATA] = $movie->getRelease_date();
-                $parameters[DaoMovies::TABLE_ENABLED] = $movie->getEnabled();
-
+                $parameters = $this->toArray($movie);
 
                 $this->connection = Connection::GetInstance();
 
                 $this->connection->ExecuteNonQuery($query, $parameters);
 
                 $this->addGenreMovie($movie->getGenre_ids(), $movie->getId());
+
             } catch (Exception $ex) {
                 throw $ex;
             }
@@ -128,7 +198,6 @@ class DaoMovies implements IDao
     //Agregar los generos de la movie a la tabla de moviesxgeneros
     private function addGenreMovie(array $genres, $idMovie)
     {
-
         try {
 
             $query = "INSERT INTO" . " moviesxgeneros " . "( idMovie , idGenero ) " . "VALUE" . " ( :idMovie , :idGenero ) ;";
@@ -206,7 +275,6 @@ class DaoMovies implements IDao
             $movie->setGenre_ids($genreList);
 
 
-
             array_push($new_movie_list, $movie);
         }
 
@@ -214,7 +282,49 @@ class DaoMovies implements IDao
         return $new_movie_list;
     }
 
+    //agregarle a la query tambien por el titulo
+    public function exist($movie)
+    {   
+        if($movie instanceof Movie){
+        try {
 
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoMovies::TABLENAME . " WHERE " . DaoMovies::TABLE_IDMOVIE . " = " . "'" . $movie->getId() . "'" . ");";
+
+            $this->connection = Connection::GetInstance();
+
+            $result = $this->connection->Execute($query);
+
+            if ($result[0][0] != 1) return false;
+            else return true;
+            
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+        }else return false;
+    }
+
+    public function toArray($object, $type = 0){
+        
+        $parameters = array();
+
+        if($object instanceof Movie){
+
+            if($type == 0){
+                $parameters[DaoMovies::TABLE_IDMOVIE] = $object->getId();
+            }
+
+            $parameters[DaoMovies::TABLE_POPULARITY] = $object->getPopularity();
+            $parameters[DaoMovies::TABLE_VIDEO] = $object->getVideo();
+            $parameters[DaoMovies::TABLE_POSTERPATH] = $object->getPoster_path();
+            $parameters[DaoMovies::TABLE_ORIGINALLANGUAGE] = $object->getOriginal_language();
+            $parameters[DaoMovies::TABLE_TITLE] = $object->getTitle();
+            $parameters[DaoMovies::TABLE_OVERVIEW] = $object->getOverview();
+            $parameters[DaoMovies::TABLE_RELEASEDATA] = $object->getRelease_date();
+            $parameters[DaoMovies::TABLE_ENABLED] = $object->getEnabled();
+        }
+
+        return $parameters;
+    }
 
     public function mapeo($value)
     {

@@ -25,21 +25,32 @@ class MoviesController {
         public function addMovie(){
             //$movie = new Movie(175.275,false,"\/k68nPLbIST6NP96JmTxmZijEvCA.jpg",577922,false,"en",array(28,878,53),"Tenet","Armed with only one word - Tenet - and fighting for the survival of the entire world, the Protagonist journeys through a twilight world of international espionage on a mission that will unfold in something beyond real time.","2020-08-22",true);
            
-            $DaoGenres = DaoGenres::GetInstance();
+            /* $DaoGenres = DaoGenres::GetInstance();
             $genres = $DaoGenres->genresFromApi();
 
             foreach($genres as $genre){
-                $DaoGenres->Add($genre);
-            }
+                $DaoGenres->add($genre);
+            } */
 
             $DaoMovies = DaoMovies::GetInstance();
             $movies = $DaoMovies->moviesFromApi();
-
-            foreach($movies as $movie){
-                $DaoMovies->Add($movie);
+            var_dump($movies);
+            /* foreach($movies as $movie){
+                $DaoMovies->add($movie);
             }
-
+ */
             
+        }
+
+        public function updateMovie(){
+
+            $DaoMovies = DaoMovies::GetInstance();
+            $movie = new Movie(175.275,false,"\/k68nPLbIST6NP96JmTxmZijEvCA.jpg",337401,"en","PEPEeeeee","Armed with only one word - Tenet - and fighting for the survival of the entire world, the Protagonist journeys through a twilight world of international espionage on a mission that will unfold in something beyond real time.","2020-08-22",true);
+            $genre = new Genre(10402, "Music");
+            $array = array($genre);
+            $movie->setGenre_ids($array);
+
+            $DaoMovies->update($movie);
         }
 
         /* "genre_ids": [

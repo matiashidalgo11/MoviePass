@@ -13,9 +13,9 @@
 
         public function add( $nombre,  $direccion, $room){
 
-            $cinema = new Cine($nombre,  $direccion, $room);
+            $cine = new Cine($nombre,  $direccion, $room);
 
-            $this->cineDao->add($cinema);
+            $this->cineDao->add($cine);
 
         }
 
@@ -24,18 +24,18 @@
             
         }
 
-        public function GetById($id){
-            return $this->cineDao->GetById($id);
+        public function GetById($idCine){
+            return $this->cineDao->GetById($idCine);
             
         }
 
-        public function Update($id,$nombre, $capacidad_total, $direccion, $valor_entrada){
+        public function Update($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada){
             
-            $cine = new Cine($id,$nombre, $capacidad_total, $direccion, $valor_entrada);
+            $cine = new Cine($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada);
 
             $this->cineDao->Update($cine);
 
-            $this->GetById($cine->id);
+            $this->GetById($cine->idCine);
         }
 
         public function Delete($id){

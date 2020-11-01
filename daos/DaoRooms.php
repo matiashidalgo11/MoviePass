@@ -29,8 +29,6 @@ class DaoRooms {
             $parameters['precio'] =  $room->getPrecio();
             $parameters['idCine'] =  $idCine;
 
-           /* array_push($this->cines_list, $cine);
-            $this->SaveData();*/
             try { 
             $this->connection = Connection::GetInstance(); 
     
@@ -66,6 +64,43 @@ class DaoRooms {
             throw $ex; 
         } 
        } 
+
+          public function retrieveOne($id) {
+        $showtime = null;
+
+        try
+        {
+            $parameters['id'] = $id;
+
+            $query = "SELECT * FROM showtimes WHERE id=:id";
+
+            $this->connection = Connection::getInstance();
+
+            $resultSet = $this->connection->execute($query, $parameters);
+
+            if(!empty($resultSet)) {
+                $showtime = $this->read($resultSet[0]);
+
+                $idRoom = $resultSet[0]["id_Room"];
+                $idMovie = $resultSet[0]["id_movie"];
+
+                $RoomDAO = new D_Rooms();
+                $Room = $RoomDAO->getOne($idRoom);
+
+                $movieDAO = new D_Movies();
+                //$movie = $movieDAO->retrieveOneNoCheckMovieDate($idMovie);
+
+                $showtime->setRoom($Room);
+                //$showtime->setMovie($movie);
+            }
+        }
+        catch (PDOException $e)
+        {
+            throw $e;
+        }
+        return $showtime;
+    }
+
 
        public function mapeo($value) 
        { 

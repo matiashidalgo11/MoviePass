@@ -4,13 +4,14 @@ namespace models;
 
 class Room{
 
-    private $id;
+    private $idRoom;
     private $nombre;
     private $precio;
     private $capacidad;
     private $idCine;
 
     public function __construct($nombre = '', $precio= '', $capacidad= '', $idCine = ''){
+		$this->idRoom = $idRoom;
         $this->nombre = $nombre;
         $this->precio = $precio;
         $this->capacity = $capacity;
@@ -18,11 +19,11 @@ class Room{
     }
 
     public function getId(){
-		return $this->id;
+		return $this->idRoom;
 	}
 
-	public function setId($id){
-		$this->id = $id;
+	public function setId($idRoom){
+		$this->idRoom = $idRoom;
 	}
 
 	public function getNombre(){

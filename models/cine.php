@@ -2,25 +2,26 @@
 
     class Cine {
 
-        private $id;
+        private $idCine;
         private $nombre;
         private $direccion;
         private $room;
 
         public function __construct( $nombre = "",  $direccion = "", $room = ""){
-            $this->id = $id;
-            $this->nombre_cine = $nombre_cine;
+            $this->idCine = $idCine;
+            $this->nombre = $nombre;
             $this->direccion = $direccion;
+            $this->room = $room;
         }
 
         public function getId()
         {
-                return $this->id;
+                return $this->idCine;
         }
 
-        public function setId($id)
+        public function setId($idCine)
         {
-                $this->id = $id;
+                $this->idCine = $idCine;
 
                 return $this;
         }

@@ -1,213 +1,355 @@
-<?php namespace daos;
+<?php
+
+namespace daos;
+
+use \Exception as Exception;
+use daos\Connection as Connection;
+use daos\DaoGenre as DaoGenre;
+use models\Movie as Movie;
+use models\Genre as Genre;
 
 
-    class DaoMovies implements IDao {
-       
-       private $movies_list = array();
-       private $file_name; 
-       
-        public function __construct()
-        {
-            $this->file_name = dirname(__DIR__)."/data/movies.json";
-        }
+class DaoMovies implements IDao
+{
 
-        public function Add($movie)
-        {
-            $this->RetrieveData();
-            
-            array_push($this->movies_list, $movie);
-            
-            return $this->SaveData();
-  
-        }
+    private $connection;
+    private static $instance = null;
 
-        public function Delete($movie){
-           
-            $this->RetrieveData();
-            
-            //Probar
-            if (($clave = array_search($movie, $this->movies_list)) != false) {
-            
-                unset($this->movies_list[$clave]);
-                
-            }
-    
-            return $this->SaveData();
-        }
+    //Info db
+    const TABLENAME = "movies";
+    const TABLE_POPULARITY = "popularity";
+    const TABLE_VIDEO = "video";
+    const TABLE_POSTERPATH = "posterPath";
+    const TABLE_IDMOVIE = "idMovie";
+    const TABLE_ORIGINALLANGUAGE = "originalLanguage";
+    const TABLE_TITLE = "title";
+    const TABLE_OVERVIEW = "overview";
+    const TABLE_RELEASEDATA = "releaseData";
+    const TABLE_ENABLED = "enabled";
 
-        public function Read(int $id){
-           
-            $this->RetrieveData();
-
-            foreach($this->movies_list as $movie){
-                if($movie->getId() == $id){
-                    return $movie;
-                }
-            }
-
-            return false;
-        }
-
-        public function UpdateList(){
-           
-            unset($this->movies_list);
-
-            $this->movies_list = $this->ListFromApi();
-
-            $this->SaveData();
-
-        }
-
-        public function GetAll()
-        {
-            $this->RetrieveData();
-
-            return $this->movies_list;
-        }
-
-        private function SaveData()
-        {
-            $arrayToEncode = array();
-            echo 'estoy en save data';
-            foreach($this->movies_list as $movie)
-            {
-                
-                $valuesArray["popularity"] = $movie->getPopularity();
-                $valuesArray["vote_count"] = $movie->getVote_count();
-                $valuesArray["video"] = $movie->getVideo();
-                $valuesArray["poster_path"] = $movie->getPoster_path();
-                $valuesArray["id"] = $movie->getId();
-                $valuesArray["adult"] = $movie->getAdult();
-                $valuesArray["backdrop_path"] = $movie->getBackdrop_path();
-                $valuesArray["original_language"] = $movie->getOriginal_language();
-                $valuesArray["original_title"] = $movie->getOriginal_title();
-                $valuesArray["genre_ids"] = $movie->getGenre_ids();
-                $valuesArray["title"] = $movie->getTitle();
-                $valuesArray["vote_average"] = $movie->getVote_average();
-                $valuesArray["overview"] = $movie->getOverview();
-                $valuesArray["release_date"] = $movie->getRelease_date();
-                $valuesArray["enabled"] = $movie->getEnabled();
-                
-
-                array_push($arrayToEncode, $valuesArray);
-            }
-
-            $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-            
-            return file_put_contents($this->file_name, $jsonContent);
-        }
-
-        private function RetrieveData()
-        {
-            $this->movies_list = array();
-
-            if(file_exists($this->file_name))
-            {
-                $jsonContent = file_get_contents($this->file_name);
-
-                $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
-
-                foreach($arrayToDecode as $valuesArray)
-                {
-                    $movie = new \models\Movie();
-                    $movie->setPopularity($valuesArray["popularity"]);
-                    $movie->setVote_count($valuesArray["vote_count"]);
-                    $movie->setVideo($valuesArray["video"]);
-                    $movie->setPoster_path($valuesArray["poster_path"]);
-                    $movie->setId($valuesArray["id"]);
-                    $movie->setAdult($valuesArray["adult"]);
-                    $movie->setBackdrop_path($valuesArray["backdrop_path"]);
-                    $movie->setOriginal_language($valuesArray["original_language"]);
-                    $movie->setOriginal_title($valuesArray["original_title"]);
-                    $movie->setGenre_ids($valuesArray["genre_ids"]);
-                    $movie->setTitle($valuesArray["title"]);
-                    $movie->setVote_average($valuesArray["vote_average"]);
-                    $movie->setOverview($valuesArray["overview"]);
-                    $movie->setRelease_date($valuesArray["release_date"]);
-                    $movie->setEnabled($valuesArray["enabled"]);
-                    
-
-                    array_push($this->movies_list, $movie);
-                }
-            }
-        }
-
+    private function __construct(){
         
-        private function ListFromApi(){
+    }
 
-            $api_url = "https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=" . KEY_TMDB;
-            $api_json = file_get_contents($api_url);
-            $api_array = ($api_json) ? json_decode($api_json, true) : array();
+    public static function GetInstance()
+    {
+        if (self::$instance == null)
+            self::$instance = new DaoMovies();
 
+        return self::$instance;
+    }
+
+    public function update($movie){
+       
+        if($movie instanceof Movie){
             
-            $new_movie_list = array();
+            if($this->exist($movie)){
 
-            foreach($api_array['results'] as $valuesArray)
-                {
-                    $movie = new \models\Movie();
+                try{
 
-                    $movie->setPopularity($valuesArray["popularity"]);
-                    $movie->setVote_count($valuesArray["vote_count"]);
-                    $movie->setVideo($valuesArray["video"]);
-                    $movie->setPoster_path($valuesArray["poster_path"]);
-                    $movie->setId($valuesArray["id"]);
-                    $movie->setAdult($valuesArray["adult"]);
-                    $movie->setBackdrop_path($valuesArray["backdrop_path"]);
-                    $movie->setOriginal_language($valuesArray["original_language"]);
-                    $movie->setOriginal_title($valuesArray["original_title"]);
-                 
-                    $movie->setTitle($valuesArray["title"]);
-                    $movie->setVote_average($valuesArray["vote_average"]);
-                    $movie->setOverview($valuesArray["overview"]);
-                    $movie->setRelease_date($valuesArray["release_date"]);
-                    $movie->setEnabled(true);
-                    
-                    $movie->setGenre_ids($this->genreConverter($valuesArray["genre_ids"]));
-                    
-                    array_push($new_movie_list, $movie);
+                $query = "UPDATE " . DaoMovies::TABLENAME .
+                " SET " . DaoMovies::TABLE_POPULARITY . " = :" . DaoMovies::TABLE_POPULARITY . " , ".
+                DaoMovies::TABLE_VIDEO . " = :" . DaoMovies::TABLE_VIDEO . " , ".
+                DaoMovies::TABLE_POSTERPATH . " = :". DaoMovies::TABLE_POSTERPATH . " , ".
+                DaoMovies::TABLE_ORIGINALLANGUAGE . " = :" . DaoMovies::TABLE_ORIGINALLANGUAGE . " , ".
+                DaoMovies::TABLE_TITLE . " = :" . DaoMovies::TABLE_TITLE . " , ".
+                DaoMovies::TABLE_OVERVIEW . " = :" . DaoMovies::TABLE_OVERVIEW . " , ".
+                DaoMovies::TABLE_RELEASEDATA . " = :" . DaoMovies::TABLE_RELEASEDATA . " , ".
+                DaoMovies::TABLE_ENABLED . " = :" . DaoMovies::TABLE_ENABLED.
+                " WHERE " . DaoMovies::TABLE_IDMOVIE . " = " . $movie->getId() . " ;";
+
+                $parameters = $this->toArray($movie,1);
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+                $this->deleteGenresMovie($movie->getId());
+
+                $this->addGenreMovie($movie->getGenre_ids(), $movie->getId());
+
+                }
+                catch (Exception $ex) {
+                    throw $ex;
                 }
 
-
-            return $new_movie_list;
-        }
-
-        private function genreConverter($array_genre_ids){
-            
-            $genre_list = $this->GenreFromApi();
-            $generos = array();
-
-            foreach($array_genre_ids as $id){
-
-                if(array_key_exists($id,$genre_list)){
-
-                    array_push($generos,$genre_list[$id]->getName());
-                }
             }
-        
-            return $generos;
+        }
+    }
+
+    private function deleteGenresMovie($idMovie){
+       
+        try{
+        $query = "DELETE FROM moviesxgeneros 
+        WHERE " . DaoMovies::TABLE_IDMOVIE ." = " . $idMovie ." ; ";
+
+        $this->connection = Connection::GetInstance();
+
+        $this->connection->ExecuteNonQuery($query);
         }
 
-        private function GenreFromApi(){
-            $api_url = "https://api.themoviedb.org/3/genre/movie/list?api_key=" . KEY_TMDB . "&language=en-US" ;
-            $api_json = file_get_contents($api_url);
-            $api_array = ($api_json) ? json_decode($api_json, true) : array();
-
-            $genre_list = array();
-
-            foreach($api_array["genres"] as $valuesArray)
-                {
-                    $genre = new \models\Genre();
-                    
-                    $genre->setId($valuesArray["id"]);
-                    $genre->setName($valuesArray["name"]);
-                    
-                    $genre_list[$genre->getId()] = $genre; 
-                }
-
-            return $genre_list;
+        catch (Exception $ex) {
+            throw $ex;
         }
 
     }
 
+    //Falta testear
+    public function delete($object)
+    {
+        if($object instanceof Movie){
 
-?>
+            if($this->exist($object)){
+                try{
+
+                $this->deleteGenresMovie($object->getId());
+
+                $query = "DELETE FROM ". DaoMovies::TABLENAME . 
+                " WHERE " . DaoMovies::TABLE_IDMOVIE ." = " . $object->getId() . " AND " . DaoMovies::TABLE_TITLE . " = " . $object->getTitle() ." ; ";
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query);
+
+                
+
+            }
+            catch (Exception $ex) {
+                throw $ex;
+            }
+            }
+        }
+        //desarrollar
+    }
+
+    public function getAll()
+    {
+        try {
+            $query = "SELECT * FROM " . DaoMovies::TABLENAME . " ;";
+
+            $this->connection = Connection::GetInstance();
+
+            $resultSet = $this->connection->Execute($query);
+
+            $array = $this->mapeo($resultSet);
+
+
+            if (!empty($array)) {
+
+                foreach ($array as $movie) {
+                    $movie->setGenre_ids($this->movieGenres($movie->getId()));
+                }
+            }
+
+            return $array;
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function getById(int $id)
+    {
+
+        try {
+            $query = "SELECT * FROM " . DaoMovies::TABLENAME . " WHERE " . DaoMovies::TABLE_IDMOVIE . " = " . "'" . $id . "'" . " ;";
+
+            $this->connection = Connection::GetInstance();
+
+            $resultSet = $this->connection->Execute($query);
+
+            $array = $this->mapeo($resultSet);
+
+            $object = !empty($array) ? $array[0] : [];
+
+            if (!empty($object) && $object instanceof Movie) {
+
+                $object->setGenre_ids($this->movieGenres($object->getId()));
+            }
+
+            return $object;
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function add($movie)
+    {
+        if ($movie instanceof Movie) {
+
+
+            try {
+                $query = "INSERT INTO " . DaoMovies::TABLENAME . "( " . DaoMovies::TABLE_IDMOVIE . " , " . DaoMovies::TABLE_POPULARITY . " , " . DaoMovies::TABLE_VIDEO . " , " . DaoMovies::TABLE_POSTERPATH . " , "  . DaoMovies::TABLE_ORIGINALLANGUAGE . " , " . DaoMovies::TABLE_TITLE . " , " . DaoMovies::TABLE_OVERVIEW . " , " . DaoMovies::TABLE_RELEASEDATA . " , " . DaoMovies::TABLE_ENABLED . " ) " .
+                    " VALUES ( " . ":" . DaoMovies::TABLE_IDMOVIE . " , " . ":" . DaoMovies::TABLE_POPULARITY . " , " . ":" . DaoMovies::TABLE_VIDEO . " , " . ":" . DaoMovies::TABLE_POSTERPATH . " , " . ":" . DaoMovies::TABLE_ORIGINALLANGUAGE . " , " . ":" . DaoMovies::TABLE_TITLE . " , " . ":" . DaoMovies::TABLE_OVERVIEW . " , " . ":" . DaoMovies::TABLE_RELEASEDATA . " , " . ":" . DaoMovies::TABLE_ENABLED . " ) ; ";
+
+                $parameters = $this->toArray($movie);
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+                $this->addGenreMovie($movie->getGenre_ids(), $movie->getId());
+
+            } catch (Exception $ex) {
+                throw $ex;
+            }
+        }
+    }
+
+    //Agregar los generos de la movie a la tabla de moviesxgeneros
+    private function addGenreMovie(array $genres, $idMovie)
+    {
+        try {
+
+            $query = "INSERT INTO" . " moviesxgeneros " . "( idMovie , idGenero ) " . "VALUE" . " ( :idMovie , :idGenero ) ;";
+
+            $parameters[DaoMovies::TABLE_IDMOVIE] = $idMovie;
+
+            $this->connection = Connection::GetInstance();
+
+
+            foreach ($genres as $genre) {
+
+                if ($genre instanceof Genre) {
+
+                    $parameters['idGenero'] = $genre->getId();
+
+                    $this->connection->ExecuteNonQuery($query, $parameters);
+                }
+            }
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    //Devuelve un arreglo con los generos que se relacionan con el idMovie
+    public function movieGenres(int $idMovie)
+    {
+
+        $query = " SELECT g.idGenero , g.nombre
+            FROM moviesxgeneros AS x 
+            INNER JOIN generos  AS g ON x.idGenero = g.idGenero
+            WHERE x.idMovie = " . $idMovie . " ;";
+
+        $this->connection = Connection::GetInstance();
+
+        $resultSet = $this->connection->Execute($query);
+
+        $daoGenre = DaoGenres::GetInstance();
+
+        $genreList = $daoGenre->mapeo($resultSet);
+
+        $genreList = !empty($genreList) ? $genreList : [];
+
+        return $genreList;
+    }
+
+
+    //Devuelve un arreglo de Movies que vienen de la API
+    public function moviesFromApi()
+    {
+
+        $api_url = "https://api.themoviedb.org/3/movie/now_playing?page=1&language=en-US&api_key=" . KEY_TMDB;
+        $api_json = file_get_contents($api_url);
+        $api_array = ($api_json) ? json_decode($api_json, true) : array();
+
+
+        $new_movie_list = array();
+
+        foreach ($api_array['results'] as $valuesArray) {
+            $movie = new Movie();
+
+            $movie->setPopularity($valuesArray["popularity"]);
+            $movie->setVideo($valuesArray["video"]);
+            $movie->setPoster_path($valuesArray["poster_path"]);
+            $movie->setId($valuesArray["id"]);
+            $movie->setOriginal_language($valuesArray["original_language"]);
+            $movie->setTitle($valuesArray["title"]);
+            $movie->setOverview($valuesArray["overview"]);
+            $movie->setRelease_date($valuesArray["release_date"]);
+            $movie->setEnabled(true);
+
+            $GenreDao = DaoGenres::GetInstance();
+
+            $genreList = $GenreDao->arrayToGenre($valuesArray["genre_ids"]);
+
+            $movie->setGenre_ids($genreList);
+
+
+            array_push($new_movie_list, $movie);
+        }
+
+
+        return $new_movie_list;
+    }
+
+    //agregarle a la query tambien por el titulo
+    public function exist($movie)
+    {   
+        if($movie instanceof Movie){
+        try {
+
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoMovies::TABLENAME . " WHERE " . DaoMovies::TABLE_IDMOVIE . " = " . "'" . $movie->getId() . "'" . ");";
+
+            $this->connection = Connection::GetInstance();
+
+            $result = $this->connection->Execute($query);
+
+            if ($result[0][0] != 1) return false;
+            else return true;
+            
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+        }else return false;
+    }
+
+    public function toArray($object, $type = 0){
+        
+        $parameters = array();
+
+        if($object instanceof Movie){
+
+            if($type == 0){
+                $parameters[DaoMovies::TABLE_IDMOVIE] = $object->getId();
+            }
+
+            $parameters[DaoMovies::TABLE_POPULARITY] = $object->getPopularity();
+            $parameters[DaoMovies::TABLE_VIDEO] = $object->getVideo();
+            $parameters[DaoMovies::TABLE_POSTERPATH] = $object->getPoster_path();
+            $parameters[DaoMovies::TABLE_ORIGINALLANGUAGE] = $object->getOriginal_language();
+            $parameters[DaoMovies::TABLE_TITLE] = $object->getTitle();
+            $parameters[DaoMovies::TABLE_OVERVIEW] = $object->getOverview();
+            $parameters[DaoMovies::TABLE_RELEASEDATA] = $object->getRelease_date();
+            $parameters[DaoMovies::TABLE_ENABLED] = $object->getEnabled();
+        }
+
+        return $parameters;
+    }
+
+    public function mapeo($value)
+    {
+
+        $value = is_array($value) ? $value : [];
+
+        $resp = array_map(
+            function ($p) {
+
+                $objet =  new Movie(
+                    $p[DaoMovies::TABLE_POPULARITY],
+                    $p[DaoMovies::TABLE_VIDEO],
+                    $p[DaoMovies::TABLE_POSTERPATH],
+                    $p[DaoMovies::TABLE_IDMOVIE],
+                    $p[DaoMovies::TABLE_ORIGINALLANGUAGE],
+                    $p[DaoMovies::TABLE_TITLE],
+                    $p[DaoMovies::TABLE_OVERVIEW],
+                    $p[DaoMovies::TABLE_RELEASEDATA],
+                    $p[DaoMovies::TABLE_ENABLED]
+                );
+
+                return $objet;
+            },
+            $value
+        );
+        return $resp;
+    }
+}

@@ -2,9 +2,9 @@
 
     interface IDao {
        
-        public function GetAll();
-        public function Add($object);
-        public function Delete($object);
+        public function getAll();
+        public function add($object);
+        public function delete($object);
         public function mapeo($value);
 
     }

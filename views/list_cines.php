@@ -27,8 +27,6 @@
                         <div class="card-body">
                         <?php echo $cine->getNombre_cine(); ?>
                         <span class="h5 card-title">Direccion:  <?php echo $cine->getDireccion(); ?></span></br>
-                        <span class="p card-text">Capacidad:  <?php echo $cine->getCapacidad_total(); ?></span></br>
-                        <span class="p card-text">Precio:  <?php echo $cine->getValor_entrada(); ?></span>
                         <form class="" action="<?php echo FRONT_ROOT . "cineController/Delete" ?> ">
                             <button type="submit" name="id" class="btn-dark btn-sm" value="<?php echo $cine->GetById($id); ?>">Eliminar</button>
                         </form>

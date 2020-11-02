@@ -1,5 +1,6 @@
 <form action="<?= FRONT_ROOT ?>/CineController/add" method="POST">
 <table>
+<h2 class="text-light" >Agregar Cines</h2>
   <tr>
     <td><label for="cine">Nombre</label></td>
     <td><input type="text" name="nombre_cine" id="nombre_cine" require></td>

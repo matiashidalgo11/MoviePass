@@ -109,7 +109,7 @@
 
 
         public function getAll(){
-            $sql = "select from " . DaoCines::TABLENAME;
+            $sql = "select from cines";
 
             $cineList = array();
 

@@ -19,7 +19,7 @@ class DaoRooms {
               
     }
 
-    public function Add($room, $idCine)
+    public function Add($room)
         {
 
             $sql = "insert into rooms (nombre, capacidad, precio,idCine) values ( :nombre,:capacidad,:precio,:idCine)";
@@ -27,7 +27,7 @@ class DaoRooms {
             $parameters['nombre'] =  $room->getNombre();
             $parameters['capacidad'] =  $room->getCapacidad();
             $parameters['precio'] =  $room->getPrecio();
-            $parameters['idCine'] =  $idCine;
+            $parameters['idCine'] =  $room->getIdCine();
 
             try { 
             $this->connection = Connection::GetInstance(); 

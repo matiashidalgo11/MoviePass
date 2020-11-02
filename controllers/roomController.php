@@ -10,8 +10,9 @@ class RoomController{
         $this->DaoRoom = new DaoRoom();
     }
 
-    public function add($room,$idCine){
-        $this->DaoRoom->add($room,$idCine);
+    public function Add($cine="",$nombre="",$capacidad="",$precio=""){
+        $room = new Room($cine,$nombre,$capacidad,$precio);
+        $this->DaoRoom->Add($room);
     }
 
     public function getById($id){

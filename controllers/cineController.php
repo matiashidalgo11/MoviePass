@@ -1,50 +1,41 @@
 <?php namespace controllers;
 
-    use daos\Cine as cineDao;
+    use daos\DaoCines as cineDao;
     use models\Cine as Cine;
 
-    class CuentasController
+    class CineController
     {
         private $cineDao;
 
         function __construct(){
             $this->cineDao = new cineDao();
         }
-        /*private $id;
-        private $nombre_cine;
-        private $capacidad_total;
-        private $direccion;
-        private $valor_entrada;
-        private $peliculas = [];*/
 
-        public function add( $nombre_cine, $capacidad_total, $direccion, $valor_entrada){
+        public function add( $nombre,  $direccion, $room){
 
-            $cine = new Cine($nombre_cine, $capacidad_total, $direccion, $valor_entrada);
+            $cine = new Cine($nombre,  $direccion, $room);
 
             $this->cineDao->add($cine);
 
-            var_dump($cine);
         }
 
         public function GetAll(){
-            $cine_list = $this->cineDao->GetAll();
-            include(ROOT . '/views/list_cines.php');
+            return  $this->cineDao->GetAll();
             
         }
 
-        public function GetById($id){
-            $cine = $this->cineDao->GetById($id);
-            include(ROOT . '/views/cine.php');
+        public function GetById($idCine){
+            return $this->cineDao->GetById($idCine);
             
         }
 
-        public function Update($id,$nombre_cine, $capacidad_total, $direccion, $valor_entrada){
+        public function Update($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada){
             
-            $cine = new Cine($id,$nombre_cine, $capacidad_total, $direccion, $valor_entrada);
+            $cine = new Cine($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada);
 
             $this->cineDao->Update($cine);
 
-            $this->GetById($cine->id);
+            $this->GetById($cine->idCine);
         }
 
         public function Delete($id){
@@ -53,5 +44,14 @@
 
         }
 
+        public function showList(){
+            
+            $arrayCine = $this->cineDao->getAll();
+            require_once(VIEWS_PATH."list_cine.php");
+        }
+
+        public function showAdd(){
+            require_once(VIEWS_PATH."addCine.php");
+        }
 
     }

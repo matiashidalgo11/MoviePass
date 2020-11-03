@@ -1,9 +1,10 @@
 <?php namespace controllers;
 
     use daos\DaoCuentas as DaoCuentas;
-    use models\Cliente as Cliente;
+    use models\Cuenta as Cuenta;
+    use models\Profile as Profile;
 
-    class CuentasController
+class CuentasController
     {
 
         public function verificar($email="",$password=""){
@@ -26,11 +27,15 @@
             require_once "views/register.php";
         }
 
-        public function crear($email, $password, $rPassword , $nombre, $apellido, $telefono, $domicilio){
+        public function crear($email, $password, $rPassword , $dni ,$nombre, $apellido, $telefono, $direccion){
 
             if($password == $rPassword){
 
-                $cuenta = new Cliente(1,$email, $password,1, $nombre, $apellido, $telefono, $domicilio);
+                $profile = new Profile($dni,$nombre,$apellido,$direccion,$telefono);
+
+                $cuenta = new Cuenta(0,$email, $password,1);
+
+                $cuenta->setProfile($profile);
 
                 $DaoCuentas = DaoCuentas::GetInstance();
 
@@ -42,6 +47,24 @@
                 require_once "views/register.php";
             }
             
+        }
+
+        public function crearProfile(){
+
+                $profile = new Profile(10,"Ivan","Hidalgo","Lib",1346545);
+
+                $cuenta = new Cuenta(0,"10@9", 12134,1);
+
+                $cuenta->setProfile($profile);
+
+            
+
+                $DaoCuentas = DaoCuentas::GetInstance();
+
+                $DaoCuentas->add($cuenta);
+
+                
+
         }
     }
 

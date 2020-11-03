@@ -14,18 +14,18 @@ constraint uniq_email unique (email)
 );
 #drop table cuentas;
 
-create table clientes(
-idCliente int not null auto_increment,
+create table profiles(
 idCuenta int not null,
 dni int not null,
 nombre varchar(30) not null,
 apellido varchar(30) not null,
 telefono varchar(30) not null,
-primary key (idCliente),
+direccion varchar(50) not null,
+primary key (dni),
 constraint fk_idCuenta foreign key (idCuenta) references cuentas(idCuenta),
 constraint uniq_email unique (dni)
 );
-#drop table clientes;
+#drop table profiles;
 
 create table generos(
 idGenero int not null,

@@ -1,5 +1,5 @@
 <?php
-		echo '
+		/* echo '
 		<!DOCTYPE html>
 		<html>
 		  <head>
@@ -12,7 +12,7 @@
 
 		    </head>
 		    <body>'
-		    ;
+		    ; */
 		if(isset($_SESSION['cuenta']))
 		{
 			if ($_SESSION['cuenta']->getPrivilegios()==0)
@@ -23,11 +23,11 @@
 			{
 				require_once "navCliente.php";
 			}
-			/*else if ($_SESSION['cuenta']->getPrivilegios()==1)
+			else if ($_SESSION['cuenta']->getPrivilegios()==1)
 			{
 				require_once "cine.php";
-			}*/
+			}
 		}
 
-echo "</body>";
+/* echo "</body>"; */
 ?>

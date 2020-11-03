@@ -1,50 +1,65 @@
 <?php namespace controllers;
 
-    use daos\DaoMovies as daoMovies;
 
-    class MoviesController {
+use daos\DaoGenres as DaoGenres;
+use daos\DaoMovies as DaoMovies;
+use models\Genre as Genre;
+use models\Movie as Movie;
 
-        private $movies_dao;
-        private $list_movies;
+class MoviesController {
+   
+        //Funcion que actualiza la cartelera de Movies(atributo enabled false para las peliculas que ya no esten) y los generos
+        public function updateFromApi(){
+            $daoMovies = DaoMovies::GetInstance();
+            $daoMovies->updateFromApi();
+            $moviesList = $daoMovies->getEnabled();
 
+            $daoGenres = DaoGenres::GetInstance();
+            $daoGenres->updateFromApi();
+            $listGenres = $daoGenres->getAll();
+
+            include(ROOT . VIEWS_PATH . "nav-bar.php");
+            include(ROOT . 'views/list_movies.php');
+        }
         
-        function __construct()
-        {
-            $this->movies_dao = new DaoMovies();
-            $this->list_movies = array();
-        }
-
-        public function updateList(){
-
-            $this->movies_dao->UpdateList();
-
-            include(ROOT . '/views/list_movies.php');
-
-
-        }
-
+        //Lista las peliculas Actuales
         public function listMovies(){
     
-            $this->list_movies = $this->movies_dao->GetAll();
+            $daoMovies = DaoMovies::GetInstance();
+            $moviesList = $daoMovies->getEnabled();
+
+            $daoGenres = DaoGenres::GetInstance();
+            $listGenres = $daoGenres->getAll();
+
+            include(ROOT . VIEWS_PATH . "nav-bar.php");
+            include(ROOT . 'views/list_movies.php');
+        }
+
+        public function listMovieByGenre($idGenre = 0){
+
+            $daoGenres = DaoGenres::GetInstance();
+            $genre = $daoGenres->getById($idGenre);
+            $listGenres = $daoGenres->getAll();
+
+            $daoMovies = DaoMovies::GetInstance();
+            $moviesList = $daoMovies->genreMovies($genre);
             
-            include(ROOT . '/views/list_movies.php');
+            include(ROOT . VIEWS_PATH . "nav-bar.php");
+            include(ROOT . 'views/list_movies.php');
+        }
+
+        public function viewMovie($idMovie = 0){
+            
+            $daoMovies = DaoMovies::GetInstance();
+
+            $movie = $daoMovies->getById($idMovie);
+
+            include(VIEWS_PATH . "nav-bar.php");
+            include(ROOT . 'views/view-movie.php');
         }
 
         
 
-        //Esta la funcion in_array tambien.
-        private function exist(\models\Movie $movie){
-            
-            foreach($this->movies_list as $aux){
-               
-                if($aux->getId() == $movie->getId() && $aux->getTitle() == $movie->getTitle()){
-                   
-                    return true;
-                }
-            }
-
-            return false;
-        }
 
         
     }

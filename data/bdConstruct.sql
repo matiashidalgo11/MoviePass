@@ -75,24 +75,25 @@ create table cines(
 
 create table rooms(
     idRoom int not null auto_increment,
-    idCine int unsigned,
+    idCine int not null,
     nombre varchar(30) not null,
     capacidad int not null,
     precio int not null,
+    primary key (idRoom),
     constraint fk_idCine foreign key (idCine) references cines(idCine)
    
-)
+);
 #drop table rooms;
 
 create table funciones(
     idFuncion int not null auto_increment,
-    idMovie int unsigned,
-    idRoom int unsigned,
+    idMovie int not null,
+    idRoom int not null,
     date varchar(30) not null,
     hour TIME(4),
-    constraint fk_idCine foreign key (idMovie) references cines(idMovie),
-    constraint fk_idCine foreign key (idRoom) references cines(idRoom),
-    constraint pkFuncion primary key (idFuncion)
+    constraint fk_idMovief foreign key (idMovie) references movies(idMovie),
+    constraint fk_idRoom foreign key (idRoom) references rooms(idRoom),
+	primary key (idFuncion)
 
-)
-#drop table funciones;
+);
+drop table funciones;

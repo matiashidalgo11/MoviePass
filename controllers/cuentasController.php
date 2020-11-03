@@ -49,23 +49,7 @@ class CuentasController
             
         }
 
-        public function crearProfile(){
 
-                $profile = new Profile(10,"Ivan","Hidalgo","Lib",1346545);
-
-                $cuenta = new Cuenta(0,"10@9", 12134,1);
-
-                $cuenta->setProfile($profile);
-
-            
-
-                $DaoCuentas = DaoCuentas::GetInstance();
-
-                $DaoCuentas->add($cuenta);
-
-                
-
-        }
     }
 
     

@@ -44,11 +44,11 @@
             $this->funcionDao->remove($id);
         }
 
-        public function showList(){
+        public function showAdd(){
             
             $arrayMovie = $this->movieDao->getAll();
             $arrayRoom = $this->roomDao->GetAll();
-            require_once(VIEWS_PATH."list_cine.php");//crear una vista
+            require_once(VIEWS_PATH."addFuncion.php");
         }
 
     }

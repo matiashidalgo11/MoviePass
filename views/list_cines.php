@@ -20,12 +20,12 @@
                         <div class="card-img-top cinema-card container">
                             <div class="row" style="height:inherit">
                                 <div class="col align-self-center">
-                                    <span class="h2 border-text"> <?php echo $cine->getNombre_cine(); ?></span>
+                                    <span class="h2 border-text"> <?php echo $cine->getNombre(); ?></span>
                                 </div>
                             </div>
                         </div>
                         <div class="card-body">
-                        <?php echo $cine->getNombre_cine(); ?>
+                        <?php echo $cine->getNombre(); ?>
                         <span class="h5 card-title">Direccion:  <?php echo $cine->getDireccion(); ?></span></br>
                         <form class="" action="<?php echo FRONT_ROOT . "cineController/Delete" ?> ">
                             <button type="submit" name="id" class="btn-dark btn-sm" value="<?php echo $cine->GetById($id); ?>">Eliminar</button>

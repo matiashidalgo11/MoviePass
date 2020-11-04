@@ -3,37 +3,27 @@
     class Movie {
 
         private $popularity;
-        private $vote_count;
         private $video;
         private $poster_path;
         private $id;
-        private $adult;
-        private $backdrop_path;
         private $original_language;
-        private $original_title;
         private $genre_ids;
         private $title;
-        private $vote_average;
         private $overview;
         private $release_date;
         private $enabled;
 
 
-        public function __construct($popularity = "", $vote_count = "", $video = "", $poster_path = "", $id = "", $adult = "", $backdrop_path = "",
-         $original_language = "",$original_title = "", $genre_ids = "", $title = "", $vote_average = "", $overview = "", $release_date = "", $enabled = true)
+        public function __construct($popularity = "", $video = "", $poster_path = "", $id = "",
+         $original_language = "", $title = "", $overview = "", $release_date = "", $enabled = true)
         {
             $this->popularity = $popularity;
-            $this->vote_count = $vote_count;
             $this->video = $video;
             $this->poster_path = $poster_path;
             $this->id = $id;
-            $this->adult = $adult;
-            $this->backdrop_path = $backdrop_path;
             $this->original_language = $original_language;
-            $this->original_title = $original_title;
-            $this->genre_ids = $genre_ids;
+            $this->genre_ids = array();
             $this->title = $title;
-            $this->vote_average = $vote_average;
             $this->overview = $overview;
             $this->release_date = $release_date;
             $this->enabled = $enabled;
@@ -56,26 +46,6 @@
         public function setPopularity($popularity)
         {
                 $this->popularity = $popularity;
-
-                return $this;
-        }
-
-        /**
-         * Get the value of vote_count
-         */ 
-        public function getVote_count()
-        {
-                return $this->vote_count;
-        }
-
-        /**
-         * Set the value of vote_count
-         *
-         * @return  self
-         */ 
-        public function setVote_count($vote_count)
-        {
-                $this->vote_count = $vote_count;
 
                 return $this;
         }
@@ -140,45 +110,6 @@
                 return $this;
         }
 
-        /**
-         * Get the value of adult
-         */ 
-        public function getAdult()
-        {
-                return $this->adult;
-        }
-
-        /**
-         * Set the value of adult
-         *
-         * @return  self
-         */ 
-        public function setAdult($adult)
-        {
-                $this->adult = $adult;
-
-                return $this;
-        }
-
-        /**
-         * Get the value of backdrop_path
-         */ 
-        public function getBackdrop_path()
-        {
-                return $this->backdrop_path;
-        }
-
-        /**
-         * Set the value of backdrop_path
-         *
-         * @return  self
-         */ 
-        public function setBackdrop_path($backdrop_path)
-        {
-                $this->backdrop_path = $backdrop_path;
-
-                return $this;
-        }
 
         /**
          * Get the value of original_language
@@ -196,26 +127,6 @@
         public function setOriginal_language($original_language)
         {
                 $this->original_language = $original_language;
-
-                return $this;
-        }
-
-        /**
-         * Get the value of original_title
-         */ 
-        public function getOriginal_title()
-        {
-                return $this->original_title;
-        }
-
-        /**
-         * Set the value of original_title
-         *
-         * @return  self
-         */ 
-        public function setOriginal_title($original_title)
-        {
-                $this->original_title = $original_title;
 
                 return $this;
         }
@@ -256,26 +167,6 @@
         public function setTitle($title)
         {
                 $this->title = $title;
-
-                return $this;
-        }
-
-        /**
-         * Get the value of vote_average
-         */ 
-        public function getVote_average()
-        {
-                return $this->vote_average;
-        }
-
-        /**
-         * Set the value of vote_average
-         *
-         * @return  self
-         */ 
-        public function setVote_average($vote_average)
-        {
-                $this->vote_average = $vote_average;
 
                 return $this;
         }

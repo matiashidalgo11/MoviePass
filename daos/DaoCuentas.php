@@ -1,120 +1,182 @@
-<?php namespace daos;
+<?php
 
-    use models\Cuenta as Cuenta;
+namespace daos;
 
-    class DaoCuentas {
-       
-       private $cuentas_list = array();
-       private $file_name; 
-       
-        public function __construct()
-        {
-            $this->file_name = dirname(__DIR__)."/data/cuentas.json";
-        }
+use \Exception as Exception;
+use daos\Connection as Connection;
+use models\Cuenta as Cuenta;
+use daos\DaoProfiles as DaoProfiles;
 
-        //No sabria si el filtro de que si existe va en el daos o en el controllers
-        public function Add(Cuenta $cuenta)
-        {
-            $this->RetrieveData();
+class DaoCuentas implements IDao
+{
+
+    private $connection;
+    private static $instance = null;
+
+    //Info db
+    const TABLENAME = "cuentas";
+    const TABLE_IDCUENTA = "idCuenta";
+    const TABLE_EMAIL = "email";
+    const TABLE_PASSWORD = "password";
+    const TABLE_PRIVILEGIOS = "privilegios";
+
+    private function __construct(){
+        
+    }
+
+    public static function GetInstance()
+    {
+        if (self::$instance == null)
+            self::$instance = new DaoCuentas();
+
+        return self::$instance;
+    }
+
+    public function delete($dato){
+        //desarrollar
+    }
+    
+    public function add($cuenta)
+    {
+        if ($cuenta instanceof Cuenta) {
+
+
+            try {
+                $query = "INSERT INTO " . DaoCuentas::TABLENAME . " ( " . DaoCuentas::TABLE_EMAIL . " , " . DaoCuentas::TABLE_PASSWORD . " , " . DaoCuentas::TABLE_PRIVILEGIOS . " ) VALUES ( " . ":" . DaoCuentas::TABLE_EMAIL . " , " . ":" . DaoCuentas::TABLE_PASSWORD . " , " . ":" . DaoCuentas::TABLE_PRIVILEGIOS . " );";
+
+                $parameters[DaoCuentas::TABLE_EMAIL] = $cuenta->getEmail();
+                $parameters[DaoCuentas::TABLE_PASSWORD] = $cuenta->getPassword();
+                $parameters[DaoCuentas::TABLE_PRIVILEGIOS] = $cuenta->getPrivilegios();
+
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+                //el id se genera en la base de datos, por eso tengo que pedir nuevamente el objeto.
+                $object = $this->getByEmail($cuenta->getEmail());
+                $cuenta->setId($object->getId());
             
-            if(!$this->exist($cuenta)){
-               
-                array_push($this->cuentas_list, $cuenta);
-                return $this->SaveData();
-            }
-            return false;
-        }
+                $daoProfile = DaoProfiles::GetInstance();
 
-        //Guardar las peliculas en el arreglo por el id ?)
-        public function AddArray($cuentaArray){
-           
-            $this->RetrieveData();
+                $daoProfile->add($cuenta);
 
-            foreach($cuentaArray as $cuenta){
-
-                if(!$this->exist($cuenta)){
-                    array_push($this->cuentas_list, $cuenta);
-                }
-                
-            }
-
-            return $this->SaveData();
-        }
-
-        public function GetAll()
-        {
-            $this->RetrieveData();
-
-            return $this->cuentas_list;
-        }
-
-        private function SaveData()
-        {
-            $arrayToEncode = array();
-
-            foreach($this->cuentas_list as $cuenta)
-            {
-                $valuesArray["id"] = $cuenta->getId();
-                $valuesArray["email"] = $cuenta->getEmail();
-                $valuesArray["password"] = $cuenta->getPassword();
-                $valuesArray["privilegios"] = $cuenta->getPrivilegios();                
-
-                array_push($arrayToEncode, $valuesArray);
-            }
-
-            $jsonContent = json_encode($arrayToEncode, JSON_PRETTY_PRINT);
-            
-            return file_put_contents($this->file_name, $jsonContent);
-        }
-
-        private function RetrieveData()
-        {
-            $this->cuentas_list = array();
-
-            if(file_exists($this->file_name))
-            {
-                $jsonContent = file_get_contents($this->file_name);
-
-                $arrayToDecode = ($jsonContent) ? json_decode($jsonContent, true) : array();
-
-                foreach($arrayToDecode as $valuesArray)
-                {
-                    $cuenta = new Cuenta();
-                    $cuenta->setId($valuesArray["id"]);
-                    $cuenta->setEmail($valuesArray["email"]);
-                    $cuenta->setPassword($valuesArray["password"]);
-                    $cuenta->setPrivilegios($valuesArray["privilegios"]);
-
-                    array_push($this->cuentas_list, $cuenta);
-                }
-            }
-        }
-
-        //Esta la funcion in_array tambien.
-        private function exist(Cuenta $cuenta){
-            
-            foreach($this->cuentas_list as $aux){
-               
-                if($aux->getId() == $cuenta->getId() && $aux->getEmail() == $cuenta->getEmail()){
-                   
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public function verificar($email, $password)
-      {
-
-        $this->RetrieveData();
-
-        foreach ($this->cuentas_list as $aux){
-            if($aux->getEmail() == $email && $aux->getPassword() == $password){
-                   $_SESSION['cuenta'] = $aux;
-
-                   //hay que incluir pantalla y los nav segun privilegios
+            } catch (Exception $ex) {
+                throw $ex;
             }
         }
     }
- }?>
+
+
+    public function getAll()
+    {
+        try {
+            $cuentaList = array();
+
+            $query = "SELECT * FROM " . DaoCuentas::TABLENAME;
+
+            $this->connection = Connection::GetInstance();
+
+            $resultSet = $this->connection->Execute($query);
+
+            $cuentaList = $this->mapeo($resultSet);
+
+            return $cuentaList;
+
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    //Falta complementar el perfil
+    public function getById($id)
+    {
+        try {
+
+            $query = "SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $id;
+
+            $this->connection = Connection::GetInstance();
+
+            $resultSet = $this->connection->Execute($query);
+
+            $array = $this->mapeo($resultSet);
+
+            $array = !empty($array) ? $array[0] : [];
+
+            return $array;
+
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function getByEmail($email)
+    {
+        try {
+
+            $query = " SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_EMAIL . " = " . "'" . $email . "'";
+
+            $this->connection = Connection::GetInstance();
+
+            $resultSet = $this->connection->Execute($query);
+
+            $array = $this->mapeo($resultSet);
+
+            $array = !empty($array) ? $array[0] : [];
+
+            return $array;
+
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+
+    public function mapeo($value)
+    {
+
+        $value = is_array($value) ? $value : [];
+
+        $resp = array_map(
+            function ($p) {
+                return new Cuenta($p[DaoCuentas::TABLE_IDCUENTA], $p[DaoCuentas::TABLE_EMAIL], $p[DaoCuentas::TABLE_PASSWORD], $p[DaoCuentas::TABLE_PRIVILEGIOS]);
+            },
+            $value
+        );
+
+
+        return $resp;
+    }
+
+    public function exist($email)
+    {
+        try {
+
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_EMAIL . " = " . "'" . $email . "'" . ");";
+
+            $this->connection = Connection::GetInstance();
+
+            $result = $this->connection->Execute($query);
+
+            if ($result[0][0] != 1) return false;
+            else return true;
+
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function verificar($email, $password)
+    {
+
+        if ($this->exist($email)) {
+
+            $cuenta = $this->getByEmail($email);
+
+            if ($cuenta != false) {
+                if ($cuenta->getPassword() == $password) {
+                    $_SESSION['cuenta'] = $cuenta;
+                }
+            }
+        }
+    }
+}

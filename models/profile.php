@@ -1,25 +1,25 @@
 <?php
 namespace models;
 
-use models\Cuenta as Cuenta;
 
-class Cliente extends Cuenta{
 
+class Profile{
+
+	private $dni;
 	private $nombre;
 	private $apellido;
-	private $domicilio;
+	private $direccion;
     private $telefono;
-    private $entradas = [];
+    private $entradas;
 
-    function __construct ($id = "", $email = "", $password = "", $privilegios = "",$nombre = "",
-                            $apellido = "",$domicilio = "",$telefono = "", $entradas = []) {
+    function __construct ($dni = "",$nombre = "", $apellido = "",$direccion = "",$telefono = "") {
 
-		parent::__construct($id,$email,$password,$privilegios);
+		$this->dni = $dni;
 		$this->nombre = $nombre;
 		$this->apellido = $apellido;
-		$this->domicilio = $domicilio;
+		$this->direccion = $direccion;
         $this->telefono = $telefono;
-        $this->entradas = $entradas;
+        $this->entradas = null;
 
     }
 
@@ -64,21 +64,21 @@ class Cliente extends Cuenta{
 	}
 
 	/**
-	 * Get the value of domicilio
+	 * Get the value of direccion
 	 */ 
-	public function getDomicilio()
+	public function getDireccion()
 	{
-		return $this->domicilio;
+		return $this->direccion;
 	}
 
 	/**
-	 * Set the value of domicilio
+	 * Set the value of direccion
 	 *
 	 * @return  self
 	 */ 
-	public function setDomicilio($domicilio)
+	public function setDireccion($direccion)
 	{
-		$this->domicilio = $domicilio;
+		$this->direccion = $direccion;
 
 		return $this;
 	}
@@ -104,4 +104,44 @@ class Cliente extends Cuenta{
 	}
 
 	
+
+    /**
+     * Get the value of entradas
+     */ 
+    public function getEntradas()
+    {
+        return $this->entradas;
+    }
+
+    /**
+     * Set the value of entradas
+     *
+     * @return  self
+     */ 
+    public function setEntradas($entradas)
+    {
+        $this->entradas = $entradas;
+
+        return $this;
+    }
+
+	/**
+	 * Get the value of dni
+	 */ 
+	public function getDni()
+	{
+		return $this->dni;
+	}
+
+	/**
+	 * Set the value of dni
+	 *
+	 * @return  self
+	 */ 
+	public function setDni($dni)
+	{
+		$this->dni = $dni;
+
+		return $this;
+	}
 }

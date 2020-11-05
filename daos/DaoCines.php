@@ -26,7 +26,7 @@
         } 
     } 
 
-    public function getById($idCine){ 
+    public function GetById($idCine){ 
         $cine = null;
         try { 
             $sql = "SELECT * from  cines where idCine=:idCine"; 
@@ -52,10 +52,9 @@
     }
 
     public function Update($idCine){
-            $sql = "UPDATE  cines (:nombre,:direccion,:room) where idCine=:idCine";
+            $sql = "UPDATE  cines (:nombre,:direccion) where idCine=:idCine";
             $parameters['nombre'] = $cine->getNombre(); 
             $parameters['direccion'] = $cine->getDireccion(); 
-            $parameters['room'] = $cine->getRoom(); 
             try{
                 $this->connection = Connection::GetInstance(); 
                 return $this->connection->ExecuteNonQuery($sql, $parameters); 

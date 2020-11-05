@@ -41,7 +41,7 @@ class DaoFunciones {
             $parameters["dayFuncion"]=$funcion->getDate();
             $parameters["hour"]=$funcion->getHour();
             $this->connection = Connection::getInstance();
-            $this->connection->executeNonQuery($sql, $parameters);
+            return $this->connection->executeNonQuery($sql, $parameters);
         }
         catch(PDOException $ex)
         {
@@ -97,6 +97,7 @@ class DaoFunciones {
         {
             throw $e;
         }
+        return $funcion;
     }
 
    /* private function mapeo(){
@@ -123,11 +124,13 @@ class DaoFunciones {
 
     public function remove ($id)
     {
+        $value =0;
         try
         {
-            $sql = "DELETE FROM funciones WHERE id=:id";  
+            $parameters['id'] = $id;
+            $sql = "DELETE from funciones where id=:id";  
              $this->connection=Connection::getInstance();
-             return $this->connection->ExecuteNonQuery($sql);
+             $value = $this->connection->ExecuteNonQuery($sql,$parameters);
         }
         catch(PDOException $ex){
         throw $ex;
@@ -159,6 +162,7 @@ class DaoFunciones {
         }catch(PDOException $ex){
             throw $ex;
         }
+        return $value;
     }
 
     public function GetAll() {
@@ -177,7 +181,7 @@ class DaoFunciones {
 
             /*if(!empty($resultSet)) {
                 foreach ($resultSet as $row) {
-                    return $this->leer($row);
+                    $funcion =$this->mapeo($row);
 
                     $idRoom = $row["idRoom"];
                     $idMovie = $row["idMovie"];

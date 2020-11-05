@@ -177,7 +177,21 @@ class DaoFunciones {
 
             /*if(!empty($resultSet)) {
                 foreach ($resultSet as $row) {
-                    return $this->mapeo($resultSet);
+                    return $this->leer($row);
+
+                    $idRoom = $row["idRoom"];
+                    $idMovie = $row["idMovie"];
+
+                    $DaoRoom = new roomDao();
+                    $room = $DaoRoom->GetById($idRoom);
+
+                    $DaoMovie = new movieDao();
+                    $movie = $DaoMovie->GetById($idMovie);
+
+                    $funcion->setRoom($room);
+                    $funcion->setMovie($movie);
+
+                    array_push($funcion_list,$funcion);
                 }
             }*/
 
@@ -196,6 +210,7 @@ class DaoFunciones {
         {
             throw $e;
         }
+        return funcion_list;
     }
 
 

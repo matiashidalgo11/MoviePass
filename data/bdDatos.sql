@@ -6,6 +6,8 @@ insert into cuentas(email,password,privilegios) values
 ('pepe@pepe', 'pepe',1);
 
 insert into profiles(idCuenta, dni, nombre, apellido, telefono, direccion) values
-(1,1234,'Matias', 'Hidalgo', 1111,"calle 1"),
-(2,4321,'Pepe', 'Pep', 2222, "calle 2");
+(2,1234,'Matias', 'Hidalgo', 1111,"calle 1"),
+(3,4321,'Pepe', 'Pep', 2222, "calle 2");
+
+
 

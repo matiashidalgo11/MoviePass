@@ -11,7 +11,7 @@
         private $pdoStatement = null;
         private static $instance = null;
 
-        private function __construct()
+        public function __construct()
         {
             try
             {

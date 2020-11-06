@@ -7,6 +7,7 @@
 class CuentasController
     {
 
+        
         public function verificar($email="",$password=""){
             
             $DaoCuentas = DaoCuentas::GetInstance();

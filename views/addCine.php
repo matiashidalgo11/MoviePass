@@ -1,4 +1,4 @@
-<form action="<?= FRONT_ROOT ?>/CineController/add" method="POST">
+<form action="<?php echo FRONT_ROOT?>cine/add" method="POST">
 <table>
 <h2 class="text-light" >Agregar Cines</h2>
   <tr>

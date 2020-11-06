@@ -1,8 +1,10 @@
 <?php namespace daos;
 
     use models\Cine as cine;
-    use daos\Connection as Connection; 
-    // Arreglar el Modify
+    use daos\Connection as Connection;
+use PDOException;
+
+// Arreglar el Modify
 
 
     class DaoCines {
@@ -37,35 +39,11 @@
             return $this->connection->ExecuteNonQuery($sql,$parameters);
 
 
-        } catch (Exception $ex) { 
+        } catch (PDOException $ex) { 
             throw $ex; 
         } 
     } 
 
-    public function getById($idCine){ 
-        
-        try { 
-            $sql = "SELECT * FROM  cines WHERE idCine=:id"; 
-
-            $parameters['idCine'] = $idCine;
- 
-            $this->connection = Connection::GetInstance();
- 
-            $resultSet = $this->connection->Execute($sql,$parameters);
- 
-            if(!empty($resultSet) && $object instanceof Cine){ 
- 
-                 return $this->mapeo($resultSet);   
-            }
-            else{
-                return false;
-            }
- 
- 
-        } catch (Exception $ex) { 
-            throw $ex; 
-        } 
-       } 
 
        //Si el resultado del execute no termina dando un Cine, el mapeo lo transforma en uno
        public function mapeo($value) 
@@ -80,7 +58,7 @@
                     $p[DaoCines::TABLE_IDCINE], 
                     $p[DaoCines::TABLE_NOMBRE], 
                     $p[DaoCines::TABLE_DIRECCION], 
-                    $p[DaoCines::TABLE_ROOM], 
+                    $p[DaoCines::TABLE_ROOM] 
                 ); 
  
                 return $objet; 
@@ -92,7 +70,7 @@
 
 
         public function Update($cine){
-            $sql = "UPDATE  cines (" . TABLE_NOMBRE . "," . TABLE_DIRECCION . "," . TABLE_ROOM  . ")";
+            $sql = "UPDATE  cines (" . DaoCines::TABLE_NOMBRE . "," . DaoCines::TABLE_DIRECCION . "," . DaoCines::TABLE_ROOM  . ")";
             
             
             $parameters[DaoCines::TABLE_NOMBRE] = $cine->getNombre(); 
@@ -102,14 +80,14 @@
             try{
                 $this->connection = Connection::GetInstance(); 
                 return $this->connection->ExecuteNonQuery($sql, $parameters); 
-            } catch (Exception $ex) { 
+            } catch (PDOException $ex) { 
                 throw $ex; 
             }
         }
 
 
         public function getAll(){
-            $sql = "select from cines";
+            $sql = "SELECT * FROM cines;";
 
             $cineList = array();
 
@@ -118,7 +96,7 @@
  
                 $resultSet = $this->connection->Execute($sql);
      
-                if(!empty($resultSet) && $object instanceof Cine){ 
+                /*if(!empty($resultSet) && $object instanceof Cine){ 
      
                     foreach ($resultSet as $value) {
                         $aux = $this->mapeo($value);
@@ -127,15 +105,71 @@
                 }
                 else{
                     return false;
+                }*/
+
+               
+                
+                foreach($resultSet as $value)
+                {
+                    array_push($cineList,$this->parseToObject($value));
                 }
+                return $cineList;
      
-     
-            } catch (Exception $ex) { 
+            } catch (PDOException $ex) { 
                 throw $ex; 
             } 
-            return $cineList;
 
         }
+
+    
+
+        public function Delete($id)
+        {
+
+        }
+
+        public function getById($idCine){ 
+        
+            $sql = "SELECT * FROM  cines WHERE idCine=".$idCine.";"; 
+            try { 
+    
+                
+     
+                $this->connection = Connection::GetInstance();
+     
+                $resultSet = $this->connection->Execute($sql);
+     
+               /* if(!empty($resultSet) && $object instanceof Cine){ 
+     
+                     return $this->mapeo($resultSet);   
+                }
+                else{
+                    return false;
+                }*/
+                foreach($resultSet as $value)
+                {
+
+                    $cine=$this->parseToObject($value);
+                }
+    
+                return $cine;
+     
+     
+            } catch (PDOException $ex) { 
+                throw $ex; 
+            } 
+           } 
+
+           public function parseToObject($value)
+           {
+               
+                   $cine=new Cine($value['nombre'],$value['direccion'],$value['idCine']);
+               
+   
+               return $cine;
+           }
+    
+
    
     }
 

@@ -3,39 +3,46 @@
 namespace daos;
 
 use Models\Funcion;
-use Models\Movie;
-use Models\Room;
+use Models\Movie as Movie;
+use Models\Room as Room;
 use daos\DaoGenres;
 use daos\Connection;
-use daos\DaoMovies;
+use daos\DaoMovies as daoMovie;
+use daos\DaoRooms as daoRoom;
+use PDOException;
 
-class ProjectionDAO {
+
+
+class DaoFunciones {
     private $connection;
     const TABLE_IDFUNCION = "idFuncion";
     const TABLE_IDMOVIE = "idMovie";
     const TABLE_IDROOM = "idRoom";
-    const TABLE_DATE = "date";
+    const TABLE_DATE = "dayFuncion";
     const TABLE_HOUR = "time";
 
-    public function __construct() {
-        
+    private $movieDao;
+
+    public function __construct() 
+    {
+        $movieDao = new daoMovie();
     }
 
     public function Add($funcion)
     {
         try
         {
-            $sql = "INSERT INTO funciones (idMovie,idRoom,date,time) VALUES (:idMovie,:idRoom,:date,:time);";
+            $sql = "INSERT INTO funciones (idMovie,idRoom,dayFuncion,hour) VALUES (:idMovie,:idRoom,:dayFuncion,:hour);";
             $room=$funcion->getRoom();
             $movie=$funcion->getMovie();
             $parameters["idMovie"] =$movie->getId();
             $parameters["idRoom"] =$room->getId();
-            $parameters["date"]=$funcion->getDate();
-            $parameters["time"]=$funcion->getHour();
+            $parameters["dayFuncion"]=$funcion->getDate();
+            $parameters["hour"]=$funcion->getHour();
             $this->connection = Connection::getInstance();
             $this->connection->executeNonQuery($sql, $parameters);
         }
-        catch(Exception $ex)
+        catch(PDOException $ex)
         {
             throw $ex;
         }
@@ -63,24 +70,27 @@ class ProjectionDAO {
         }
     }*/
 
-
     public function GetById($id) {
-
+        
+      
         try
         {
-            $parameters['id'] = $id;
-            $room=$funcion->getRoom();
-            $movie=$funcion->getMovie();
+        
 
-            $sql = "SELECT * FROM funciones WHERE id=:id";
+            $sql = "SELECT * FROM funciones WHERE id=".$id.";";
 
             $this->connection = Connection::getInstance();
 
-            $resultSet = $this->connection->Execute($sql, $parameters);
+            $resultSet = $this->connection->Execute($sql);
 
-            if(!empty($resultSet)) {
+            /*if(!empty($resultSet)) {
                 return $this->mapeo($resultSet);
-            }
+            }*/
+
+          $funcion = $this->parseToObject($resultSet);
+
+          return $funcion;
+
         }
         catch (PDOException $e)
         {
@@ -88,7 +98,7 @@ class ProjectionDAO {
         }
     }
 
-    private function mapeo(){
+   /* private function mapeo(){
        
         $value = is_array($value) ? $value : []; 
     
@@ -108,7 +118,7 @@ class ProjectionDAO {
             $value 
         ); 
         return count($resp) > 1 ? $resp : $resp['0']; 
-    }
+    }*/
 
     public function remove ($id)
     {
@@ -118,7 +128,7 @@ class ProjectionDAO {
              $this->connection=Connection::getInstance();
              return $this->connection->ExecuteNonQuery($sql);
         }
-        catch(Exception $ex){
+        catch(PDOException $ex){
         throw $ex;
     }
     }
@@ -145,32 +155,64 @@ class ProjectionDAO {
                 $moviesList[]=$movie;
             }
             return $moviesList;          
-        }catch(Exception $ex){
+        }catch(PDOException $ex){
             throw $ex;
         }
     }
 
-    public function GetAll($date) {
+    public function GetAll() {
 
+        $funcionesList=array();
         try
         {
-            $parameters['date'] = $date;
-            $sql = "SELECT * FROM funciones where date=:date ORDER BY date";
+            
+            $sql = "SELECT * FROM funciones;";
 
             $this->connection = Connection::getInstance();
 
-            $resultSet = $this->connection->Execute($sql, $parameters);
+            $resultSet = $this->connection->Execute($sql);
 
-            if(!empty($resultSet)) {
+           
+
+            /*if(!empty($resultSet)) {
                 foreach ($resultSet as $row) {
                     return $this->mapeo($resultSet);
                 }
+            }*/
+
+            foreach($resultSet as $value)
+            {
+                
+                array_push($funcionesList,$this->parseToObject($value));
             }
+
+            return $funcionesList;
+
+
+
         }
         catch (PDOException $e)
         {
             throw $e;
         }
     }
+
+
+    public function parseToObject($value)
+    {
+        
+        $funcion = new Funcion();
+        $movieDao= new daoMovie();
+        $roomDao= new daoRoom();
+        
+        $funcion->SetId($value['idFuncion']);
+        $funcion->setDate($value['dayFuncion']);
+        $funcion->setHour($value['hour']);
+        $funcion->setRoom($roomDao->getById($value['idRoom']));
+        $funcion->setMovie($movieDao->getById($value['idMovie']));
+
+        return $funcion;
+    }
+
 
 }

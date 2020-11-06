@@ -7,13 +7,13 @@ use daos\Connection as Connection;
 use daos\DaoGenre as DaoGenre;
 use models\Movie as Movie;
 use models\Genre as Genre;
-
+use PDOException;
 
 class DaoMovies implements IDao
 {
 
     private $connection;
-    private static $instance = null;
+    
 
     //Info db
     const TABLENAME = "movies";
@@ -27,17 +27,11 @@ class DaoMovies implements IDao
     const TABLE_RELEASEDATA = "releaseData";
     const TABLE_ENABLED = "enabled";
 
-    private function __construct(){
+    public function __construct(){
         
     }
 
-    public static function GetInstance()
-    {
-        if (self::$instance == null)
-            self::$instance = new DaoMovies();
 
-        return self::$instance;
-    }
     //*Modificar para que solo funcione con peliculas habilitadas
     //Funcion que retorna todas las peliculas por el idGenero 
     public function genreMovies(Genre $genre){
@@ -147,14 +141,18 @@ class DaoMovies implements IDao
 
     public function getAll()
     {
+        $movieList=array();
+        
+        $query = "SELECT * FROM " . DaoMovies::TABLENAME . " ;";
+
+        
         try {
-            $query = "SELECT * FROM " . DaoMovies::TABLENAME . " ;";
 
             $this->connection = Connection::GetInstance();
 
             $resultSet = $this->connection->Execute($query);
 
-            $array = $this->mapeo($resultSet);
+           /* $array = $this->mapeo($resultSet);
 
 
             if (!empty($array)) {
@@ -163,12 +161,25 @@ class DaoMovies implements IDao
                     $movie->setGenre_ids($this->movieGenres($movie->getId()));
                 }
             }
+            return $array;*/
+            
+            
+            foreach($resultSet as $value)
+            {
+                array_push($movieList,$this->parseToObject($value));
+            }
 
-            return $array;
+            
+            return $movieList;
+
+
         } catch (Exception $ex) {
             throw $ex;
         }
     }
+
+
+  
 
     public function getEnabled()
     {
@@ -190,22 +201,24 @@ class DaoMovies implements IDao
             }
 
             return $array;
-        } catch (Exception $ex) {
+        } catch (PDOException $ex) {
             throw $ex;
         }
     }
 
-    public function getById(int $id)
+    public function getById($id)
     {
+        $query = "SELECT * FROM " . DaoMovies::TABLENAME . " WHERE " . DaoMovies::TABLE_IDMOVIE . " = "  . $id . " ;";
+
+        
 
         try {
-            $query = "SELECT * FROM " . DaoMovies::TABLENAME . " WHERE " . DaoMovies::TABLE_IDMOVIE . " = " . "'" . $id . "'" . " ;";
 
             $this->connection = Connection::GetInstance();
 
             $resultSet = $this->connection->Execute($query);
 
-            $array = $this->mapeo($resultSet);
+            /*$array = $this->mapeo($resultSet);
 
             $object = !empty($array) ? $array[0] : [];
 
@@ -214,8 +227,16 @@ class DaoMovies implements IDao
                 $object->setGenre_ids($this->movieGenres($object->getId()));
             }
 
-            return $object;
-        } catch (Exception $ex) {
+            return $object;*/
+            foreach($resultSet as $value)
+            {
+
+                $movie=$this->parseToObject($value);
+            }
+
+            return $movie;
+
+        } catch (PDOException $ex) {
             throw $ex;
         }
     }
@@ -282,9 +303,9 @@ class DaoMovies implements IDao
 
         $resultSet = $this->connection->Execute($query);
 
-        $daoGenre = DaoGenres::GetInstance();
+        
 
-        $genreList = $daoGenre->mapeo($resultSet);
+        $genreList = $this->genderDAO->mapeo($resultSet);
 
         $genreList = !empty($genreList) ? $genreList : [];
 
@@ -450,4 +471,95 @@ class DaoMovies implements IDao
         );
         return $resp;
     }
+
+
+    public function searchIdMovie($title)
+    {
+        
+        $sql= "SELECT idMovie FROM movies  WHERE title=".'"'.$title.'";';
+
+        try
+        {
+           
+            $this->connection=Connection::GetInstance(); 
+            
+            
+            $value= $this->connection->Execute($sql);
+            
+           
+            foreach ($value as $key =>$valueArray)
+            {
+                $id=$valueArray['idMovie'];
+            }
+
+            return $id;
+
+        }
+        catch(PDOException $e)
+        {
+            throw $e;
+        }
+    }
+
+    public function downloadData()
+    {
+        
+
+        $jsonContent = file_get_contents("https://api.themoviedb.org/3/movie/now_playing?api_key=".KEY_TMDB."&language=en-US&page=1",true);
+
+
+        $arrayToDecode=($jsonContent) ? json_decode($jsonContent,true):array();
+
+        
+        
+        foreach ($arrayToDecode['results'] as $valueArray)
+        {
+            $sql= "INSERT INTO movies (idMovie,title,posterPath,overview,originalLanguage,releaseData,video,popularity,".DaoMovies::TABLE_ENABLED.") 
+                               values(:idMovie,:title,:posterPath,:overview,:originalLanguage,:releaseData,:video,:popularity,:".DaoMovies::TABLE_ENABLED.");";
+              
+                
+
+                $parameters['idMovie']=$valueArray['id'];
+                $parameters['title']=$valueArray['title'];
+                $parameters['posterPath']=$valueArray['poster_path'];
+                $parameters['overview']=$valueArray['overview'];
+                $parameters['video']= $valueArray['video'];
+                $parameters['originalLanguage']=$valueArray['original_language'];
+                $parameters[DaoMovies::TABLE_ENABLED]=true;
+                $parameters['releaseData']=$valueArray['release_date'];
+                $parameters['popularity']=$valueArray['popularity'];
+
+                
+
+              
+                try
+                {
+                    $this->connection = Connection::GetInstance();
+                     $this->connection->ExecuteNonQuery($sql,$parameters);
+                    
+                        
+                    }
+                    catch(PDOException $e)
+                    {
+                        throw $e;
+                    }       
+                  
+        }
+
+       
+    }
+
+    public function parseToObject($value)
+    {
+        
+            $movie= new Movie($value['popularity'],$value['video'],$value['posterPath'],$value['idMovie'],
+                $value['originalLanguage'],$value['title'],$value['overview'],$value['releaseData'],$value['enabled']);
+    
+        return $movie;
+
+
+    }
+
+
+    
 }

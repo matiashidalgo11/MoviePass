@@ -23,5 +23,16 @@ class RoomController{
         return $this->roomDao->getArrayByCinemaId($cinemaId);
     }
 
+    public function showList($idCine)
+    {
+        
+       
+        $roomList=array();
+
+        $roomList=$this->DaoRoom->getRoomsXcinema($idCine);
+
+        require_once(VIEWS_PATH."list_rooms.php");
+    
+    }
 }
 ?>

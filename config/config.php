@@ -1,7 +1,7 @@
 <?php
 
 define('ROOT', dirname(__DIR__) . "/");
-define('FRONT_ROOT', 'http://localhost/MoviePass5/');
+define('FRONT_ROOT', 'http://localhost/xampp/MoviePass5/');
 define('VIEWS_PATH','views/');
 define("CSS_PATH", FRONT_ROOT.VIEWS_PATH . "css/");
 define("JS_PATH", FRONT_ROOT.VIEWS_PATH . "js/");
@@ -13,6 +13,6 @@ define('HOST_URL', '//'.$_SERVER['HTTP_HOST'].dirname($_SERVER['PHP_SELF'])."/")
 
 //Constantes para BD 
 define("DB_HOST", "localhost");
-define("DB_NAME", "MoviePass");
+define("DB_NAME", "MoviePass5");
 define("DB_USER", "root");
 define("DB_PASS", "");

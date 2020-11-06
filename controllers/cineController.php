@@ -17,6 +17,8 @@
 
             $this->cineDao->add($cine);
 
+            $this->showList();
+
         }
 
         public function GetAll(){
@@ -45,9 +47,13 @@
         }
 
         public function showList(){
+
+
             
             $arrayCine = $this->cineDao->getAll();
-            require_once(VIEWS_PATH."list_cine.php");
+
+            
+            require_once(VIEWS_PATH."list_cines.php");
         }
 
         public function showAdd(){

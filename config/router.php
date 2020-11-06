@@ -1,68 +1,29 @@
-<?php namespace config;
+<?php 
+    namespace config;
 
-    class Router {
+    use config\request as Request;
 
-        /**
-         * Se encarga de direccionar a la pagina solicitada
-         *
-         * @param Request
-         */
-
-        public function __construct()
+    class router
+    {
+        public static function Route(Request $request)
         {
-            # code...
-        }
-        
-        public static function direccionar(Request $request) {
+            $controllerName = $request->getcontroller() . 'Controller';
 
-            /**
-             *  
-             */
-            $controlador = $request->getControlador();
-
-            // UsuariosControlador
-
-            /**
-             * 
-             */
-            $metodo = $request->getMetodo();
-
-            // add
-
-            /**
-             * 
-             */
-            $parametros = $request->getParametros();
-
-            // Array
-            // (
-            //     [nombre] => Prueba
-            //     [email] => nose@asd
-            //     [pass] => asd
-            // )
+           
+            $methodName = $request->getmethod();
 
 
-            /**
-             * 
-             */
-            $mostrar = "controllers\\". $controlador;
+            $methodParameters = $request->getparameters();          
 
-            // Controladores\Usuarios
+            $controllerClassName = "controllers\\". $controllerName;    
+            
 
-            /**
-             * 
-             */
-            $controlador = new $mostrar;
-
-            /**
-             * 
-             */
-            if(!isset($parametros)) {
-                call_user_func(array($controlador, $metodo));
-            } else {
-                call_user_func_array(array($controlador, $metodo), $parametros);
-            }
+            $controller = new $controllerClassName;
+            
+            if(!isset($methodParameters))            
+                call_user_func(array($controller, $methodName));
+            else
+                call_user_func_array(array($controller, $methodName), $methodParameters);
         }
     }
-
 ?>

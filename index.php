@@ -16,21 +16,19 @@
 	/**
 	 * Alias
 	 */
-	use config\Autoload 	as Autoload;
-	use config\Router 	as Router;
-	use config\Request 	as Request;
+	use config\autoload 	as Autoload;
+	use config\router 	as Router;
+	use config\request 	as Request;
 
 	/**
 	 * Flujo de ejecución
 	 */
-	Autoload::start();
-
-	$request = new Request();
+	Autoload::Start();
 
 	require_once(VIEWS_PATH . "header.php");
 
 
-	Router::direccionar($request);
+	Router::Route(new Request());
 
 	require_once(VIEWS_PATH . "footer.php");
 

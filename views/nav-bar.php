@@ -70,6 +70,11 @@
 
           </div>
 
+          <div class="userOff d-flex align-items-end">
+            <a class="nav-link" href="<?= FRONT_ROOT ?>LoginController/init">Admin</a>
+
+          </div>
+
       <?php }
       } ?>
 

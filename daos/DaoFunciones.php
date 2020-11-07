@@ -119,7 +119,7 @@ class DaoFunciones {
         {
             throw $e;
         }
-        return funcion_list;
+        return $funcion;
     }
 
    /* private function mapeo(){
@@ -146,6 +146,7 @@ class DaoFunciones {
 
     public function remove ($id)
     {
+        $value =0;
         try
         {
             $sql = "SELECT * from funciones order by dateF";
@@ -227,8 +228,21 @@ class DaoFunciones {
 
             /*if(!empty($resultSet)) {
                 foreach ($resultSet as $row) {
-					$date = $row['Fecha'];
-                    array_push($dateList, $date);
+                    $funcion =$this->mapeo($row);
+
+                    $idRoom = $row["idRoom"];
+                    $idMovie = $row["idMovie"];
+
+                    $DaoRoom = new roomDao();
+                    $room = $DaoRoom->GetById($idRoom);
+
+                    $DaoMovie = new movieDao();
+                    $movie = $DaoMovie->GetById($idMovie);
+
+                    $funcion->setRoom($room);
+                    $funcion->setMovie($movie);
+
+                    array_push($funcion_list,$funcion);
                 }
             }*/
 
@@ -247,7 +261,7 @@ class DaoFunciones {
         {
             throw $e;
         }
-        return $dateList;
+        return funcion_list;
     }
 
 

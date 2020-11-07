@@ -52,9 +52,7 @@ class MoviesController {
             $daoFunciones= new DaoFunciones();
             $funcionesList= $daoFunciones->GetAll();
 
-            
-            
-            
+    
 
 
             include(VIEWS_PATH . "nav-bar.php");
@@ -74,11 +72,11 @@ class MoviesController {
             include(ROOT . 'views/list_movies.php');
         }
 
-        public function viewMovie($idMovie = 0){
+        public function viewMovie($idMovie){
             
            
 
-            $movie = $this->daoMovies->getById($idMovie);
+            $movie = $this->movieDAO->getById($idMovie);
 
             include(VIEWS_PATH . "nav-bar.php");
             include(ROOT . 'views/view-movie.php');

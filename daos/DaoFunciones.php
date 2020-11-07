@@ -14,6 +14,7 @@ use PDOException;
 
 
 class DaoFunciones {
+    
     private $connection;
     const TABLE_IDFUNCION = "idFuncion";
     const TABLE_IDMOVIE = "idMovie";

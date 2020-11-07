@@ -3,9 +3,11 @@
     use daos\DaoFunciones as funcionDao;
     use daos\DaoMovies as movieDao;
     use daos\DaoRooms as roomDao;
-    use models\Funcion as funcion;
+    use models\Funcion as Funcion;
+    
+    
 
-    class CineController
+    class funcionController
     {
         private $funcionDao;
         private $movieDao;

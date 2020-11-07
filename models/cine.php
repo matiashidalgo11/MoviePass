@@ -5,13 +5,14 @@
         private $idCine;
         private $nombre;
         private $direccion;
-        private $room;
+        
 
-        public function __construct( $nombre = "",  $direccion = "", $room = ""){
-            $this->idCine = $idCine;
+        public function __construct( $nombre = "",  $direccion = "",$idCine=""){
+            
             $this->nombre = $nombre;
             $this->direccion = $direccion;
-            $this->room = $room;
+            $this->idCine=$idCine;
+            
         }
 
         public function getId()
@@ -50,18 +51,5 @@
                 return $this;
         }
 
-        public function getRoom(){
-
-                return $this->room;
-
-        }
-
-        public function setRoom($room){
-
-                $this->room=$room;
-
-                return $this;
-                
-        }
 
 }

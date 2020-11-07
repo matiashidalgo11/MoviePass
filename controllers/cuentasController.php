@@ -13,7 +13,7 @@ class CuentasController
             $DaoCuentas = DaoCuentas::GetInstance();
             
             $validator = $DaoCuentas->verificar($email,$password);
-            
+
             if(!isset($validator) && isset($_SESSION['cuenta']))
             {
             include ROOT . VIEWS_PATH . "nav-bar.php";
@@ -23,7 +23,7 @@ class CuentasController
                 if($validator == 1) $emailValidator = "is-invalid";
                 else if ($validator == 2) $passValidator = "is-invalid"; $emailIngresado = $email;
 
-            require_once "views/login.php";
+            include ROOT . VIEWS_PATH . "login.php";
             }
         }
 

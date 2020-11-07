@@ -11,9 +11,14 @@
             $this->cineDao = new cineDao();
         }
 
-        public function Add($nombre="",$direccion="",$room=""){
-            $cine = new Cine($nombre,$direccion,$room);
-            $this->cineDao->Add($cine);
+        public function add( $nombre,  $direccion, $room){
+
+            $cine = new Cine($nombre,  $direccion, $room);
+
+            $this->cineDao->add($cine);
+
+            $this->showList();
+
         }
 
         public function GetAll(){
@@ -34,8 +39,13 @@
         }
 
         public function showList(){
+
+
+            
             $arrayCine = $this->cineDao->getAll();
-            require_once(VIEWS_PATH."list_cine.php");
+
+            
+            require_once(VIEWS_PATH."list_cines.php");
         }
 
         public function showAdd(){

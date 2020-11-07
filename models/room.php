@@ -8,14 +8,15 @@ class Room{
     private $nombre;
     private $precio;
     private $capacidad;
-    private $idCine;
+    private $cine;
 
-    public function __construct($nombre = '', $precio= '', $capacidad= '', $idCine = ''){
+    public function __construct($nombre = '', $precio= '', $capacidad= '', $idCine = '',$idRoom="",$cine=""){
 		$this->idRoom = $idRoom;
         $this->nombre = $nombre;
         $this->precio = $precio;
-        $this->capacity = $capacity;
-        $this->idCinema = $idCinema;
+		$this->capacidad = $capacidad;
+		$this->cine=$cine;
+        
     }
 
     public function getId(){
@@ -50,11 +51,11 @@ class Room{
 		$this->capacidad = $capacidad;
 	}
 
-	public function getIdCine(){
+	public function getCine(){
 		return $this->idCine;
 	}
 
-	public function setIdCine($idCine){
+	public function setCine($idCine){
 		$this->idCine = $idCine;
 	}
 

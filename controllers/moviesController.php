@@ -3,56 +3,75 @@
 
 use daos\DaoGenres as DaoGenres;
 use daos\DaoMovies as DaoMovies;
+use daos\DaoGenderMovies as DaogenderMovie;
 use models\Genre as Genre;
 use models\Movie as Movie;
 
+use daos\DaoFunciones as DaoFunciones;
+
 class MoviesController {
+
+    private $movieDAO;
+    private $genderDAO;
+
+
+        public function __construct()
+        {
+            $this->movieDAO= DaoMovies::GetInstance();
+            $this->genderDAO = DaoGenres::GetInstance();
+
+        }
    
         //Funcion que actualiza la cartelera de Movies(atributo enabled false para las peliculas que ya no esten) y los generos
         public function updateFromApi(){
-            $daoMovies = DaoMovies::GetInstance();
-            $daoMovies->updateFromApi();
-            $moviesList = $daoMovies->getEnabled();
+            
+            $this->daoMovies->updateFromApi();
+            $moviesList = $this->daoMovies->getEnabled();
 
-            $daoGenres = DaoGenres::GetInstance();
-            $daoGenres->updateFromApi();
-            $listGenres = $daoGenres->getAll();
+            
+            $this->genderDAO->updateFromApi();
+            $listGenres = $this->genderDAO->getAll();
 
             include(ROOT . VIEWS_PATH . "nav-bar.php");
             include(ROOT . 'views/list_movies.php');
         }
         
         //Lista las peliculas Actuales
-        public function listMovies(){
-    
-            $daoMovies = DaoMovies::GetInstance();
-            $moviesList = $daoMovies->getEnabled();
+        public function listMovies()
+        {
+            $moviesList=array();
+            $funcionesList=array();
+            $moviesList = $this->movieDAO->getAll();
 
-            $daoGenres = DaoGenres::GetInstance();
+           
+
+           $daoGenres = DaoGenres::GetInstance();
             $listGenres = $daoGenres->getAll();
 
-            include(ROOT . VIEWS_PATH . "nav-bar.php");
-            include(ROOT . 'views/list_movies.php');
+
+
+            include(VIEWS_PATH . "nav-bar.php");
+            include(VIEWS_PATH."list_movies.php");
         }
 
         public function listMovieByGenre($idGenre = 0){
 
-            $daoGenres = DaoGenres::GetInstance();
-            $genre = $daoGenres->getById($idGenre);
-            $listGenres = $daoGenres->getAll();
+            
+            $genre = $this->genderDAO->getById($idGenre);
 
-            $daoMovies = DaoMovies::GetInstance();
-            $moviesList = $daoMovies->genreMovies($genre);
+            $listGenres = $this->genderDAO->getAll();
+            
+            $moviesList = $this->movieDAO->genreMovies($genre);
             
             include(ROOT . VIEWS_PATH . "nav-bar.php");
             include(ROOT . 'views/list_movies.php');
         }
 
-        public function viewMovie($idMovie = 0){
+        public function viewMovie($idMovie){
             
-            $daoMovies = DaoMovies::GetInstance();
+           
 
-            $movie = $daoMovies->getById($idMovie);
+            $movie = $this->movieDAO->getById($idMovie);
 
             include(VIEWS_PATH . "nav-bar.php");
             include(ROOT . 'views/view-movie.php');

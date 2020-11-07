@@ -1,3 +1,9 @@
+<?php require_once(VIEWS_PATH."nav-bar.php");
+        require_once(VIEWS_PATH."header.php");
+
+?>
+
+
 <div id="listaCines">
     <div class ="container"> 
         <div class="listcinema-container">
@@ -6,14 +12,17 @@
                     <h2> Sucursales
                 </div>
                 <div class="col-3">
-                    <form method="get" action="<?php require_once "cine.php";/*echo FRONT_ROOT . "Cine/ShowAddView"*/ ?> ">
-                        <button type"submit" class="btn btn-dark">Agregar nuevo cine</button>
+                    <form method="get" action="<?php echo FRONT_ROOT?>cine/showAdd">
+                        <button type="submit" class="btn btn-dark">Agregar nuevo cine</button>
                     </form>
                 </div>
+                
             </div>
             <div class="row">
                 <?php 
-                foreach($cines_list as $cine)
+                foreach($arrayCine as $cine)
+                {
+
                 ?>
                 <div class="col-3" style="margin-bottom:20px">
                     <div class="card">
@@ -25,16 +34,25 @@
                             </div>
                         </div>
                         <div class="card-body">
-                        <?php echo $cine->getNombre(); ?>
-                        <span class="h5 card-title">Direccion:  <?php echo $cine->getDireccion(); ?></span></br>
-                        <form class="" action="<?php echo FRONT_ROOT . "cineController/Delete" ?> ">
-                            <button type="submit" name="id" class="btn-dark btn-sm" value="<?php echo $cine->GetById($id); ?>">Eliminar</button>
+                        
+                        <span class="h5 card-title">Direccion: <?php echo $cine->getDireccion(); ?></span></br>
+                        <form class="" action="<?php echo FRONT_ROOT?>cine/Delete" method="POST">
+                            <button type="submit" name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId($id) ?>">Eliminar</button>
+                        </form>
+                        <form action="<?php echo FRONT_ROOT?>room/showList" method="POST">
+                            <button type="submit"  name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId(); ?>">Ver Salas</button>
                         </form>
                         </div>
                     </div>
                 
                 </div>
+
+                <?php } ?>
+
             </div>
         </div>
     </div>
 </div>
+
+
+<?php require_once(VIEWS_PATH."footer.php");?>

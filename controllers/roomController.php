@@ -43,5 +43,16 @@ class RoomController{
         require_once(VIEWS_PATH."addRoom.php");
     }
 
+    public function showList($idCine)
+    {
+        
+       
+        $roomList=array();
+
+        $roomList=$this->DaoRoom->getRoomsXcinema($idCine);
+
+        require_once(VIEWS_PATH."list_rooms.php");
+    
+    }
 }
 ?>

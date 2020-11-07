@@ -1,26 +1,18 @@
 <?php namespace config;
 
-    class Autoload {
-
-        public static function start() {
 
 
-
-            spl_autoload_register(function($classPath) {
-
-
-                // Model\User
-
-                // Invierto las barras
-
-                $pathBarrasInvertidas = str_replace("\\", "/", $classPath);
-
-                // Model/User
+class autoload {
+        
+        public static function Start() {
+            spl_autoload_register(function($className)
+			{
+                $classPath = ucwords(str_replace("\\", "/", ROOT.$className).".php");
                 
-                $classFile = strtolower(ROOT . $pathBarrasInvertidas . ".php");
-
-                include_once($classFile);
-            });
+                include_once($classPath);
+                
+               
+			});
         }
     }
 ?>

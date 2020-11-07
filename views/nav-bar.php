@@ -15,10 +15,13 @@
         <a class="nav-link" href="#">Cines <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>movies/listMovies">Cartelera</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>MoviesController/listMovies">Cartelera</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>cine/ShowList">Administrar Cines</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>cineController/ShowList">Administrar Cines</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>funcionController/listFunciones">Administrar Funciones</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -39,7 +42,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php foreach($listGenres as $genre){ ?>
 
-            <form action="<?= FRONT_ROOT ?>movies/listMovieByGenre" method="post">
+            <form action="<?= FRONT_ROOT ?>MoviesController/listMovieByGenre" method="post">
 
               <input type="hidden" value="<?= $genre->getId();?>" name="idGenre">
 
@@ -69,7 +72,7 @@
       <div class="userOff d-flex align-items-end">
         <a class="nav-link" href="#">Iniciar Sesion</a>
       
-        <a class="nav-link" href="<?= FRONT_ROOT ?>cuentas/registrarse">Crear Cuenta</a>
+        <a class="nav-link" href="<?= FRONT_ROOT ?>CuentasController/registrarse">Crear Cuenta</a>
      </div>
      
 

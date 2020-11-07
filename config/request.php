@@ -16,12 +16,12 @@
             $urlArray = array_filter($urlArray);
 
             if(empty($urlArray))
-                $this->controller = "cuentas";            
+                $this->controller = "LoginController";            
             else
                 $this->controller = ucwords(array_shift($urlArray));
 
             if(empty($urlArray))
-                $this->method = "verificar";
+                $this->method = "init";
             else
                 $this->method = array_shift($urlArray);
 

@@ -12,10 +12,13 @@
         <a class="nav-link" href="#">Cines <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>movies/listMovies">Cartelera</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>MoviesController/listMovies">Cartelera</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="<?php echo FRONT_ROOT ?>cine/ShowList">Administrar Cines</a>
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>cineController/ShowList">Administrar Cines</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="<?php echo FRONT_ROOT ?>funcionController/listFunciones">Administrar Funciones</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -29,7 +32,8 @@
         </div>
 
 
-            <form action="<?= FRONT_ROOT ?>movies/listMovieByGenre" method="post">
+      <?php } else if ($_SESSION['cuenta']->getPrivilegios() == 1) { ?>
+        <?php $perfil = $_SESSION['cuenta']->getProfile(); ?>
 
 
 
@@ -59,12 +63,12 @@
 
       <?php } else { ?>
 
-      <div class="userOff d-flex align-items-end">
-        <a class="nav-link" href="#">Iniciar Sesion</a>
-      
-        <a class="nav-link" href="<?= FRONT_ROOT ?>cuentas/registrarse">Crear Cuenta</a>
-     </div>
-     
+        <?php if ($_SESSION['cuenta']->getPrivilegios() == 0) { ?>
+
+          <div class="userOff d-flex align-items-end">
+            <a class="nav-link" href="<?= FRONT_ROOT ?>LoginController/init">Admin</a>
+
+          </div>
 
           <div class="userOff d-flex align-items-end">
             <a class="nav-link" href="<?= FRONT_ROOT ?>LoginController/init">Admin</a>

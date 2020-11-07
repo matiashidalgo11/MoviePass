@@ -7,7 +7,7 @@
             <div class="col-12 col-sm-6 col-md-3">
 
 
-                <form class="form-container border rounded-lg" action="<?= FRONT_ROOT ?>cuentas/verificar" method="POST">
+                <form class="form-container border rounded-lg" action="<?= FRONT_ROOT ?>CuentasController/verificar" method="POST">
                         <h3 class="text-center font-eight-bol">Iniciar Sesion</h3>
 
                         <div class="form-group">
@@ -29,7 +29,7 @@
                         </div>
                        
                         <button type="submit" class="btn btn-primary">Entrar</button>
-                        <a href="<?= FRONT_ROOT ?>cuentas/registrarse" class="btn btn-success"> Registrarse</a>
+                        <a href="<?= FRONT_ROOT ?>CuentasController/registrarse" class="btn btn-success"> Registrarse</a>
                 </form>
             </div>
 

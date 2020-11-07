@@ -149,10 +149,23 @@ class DaoFunciones {
         $value =0;
         try
         {
-            $parameters['id'] = $id;
-            $sql = "DELETE from funciones where id=:id";  
-             $this->connection=Connection::getInstance();
-             $value = $this->connection->ExecuteNonQuery($sql,$parameters);
+            $sql = "SELECT * from funciones order by dateF";
+            $this->connection = Connection::getInstance();
+            $resultSet = $this->connection->Execute($sql, $parameters);
+            if(!empty($resultSet)) {
+                foreach ($resultSet as $row) {
+                    return $this->mapeo($row);
+                    $idRoom = $row["idRoom"];
+                    $idMovie = $row["idMovie"];
+                    $DaoRoom = new roomDao();
+                    $room = $DaoRoom->GetById($idRoom);
+                    $DaoMovie = new movieDao();
+                    $movie = $DaoMovie->GetById($idMovie);
+                    $funcion->setRoom($room);
+                    $funcion->setMovie($movie);
+                    array_push($funcion_list,$funcion);
+                }
+            }
         }
         catch(PDOException $ex){
         throw $ex;
@@ -193,7 +206,10 @@ class DaoFunciones {
         }catch(PDOException $ex){
             throw $ex;
         }
-        return $value;
+        catch (PDOException $e)
+        {
+            throw $e;
+        }
     }
 
     public function GetAll() {

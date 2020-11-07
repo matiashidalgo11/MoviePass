@@ -14,7 +14,14 @@ use models\Cine;
 
 
 class DaoRooms {
+
     private $connection;
+    const TABLE_NAME = "room";
+    const TABLE_IDROOM = "idRoom";
+    const TABLE_NOMBRE = "nombre";
+    const TABLE_CAPACIDAD ="capacidad";
+    const TABLE_PRECIO = "precio";
+    const TABLE_IDCINE = "idCine";
 
     public function __construct(){
               
@@ -29,14 +36,16 @@ class DaoRooms {
             $parameters['capacidad'] =  $room->getCapacidad();
             $parameters['precio'] =  $room->getPrecio();
             $parameters['idCine'] =  $room->getIdCine();
+
+            try { 
             $this->connection = Connection::GetInstance(); 
+    
             return $this->connection->ExecuteNonQuery($sql,$parameters);
 
 
         } catch (PDOException $ex) { 
             throw $ex; 
         } 
-
     } 
 
   
@@ -153,10 +162,6 @@ class DaoRooms {
         $parameters[DaoRooms::TABLE_IDCINE] = $room->getIdCine(); 
         
         try{
-        $parameters['nombre'] = $room->getNombre(); 
-        $parameters['capacidad'] = $room->getCapacidad(); 
-        $parameters['precio'] = $room->getPrecio(); 
-        $parameters['idCine'] = $room->getIdCine(); 
             $this->connection = Connection::GetInstance(); 
             return $this->connection->ExecuteNonQuery($sql, $parameters); 
         } catch (PDOException $ex) { 
@@ -257,7 +262,7 @@ class DaoRooms {
         $roomList=array();
         
         try{
-            $sql="SELECT * from rooms where idCine = :idCine ;";
+            $sql="SELECT * from rooms where" .  DaoRooms::TABLE_IDCINE . " = '" . $idCine . "';";
             $this->connection=Connection::getInstance();
             $resultSet=$this->connection->execute($sql);
             foreach ($resultSet as $room) {
@@ -271,24 +276,9 @@ class DaoRooms {
         }catch(PDOException $ex){
             throw $ex;
         }
-        return $roomList;
     }
        
-	public function remove($idRoom)
-	{
-        $value =0;
-        try
-        {
-            $parameters['id'] = $id;
-            $sql = "DELETE from rooms where idRoom=:idRoom";  
-             $this->connection=Connection::getInstance();
-             $value = $this->connection->ExecuteNonQuery($sql,$parameters);
-        }
-            catch(Exception $ex){
-            throw $ex;
-        }
-        return $value;
-    }
+
 
 }
 ?>

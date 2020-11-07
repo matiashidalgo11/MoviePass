@@ -9,21 +9,33 @@ use PDOException;
 
     class DaoCines {
        
+    
     private $connection;
+    const TABLE_IDCINE = "idCine";
+    const TABLE_NOMBRE = "nombre";
+    const TABLE_DIRECCION = "direccion";
+    const TABLE_ROOM = "room";
 
        
-        public function __construct(){
-
+        public function __construct()
+        {
+           /*$this->RetrieveData();*/
         }
 
         public function Add($cine)
         {
-            $sql = "INSERT into cines (nombre, direccion,room ) values ( :nombre,:direccion, :room)";
+            /* array_push($this->cines_list, $cine);
+             $this->SaveData();*/
+
+            $sql = "insert into cines (nombre, direccion,room ) values ( :nombre,:direccion, :room)";
+
             $parameters['nombre'] =  $cine->getNombre();
             $parameters['direccion'] =  $cine->getDireccion();
             $parameters['room'] =  $cine->getRoom();
+
             try { 
             $this->connection = Connection::GetInstance(); 
+    
             return $this->connection->ExecuteNonQuery($sql,$parameters);
 
 
@@ -56,14 +68,6 @@ use PDOException;
         return count($resp) > 1 ? $resp : $resp['0']; 
     } 
 
-    public function mapeo($row){
-        $cine = new Cine();
-        $cine->setId($row["idCine"]);
-        $cine->setNombre($row["nombre"]);
-        $cine->setDireccion($row["direccion"]);
-        $cine->setRoom($row["room"]);
-        return $cine;
-    }
 
         public function Update($cine){
             $sql = "UPDATE  cines (" . DaoCines::TABLE_NOMBRE . "," . DaoCines::TABLE_DIRECCION . "," . DaoCines::TABLE_ROOM  . ")";
@@ -79,7 +83,7 @@ use PDOException;
             } catch (PDOException $ex) { 
                 throw $ex; 
             }
-    }
+        }
 
 
         public function getAll(){
@@ -169,5 +173,5 @@ use PDOException;
    
     }
 
-    }
+
 ?>

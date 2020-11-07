@@ -14,7 +14,6 @@ use PDOException;
 
 
 class DaoFunciones {
-    
     private $connection;
     const TABLE_IDFUNCION = "idFuncion";
     const TABLE_IDMOVIE = "idMovie";
@@ -41,7 +40,7 @@ class DaoFunciones {
             $parameters["dayFuncion"]=$funcion->getDate();
             $parameters["hour"]=$funcion->getHour();
             $this->connection = Connection::getInstance();
-            return $this->connection->executeNonQuery($sql, $parameters);
+            $this->connection->executeNonQuery($sql, $parameters);
         }
         catch(PDOException $ex)
         {
@@ -49,49 +48,27 @@ class DaoFunciones {
         }
     }
 
-    public function GetById($id) {
-        $funcion = null;
-        try
-        {
-            $parameters['id'] = $id;
-            $sql = "SELECT * from funciones where id=:id";
-            $this->connection = Connection::getInstance();
-            $resultSet = $this->connection->Execute($sql, $parameters);
-            if(!empty($resultSet)) {
-                $funcion = $this->mapeo($resultSet[0]);
-                $idRoom = $resultSet[0]["idRoom"];
-                $idMovie = $resultSet[0]["idMovie"];
-                $DaoRoom = new roomDao();
-                $room = $DaoRoom->GetById($idRoom);
-                $DaoMovie = new movieDao();
-                $movie = $DaoMovie->GetById($idMovie);
-                $funcion->setRoom($room);
-                $funcion->setMovie($movie);
-
+ /* Debo ingresar todos los atributos de Movie en el select y la creacion del objeto. Debo crear un atributo genero en el constructor que viene de base DaoGenre.
+    public function getArrayByIdRoom($idRoom){
+        $funcion_list=array();
+        try{
+            $sql="SELECT f.idFuncion,f.idRoom,f.time,f.date,m.idMovie,m.title
+                    from funciones f
+                    inner join movies m on m.idMovie = f.idMovie
+                    where f.idRoom = $idRoom and concat(f.date,' ',f.time) > now()";
+            $this->connection=Connection::getInstance();
+            $resultSet=$this->connection->execute($sql);
+            foreach ($resultSet as $row) {
+                $movie=new Movie($row["title"],$row["idMovie"]); 
+                $movie->setGenres($this->genero->getByIdMovie($row["idMovie"]));
+                $funcion_list[]=new Funcion($row["idFuncion"],$movie,$idRoom,$row["date"],$row["time"]);
             }
+            return $funcion_list;
         }
-        catch (PDOException $e)
-        {
-            throw $e;
-        }
-        return $funcion;
-    }
-
-    public function remove ($id)
-    {
-        $value =0;
-        try
-        {
-            $parameters['id'] = $id;
-            $sql = "DELETE from funciones where id=:id";  
-             $this->connection=Connection::getInstance();
-             $value = $this->connection->ExecuteNonQuery($sql,$parameters);
-        }
-            catch(Exception $ex){
+        catch(Exception $ex){
             throw $ex;
         }
-        return $value;
-    }
+    }*/
 
     public function GetById($id) {
         
@@ -119,7 +96,6 @@ class DaoFunciones {
         {
             throw $e;
         }
-        return $funcion;
     }
 
    /* private function mapeo(){
@@ -146,39 +122,15 @@ class DaoFunciones {
 
     public function remove ($id)
     {
-        $value =0;
         try
         {
-            $sql = "SELECT * from funciones order by dateF";
-            $this->connection = Connection::getInstance();
-            $resultSet = $this->connection->Execute($sql, $parameters);
-            if(!empty($resultSet)) {
-                foreach ($resultSet as $row) {
-                    return $this->mapeo($row);
-                    $idRoom = $row["idRoom"];
-                    $idMovie = $row["idMovie"];
-                    $DaoRoom = new roomDao();
-                    $room = $DaoRoom->GetById($idRoom);
-                    $DaoMovie = new movieDao();
-                    $movie = $DaoMovie->GetById($idMovie);
-                    $funcion->setRoom($room);
-                    $funcion->setMovie($movie);
-                    array_push($funcion_list,$funcion);
-                }
-            }
+            $sql = "DELETE FROM funciones WHERE id=:id";  
+             $this->connection=Connection::getInstance();
+             return $this->connection->ExecuteNonQuery($sql);
         }
         catch(PDOException $ex){
         throw $ex;
     }
-
-    public function mapeo($row){
-        $funcion = new Funcion();
-
-        $funcion->setId($row["id"]);
-        $funcion->setDate($row["date"]);
-        $funcion->setHour($row["hour"]);
-
-        return $funcion;
     }
 
     public function getAllMovies(){
@@ -206,10 +158,6 @@ class DaoFunciones {
         }catch(PDOException $ex){
             throw $ex;
         }
-        catch (PDOException $e)
-        {
-            throw $e;
-        }
     }
 
     public function GetAll() {
@@ -228,21 +176,7 @@ class DaoFunciones {
 
             /*if(!empty($resultSet)) {
                 foreach ($resultSet as $row) {
-                    $funcion =$this->mapeo($row);
-
-                    $idRoom = $row["idRoom"];
-                    $idMovie = $row["idMovie"];
-
-                    $DaoRoom = new roomDao();
-                    $room = $DaoRoom->GetById($idRoom);
-
-                    $DaoMovie = new movieDao();
-                    $movie = $DaoMovie->GetById($idMovie);
-
-                    $funcion->setRoom($room);
-                    $funcion->setMovie($movie);
-
-                    array_push($funcion_list,$funcion);
+                    return $this->mapeo($resultSet);
                 }
             }*/
 
@@ -261,7 +195,6 @@ class DaoFunciones {
         {
             throw $e;
         }
-        return funcion_list;
     }
 
 

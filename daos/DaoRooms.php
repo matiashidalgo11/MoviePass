@@ -16,44 +16,29 @@ use models\Cine;
 class DaoRooms {
 
     private $connection;
-    const TABLE_NAME = "room";
-    const TABLE_IDROOM = "idRoom";
-    const TABLE_NOMBRE = "nombre";
-    const TABLE_CAPACIDAD ="capacidad";
-    const TABLE_PRECIO = "precio";
-    const TABLE_IDCINE = "idCine";
 
     public function __construct(){
               
     }
-
     public function Add($room)
-        {
-
-            $sql = "insert into rooms (nombre, capacidad, precio,idCine) values ( :nombre,:capacidad,:precio,:idCine);";
-
-            $parameters['nombre'] =  $room->getNombre();
-            $parameters['capacidad'] =  $room->getCapacidad();
-            $parameters['precio'] =  $room->getPrecio();
-            $parameters['idCine'] =  $room->getIdCine();
-
-            try { 
-            $this->connection = Connection::GetInstance(); 
-    
-            return $this->connection->ExecuteNonQuery($sql,$parameters);
-
-
-        } catch (PDOException $ex) { 
+    {
+        try { 
+        $sql = "INSERT into rooms (nombre, capacidad, precio,cine) values ( :nombre,:capacidad,:precio,:cine)";
+        $parameters['nombre'] =  $room->getNombre();
+        $parameters['capacidad'] =  $room->getCapacidad();
+        $parameters['precio'] =  $room->getPrecio();
+        $parameters['cine'] =  $room->getCine();
+        $this->connection = Connection::GetInstance(); 
+        return $this->connection->ExecuteNonQuery($sql,$parameters);
+        } catch (Exception $ex) { 
             throw $ex; 
         } 
-    } 
+    }
 
-  
-
-       public function getRoomsXcinema($idCine)
+       public function getRoomsXcinema($cine)
        {
 
-        $sql = "SELECT * FROM  rooms WHERE idCine=".$idCine.";"; 
+        $sql = "SELECT * FROM  rooms WHERE cine=".$cine.";"; 
         $roomList=array();
 
         try 
@@ -80,164 +65,83 @@ class DaoRooms {
 
        }
 
-          public function retrieveOne($id) {
-        $showtime = null;
-
-        try
-        {
-            $parameters['id'] = $id;
-
-            $query = "SELECT * FROM showtimes WHERE id=:id";
-
-            $this->connection = Connection::getInstance();
-
-            $resultSet = $this->connection->execute($query, $parameters);
-
-            if(!empty($resultSet)) {
-                $showtime = $this->read($resultSet[0]);
-
-                $idRoom = $resultSet[0]["id_Room"];
-                $idMovie = $resultSet[0]["id_movie"];
-
-                $RoomDAO = new DaoCines();
-                $Room = $RoomDAO->getOne($idRoom);
-
-                $movieDAO = new DaoMovies();
-                //$movie = $movieDAO->retrieveOneNoCheckMovieDate($idMovie);
-
-                $showtime->setRoom($Room);
-                //$showtime->setMovie($movie);
+       public function getById($idRoom){ 
+        $room = null;
+        try { 
+            $sql = "SELECT r.idRoom,r.nombre,r.precio,r.capacidad,c.cine from rooms r innner join cines c on c.cine=r.cine where idRoom = :idRoom;"; 
+            $parameters['idRoom'] = $idRoom;
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($sql, $parameters);
+            if(!empty($resultSet)){ 
+                 $room = $this->parseToObject($resultSet);   
             }
-        }
-        catch (PDOException $e)
-        {
-            throw $e;
-        }
-        return $showtime;
+        } catch (Exception $ex) { 
+            throw $ex; 
+        } 
+        return $room;
     }
-
     
-    
-    public function mapeo($value) 
-    { 
-        
-        $value = is_array($value) ? $value : []; 
-        
-        $resp = array_map( 
-            function ($p) { 
-                
-                $objet =  new Room( 
-                    $p[DaoRooms::TABLE_IDROOM], 
-                    $p[DaoRooms::TABLE_NOMBRE], 
-                    $p[DaoRooms::TABLE_CAPACIDAD], 
-                    $p[DaoRooms::TABLE_PRECIO], 
-                    $p[DaoRooms::TABLE_IDCINE]
-                ); 
-                
-                return $objet; 
-            }, 
-            $value 
-        ); 
-        return count($resp) > 1 ? $resp : $resp['0']; 
+    public function mapeo($row){
+        $room = new Room();
+        $room->setId($row["idRoom"]);
+        $room->setNombre($row["nombre"]);
+        $room->setPrecio($row["precio"]);
+        $room->setCapacidad($row["capacidad"]);
+        $room->setCine($row["cine"]);
+        return $room;
     }
-    /* 
-    public function modify($room){
-        foreach($this->room as $i => $c){
-            if($r->getId()== $room->getId()){
-                $this->room_list[$i] = $room;
-                $this->SaveData();
-                return true;
-            }
-        }
-        return false;
-    }*/
     
-    public function Update($room){
-        $sql = "UPDATE " . DaoRooms::TABLE_NAME . "(" . DaoRooms::TABLE_NOMBRE . "," . DaoRooms::TABLE_CAPACIDAD . "," . DaoRooms::TABLE_PRECIO . "," . DaoRooms::TABLE_IDCINE . ")";
-        
-        
-        $parameters[DaoRooms::TABLE_NOMBRE] = $room->getNombre(); 
-        $parameters[DaoRooms::TABLE_CAPACIDAD] = $room->getCapacidad(); 
-        $parameters[DaoRooms::TABLE_PRECIO] = $room->getPrecio(); 
-        $parameters[DaoRooms::TABLE_IDCINE] = $room->getIdCine(); 
-        
+    public function Update($idRoom){
+        $sql = "UPDATE rooms (:nombre,:capacidad,:precio,:cine) where idRoom=:idRoom";
         try{
+        $parameters['nombre'] = $room->getNombre(); 
+        $parameters['capacidad'] = $room->getCapacidad(); 
+        $parameters['precio'] = $room->getPrecio(); 
+        $parameters['cine'] = $room->getCine(); 
             $this->connection = Connection::GetInstance(); 
             return $this->connection->ExecuteNonQuery($sql, $parameters); 
-        } catch (PDOException $ex) { 
+        } catch (Exception $ex) { 
             throw $ex; 
         }
     }
     
-    
-    public function getAll(){
-        $sql = " SELECT * FROM " . DaoRooms::TABLE_NAME.";";
-        
+    public function GetAll(){
+        $sql = "SELECT from r.idRooms, r.nombre, r.precio, r.capacidad, c.cine from rooms r inner join cines c on c.cine=r.cine ";
         $roomList = array();
-        
         try{
             $this->connection = Connection::GetInstance();
-            
             $resultSet = $this->connection->Execute($sql);
-            
-            /*if(!empty($resultSet) && $object instanceof Room){ 
-                
-                foreach ($resultSet as $value) {
-                    $aux = $this->mapeo($value);
+            if(!empty($resultSet) && $object instanceof Room){ 
+ 
+                foreach ($resultSet as $row) {
+                    $aux = $this->parseToObject($row);
                     array_push($roomList,$aux);
                 }    
             }
             else{
                 return false;
-            }*/
-            
-            foreach($resultSet as $value)
-            {
-                foreach ($value as $valueArray)
-                array_push($roomList,$this->parseToObject($valueArray));
             }
-            return $roomList;
-            
-        } catch (PDOException $ex) { 
+        } catch (Exception $ex) { 
             throw $ex; 
         } 
         return $roomList;
-        
     }
 
-    public function getById($id){ 
-        
-        $room=new room();
-        try { 
-            $sql = "SELECT * FROM  rooms WHERE " . DaoRooms::TABLE_IDROOM . " =" . $id . ";"; 
-
-            
-            
-            $this->connection = Connection::GetInstance();
- 
-            $resultSet = $this->connection->Execute($sql);
-
-            
- 
-            /*if(!empty($resultSet) && $object instanceof Room){ 
- 
-                 return $this->mapeo($resultSet);   
-            }
-            else{
-                return false;
-            }*/
-            foreach($resultSet as $value)
-            {
-
-                $room=$this->parseToObject($value);
-            }
-            return $room;
- 
-        } catch (PDOException $ex) { 
-            throw $ex; 
-        } 
-       } 
-
+    public function remove($idRoom)
+	{
+        $value =0;
+        try
+        {
+            $parameters['id'] = $id;
+            $sql = "DELETE from rooms where idRoom=:idRoom";  
+             $this->connection=Connection::getInstance();
+             $value = $this->connection->ExecuteNonQuery($sql,$parameters);
+        }
+            catch(Exception $ex){
+            throw $ex;
+        }
+        return $value;
+    }
 
     public function parseToObject($value)
     {   
@@ -250,32 +154,30 @@ class DaoRooms {
            $room->setCapacidad($value['capacidad']);
            $room->setPrecio($value['precio']);
            $room->setNombre($value['nombre']);
-           $room->setCine($cinemaDao->getById($value['idCine']));
+           $room->setCine($cinemaDao->getById($value['cine']));
    
        
 
         return $room;
     }
     
-    public function getArrayByIdCine($idCine){
-        
+    public function getArrayByCine($cine){
         $roomList=array();
-        
         try{
-            $sql="SELECT * from rooms where" .  DaoRooms::TABLE_IDCINE . " = '" . $idCine . "';";
+            $sql="SELECT * from rooms where cine = :cine ;";
             $this->connection=Connection::getInstance();
             $resultSet=$this->connection->execute($sql);
             foreach ($resultSet as $room) {
-                $roomList[]=new Room($room["id"],
-                $room["nombre"],
-                $room["capacidad"],
-                $room["precio"],
-                    $room["idCine"]);
+                $roomList[]=new Room($room["idRoom"],
+                    $room["nombre"],
+                    $room["capacidad"],
+                    $room["precio"],
+                    $room["cine"]);
             }
-            return $roomList;
-        }catch(PDOException $ex){
+        }catch(Exception $ex){
             throw $ex;
         }
+        return $roomList;
     }
        
 

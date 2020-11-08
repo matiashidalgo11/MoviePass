@@ -5,13 +5,13 @@
         private $idCine;
         private $nombre;
         private $direccion;
+        private $room;
         
-
-        public function __construct( $nombre = "",  $direccion = "",$idCine=""){
+        public function __construct( $nombre = "",  $direccion = "",$room=""){
             
             $this->nombre = $nombre;
             $this->direccion = $direccion;
-            $this->idCine=$idCine;
+            $this->room=$room;
             
         }
 
@@ -51,5 +51,16 @@
                 return $this;
         }
 
+        public function getRoom()
+        {
+                return $this->room;
+        }
+
+        public function setRoom($room)
+        {
+                $this->room = $room;
+
+                return $this;
+        }
 
 }

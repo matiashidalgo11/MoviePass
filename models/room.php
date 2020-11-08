@@ -10,8 +10,7 @@ class Room{
     private $capacidad;
     private $cine;
 
-    public function __construct($nombre = '', $precio= '', $capacidad= '', $idCine = '',$idRoom="",$cine=""){
-		$this->idRoom = $idRoom;
+    public function __construct($nombre = '', $precio= '', $capacidad= '', $cine=""){
         $this->nombre = $nombre;
         $this->precio = $precio;
 		$this->capacidad = $capacidad;
@@ -52,11 +51,11 @@ class Room{
 	}
 
 	public function getCine(){
-		return $this->idCine;
+		return $this->cine;
 	}
 
-	public function setCine($idCine){
-		$this->idCine = $idCine;
+	public function setCine($cine){
+		$this->cine = $cine;
 	}
 
 }

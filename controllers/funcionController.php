@@ -3,8 +3,7 @@
     use daos\DaoFunciones as funcionDao;
     use daos\DaoMovies as movieDao;
     use daos\DaoRooms as roomDao;
-    use models\Funcion as Funcion;
-    
+    use models\Funcion as funcion;
     
 
     class funcionController

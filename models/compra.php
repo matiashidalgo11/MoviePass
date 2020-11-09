@@ -10,6 +10,7 @@ class compra
     private $totalTickets;
     private $descuento;
     private $cuenta;
+    
     private $tickets=array();
 
     public function __construct($fecha="",$totalTickets="",$descuento="",$cuenta="")

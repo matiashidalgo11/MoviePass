@@ -26,7 +26,7 @@ class DaoCompra
 
     public function Add($compra)
     {
-        $sql= "INSERT INTO compras (totalTickets,fecha,descuento,idCuenta) VALUES (totalTickets,fecha,descuento,idCuenta);";
+        $sql= "INSERT INTO compras (totalTickets,fecha,descuento,idCuenta) VALUES (:totalTickets,:fecha,:descuento,:idCuenta);";
 
         $cuenta=$compra->getCuenta();
 

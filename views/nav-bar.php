@@ -1,3 +1,6 @@
+
+
+
 <div class='container-fluid'>
 
 <nav id="menuNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -39,7 +42,7 @@
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
             <?php foreach($listGenres as $genre){ ?>
 
-            <form action="<?= FRONT_ROOT ?>movies/listMovieByGenre" method="post">
+            <form action="<?php echo FRONT_ROOT ?>movies/listMovieByGenre" method="post">
 
               <input type="hidden" value="<?= $genre->getId();?>" name="idGenre">
 
@@ -76,5 +79,8 @@
   </div>
 </nav>
 </div>
+
+
+
 
 

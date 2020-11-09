@@ -78,7 +78,7 @@ class DaoFunciones {
         {
         
 
-            $sql = "SELECT * FROM funciones WHERE id=".$id.";";
+            $sql = "SELECT * FROM funciones WHERE idFuncion=".$id.";";
 
             $this->connection = Connection::getInstance();
 
@@ -87,8 +87,11 @@ class DaoFunciones {
             /*if(!empty($resultSet)) {
                 return $this->mapeo($resultSet);
             }*/
+            foreach ($resultSet as $value)
+            {
 
-          $funcion = $this->parseToObject($resultSet);
+                $funcion = $this->parseToObject($value);
+            }
 
           return $funcion;
 

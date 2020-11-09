@@ -63,34 +63,9 @@ class DaoFunciones {
         catch(Exception $ex){
             throw $ex;
         }
-    }*/
-
-    public function getAllMovies(){
-        $moviesList=array();
-        try{
-            $query="SELECT m.* from projections p
-                    inner join movies m on p.id_movie=m.id_movie
-                    where concat(p.proj_date,' ',p.proj_time) > now()
-                    group by m.id_movie";
-            $this->connection=Connection::getInstance();
-            $results=$this->connection->execute($query);
-            foreach ($results as $row) {
-                $movie=new Movie($row["title"],
-                    $row["id_movie"],
-                    $row["synopsis"],
-                    $row["poster_url"],
-                    $row["video_url"],
-                    $row["length"],
-                    [],
-                    $row["release_date"]);
-                $movie->setGenres($this->genrexM->getByMovieId($row["id_movie"]));
-                $moviesList[]=$movie;
-            }
-            return $moviesList;          
-        }catch(PDOException $ex){
-            throw $ex;
-        }
+        return $value;
     }
+    
 
     public function GetAll() {
         $funcionesList=array();

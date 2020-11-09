@@ -89,7 +89,6 @@ create table IF NOT EXISTS funciones(
     dayFuncion varchar(30) not null,
     hour TIME(4),
 	primary key (idFuncion),
-    soldTickets int,
     constraint fk_idMovief foreign key (idMovie) references movies(idMovie),
     constraint fk_idRoom foreign key (idRoom) references rooms(idRoom)
 
@@ -116,17 +115,6 @@ create table IF NOT EXISTS tickets(
     constraint fk_idFuncionT foreign key (idFuncion) references funciones(idFuncion)
 );
 #drop table tickets;
-create table IF NOT EXISTS compras(
-	idCompra int not null auto_increment,
-    fecha date not null,
-    idFuncion int,
-    totalTickets double not null,
-    descuento double not null,
-    idCuenta int not null,
-    codigoPago varchar(100),
-    constraint pk_Compras primary key (idCompra),
-    constraint fk_idCuentaC foreign key (idCuenta) references cuentas(idCuenta),
-    constraint fk_idFuncionC foreign key (idFuncion) references funciones (idFuncion)
 
 create table IF NOT EXISTS pagos(
     idPago int NOT null auto_increment,

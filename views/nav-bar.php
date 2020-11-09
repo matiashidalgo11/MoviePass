@@ -55,10 +55,35 @@
       </li>
       
 
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-      </li>
-      
+          <li class="nav-item">
+            <a class="nav-link" href="<?= FRONT_ROOT ?>MoviesController/listMovies">Funciones</a>
+          </li>
+
+          
+
+        <?php } }?>
+
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Generos
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <?php foreach ($listGenres as $genre) { ?>
+
+                <form action="<?php echo FRONT_ROOT ?>movies/listMovieByGenre" method="post"> 
+
+                  <input type="hidden" value="<?= $genre->getId(); ?>" name="idGenre">
+
+                  <button class="dropdown-item" type="submit"> <?= $genre->getName(); ?> </button>
+
+                </form>
+
+              <?php } ?>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="#">Todo</a>
+            </div>
+          </li>
+          
       </ul>
    
       <form class="form-inline my-2 my-lg-0 ">

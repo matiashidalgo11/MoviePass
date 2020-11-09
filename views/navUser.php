@@ -1,5 +1,3 @@
-
-
 <div class='container-fluid'>
 
 <nav id="menuNav" class="navbar navbar-expand-lg navbar-dark bg-dark">

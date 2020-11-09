@@ -5,7 +5,6 @@ namespace daos;
 use \Exception as Exception;
 use daos\Connection as Connection;
 use models\Genre as Genre;
-use PDOException;
 
 class DaoGenres implements IDao
 {
@@ -18,11 +17,17 @@ class DaoGenres implements IDao
     const TABLE_IDGENRE = "idGenero";
     const TABLE_NOMBRE = "nombre";
 
-    public function __construct(){
+    private function __construct(){
         
     }
 
+    public static function GetInstance()
+    {
+        if (self::$instance == null)
+            self::$instance = new DaoGenres();
 
+        return self::$instance;
+    }
 
     public function delete($dato)
     {
@@ -178,46 +183,4 @@ class DaoGenres implements IDao
 
         return $resp;
     }
-
-
-    public function downloadData()
-    {
-        
-
-        $jsonContent = file_get_contents("https://api.themoviedb.org/3/genre/movie/list?api_key=".KEY_TMDB."&language=en-US",true);
-
-        $arrayToDecode=($jsonContent) ? json_decode($jsonContent,true) : array();
-
-
-        
-        foreach ($arrayToDecode  as $key=> $valueArray)
-        {   
-            
-            foreach($valueArray as $key => $gender)
-            {
-                
-                $sql= "INSERT INTO generos (idGenero,nombre) values(:idGenero,:nombre)";
-                $parameters['idGenero']=$gender['id'];
-                $parameters['nombre']=$gender['name'];
-
-                try
-                {
-                    $this->connection=Connection::GetInstance();
-                    $this->connection->ExecuteNonQuery($sql,$parameters);
-                }
-                catch(PDOException $e)
-                {   
-                    throw $e;
-                }
-            }
-
-        }
-
-        
-    }
-
-
 }
-
-
-?>

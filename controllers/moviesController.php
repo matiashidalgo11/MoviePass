@@ -45,7 +45,6 @@ class MoviesController {
             $moviesList = $this->movieDAO->getAll();
 
            
-
            /* $daoGenres = DaoGenres::GetInstance();
             $listGenres = $daoGenres->getAll();*/
 

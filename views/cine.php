@@ -5,6 +5,8 @@
 <?php
 require_once(VIEWS_PATH."navUser.php");
 require_once(VIEWS_PATH."header.php");
+
+
 ?>
 
 

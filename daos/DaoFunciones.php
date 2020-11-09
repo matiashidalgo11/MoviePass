@@ -33,13 +33,14 @@ class DaoFunciones {
     {
         try
         {
-            $sql = "INSERT INTO funciones (idMovie,idRoom,dayFuncion,hour) VALUES (:idMovie,:idRoom,:dayFuncion,:hour);";
+            $sql = "INSERT INTO funciones (idMovie,idRoom,dayFuncion,hour,soldTickets) VALUES (:idMovie,:idRoom,:dayFuncion,:hour,:soldTickets);";
             $room=$funcion->getRoom();
             $movie=$funcion->getMovie();
             $parameters["idMovie"] =$movie->getId();
             $parameters["idRoom"] =$room->getId();
             $parameters["dayFuncion"]=$funcion->getDate();
             $parameters["hour"]=$funcion->getHour();
+            $parameters['soldTickets']=0;
             $this->connection = Connection::getInstance();
             $this->connection->executeNonQuery($sql, $parameters);
         }
@@ -214,8 +215,48 @@ class DaoFunciones {
         $funcion->setHour($value['hour']);
         $funcion->setRoom($roomDao->getById($value['idRoom']));
         $funcion->setMovie($movieDao->getById($value['idMovie']));
+        $funcion->setSoldTickets($value['soldTickets']);
 
         return $funcion;
+    }
+
+    public function checkSeats($idFuncion,$totalTicket)
+    {
+        $funcion=$this->GetById($idFuncion);
+
+        if($funcion->getSoldTickets()+$totalTicket <= $funcion->getRoom()->getCapacidad())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function upDateSale($idFuncion,$totalTicket)
+    {
+        $funcion=$this->GetById($idFuncion);
+
+        $ventas=$funcion->getSoldTickets()+$totalTicket;
+
+        $parameters['idFuncion']=$idFuncion;
+        $parameters['soldTickets']=$ventas;
+
+        $sql="UPDATE funciones SET soldTickets=:soldTickets WHERE idFuncion=:idFuncion;";
+
+       
+
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($sql,$parameters);
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+
+
     }
 
 

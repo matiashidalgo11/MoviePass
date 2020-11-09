@@ -3,29 +3,33 @@
     use daos\DaoCuentas as DaoCuentas;
     use models\Cuenta as Cuenta;
     use models\Profile as Profile;
+use PDOException;
 
 class CuentasController
     {
 
-        
         public function verificar($email="",$password=""){
             
             $DaoCuentas = DaoCuentas::GetInstance();
             
-            $DaoCuentas->verificar($email,$password);
+            $validator = $DaoCuentas->verificar($email,$password);
             
-            if(isset($_SESSION['cuenta']))
+            if(!isset($validator) && isset($_SESSION['cuenta']))
             {
-            require_once "views/template.php";
+            include ROOT . VIEWS_PATH . "nav-bar.php";
             }
             else {
+
+                if($validator == 1) $emailValidator = "is-invalid";
+                else if ($validator == 2) $passValidator = "is-invalid"; $emailIngresado = $email;
+
             require_once "views/login.php";
             }
         }
 
         public function registrarse(){
 
-            require_once "views/register.php";
+            include "views/register.php";
         }
 
         public function crear($email, $password, $rPassword , $dni ,$nombre, $apellido, $telefono, $direccion){
@@ -38,16 +42,38 @@ class CuentasController
 
                 $cuenta->setProfile($profile);
 
-                $DaoCuentas = DaoCuentas::GetInstance();
+                /* try{
+                    $DaoCuentas = DaoCuentas::GetInstance();
 
-                $DaoCuentas->add($cuenta);
+                    $DaoCuentas->add($cuenta);
 
-                require_once VIEWS_PATH . "login.php";
+                }catch (PDOException $p){
+                    if(strpos($p, "SQLSTATE[23000]")) {
+                        echo "Accion para la exception";
+                    }
+                } */
+
+
+                include VIEWS_PATH . "login.php";
             }else {
+
+                $passValidator = "is-invalid";
                 
-                require_once "views/register.php";
+                include "views/register.php";
             }
             
+        }
+
+        public function viewPerfil(){
+
+            if(isset($_SESSION['cuenta']))
+            {
+            include ROOT . VIEWS_PATH . "nav-bar.php";
+            include ROOT . VIEWS_PATH . "view-profile.php";
+            }
+            else {
+            require_once "views/login.php";
+            }
         }
 
 

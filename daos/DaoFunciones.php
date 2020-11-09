@@ -18,7 +18,7 @@ class DaoFunciones {
 
     public function __construct() 
     {
-        $movieDao = new daoMovie();
+        $movieDao = DaoMovies::GetInstance();
     }
 
     public function Add($funcion)
@@ -63,7 +63,7 @@ class DaoFunciones {
         catch(Exception $ex){
             throw $ex;
         }
-    }*/
+    }
 
     public function getAllMovies(){
         $moviesList=array();

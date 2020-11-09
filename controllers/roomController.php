@@ -1,46 +1,26 @@
 <?php
 namespace controllers;
-use daos\DaoRooms as roomDao;
-use daos\DaoCine as cineDao;
+use daos\DaoRooms as DaoRoom;
+use models\room as Room;
 
 class RoomController{
-    private $roomDao;
-    private $cineDao;
+    private $DaoRoom;
 
     public function __construct(){
-        $this->roomDao = new DaoRooms();
-        $this->cineDao = new DaoCines();
+        $this->DaoRoom = new DaoRoom();
     }
 
     public function Add($cine="",$nombre="",$capacidad="",$precio=""){
         $room = new Room($cine,$nombre,$capacidad,$precio);
-        $this->roomDao->Add($room);
+        $this->DaoRoom->Add($room);
     }
 
-    public function getById($idRoom){
-        return $this->roomDao->getById($idRoom);
+    public function getById($id){
+        return $this->DaoRoom->getById($id);
     }
 
-    public function getArrayByCinemaId($idCine){
-        return $this->roomDao->getArrayByCinemaId($idCine);
-    }
-
-    public function remove($idRoom){
-        $this->roomDao->remove($idRoom);
-    } 
-
-    public function GetAll(){
-        return $this->roomDao->GetAll();
-    }
-/*
-    public function showList(){
-        $arrayRoom = $this->roomDao->GetAll();
-        require_once(VIEWS_PATH."list_room.php");
-    }*/
-
-    public function showAdd(){
-        $arrayCine = $this->cineDao->GetAll();
-        require_once(VIEWS_PATH."addRoom.php");
+    public function getArrayByCinemaId($cinemaId){
+        return $this->roomDao->getArrayByCinemaId($cinemaId);
     }
 
     public function showList($idCine)

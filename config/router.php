@@ -7,7 +7,7 @@
     {
         public static function Route(Request $request)
         {
-            $controllerName = $request->getcontroller();
+            $controllerName = $request->getcontroller() . 'Controller';
 
            
             $methodName = $request->getmethod();

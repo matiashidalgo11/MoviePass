@@ -13,12 +13,13 @@ class MoviesController {
 
     private $movieDAO;
     private $genderDAO;
-
+    private $genderMovieDAO;
 
         public function __construct()
         {
-            $this->movieDAO= DaoMovies::GetInstance();
-            $this->genderDAO = DaoGenres::GetInstance();
+            $this->movieDAO=new DaoMovies();
+            $this->genderDAO = new DaoGenres();
+            $this->genderMovieDAO= new DaogenderMovie();
 
         }
    
@@ -44,10 +45,13 @@ class MoviesController {
             $moviesList = $this->movieDAO->getAll();
 
            
+           /* $daoGenres = DaoGenres::GetInstance();
+            $listGenres = $daoGenres->getAll();*/
 
-           $daoGenres = DaoGenres::GetInstance();
-            $listGenres = $daoGenres->getAll();
+            $daoFunciones= new DaoFunciones();
+            $funcionesList= $daoFunciones->GetAll();
 
+    
 
 
             include(VIEWS_PATH . "nav-bar.php");
@@ -58,10 +62,10 @@ class MoviesController {
 
             
             $genre = $this->genderDAO->getById($idGenre);
-
             $listGenres = $this->genderDAO->getAll();
+
             
-            $moviesList = $this->movieDAO->genreMovies($genre);
+            $moviesList = $this->daoMovies->genreMovies($genre);
             
             include(ROOT . VIEWS_PATH . "nav-bar.php");
             include(ROOT . 'views/list_movies.php');

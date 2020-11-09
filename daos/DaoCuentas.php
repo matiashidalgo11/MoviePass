@@ -100,13 +100,9 @@ class DaoCuentas implements IDao
 
             $array = $this->mapeo($resultSet);
 
-            $object = !empty($array) ? $array[0] : [];
+            $array = !empty($array) ? $array[0] : [];
 
-            $daoPerfil = DaoProfiles::GetInstance();
-
-            $object->setProfile($daoPerfil->getByIdCuenta($id));
-
-            return $object;
+            return $array;
 
         } catch (Exception $ex) {
             throw $ex;
@@ -125,14 +121,9 @@ class DaoCuentas implements IDao
 
             $array = $this->mapeo($resultSet);
 
-            $object = !empty($array) ? $array[0] : [];
+            $array = !empty($array) ? $array[0] : [];
 
-            $daoPerfil = DaoProfiles::GetInstance();
-
-            $object->setProfile($daoPerfil->getByIdCuenta($object->getId()));
-
-            return $object;
-
+            return $array;
 
         } catch (Exception $ex) {
             throw $ex;
@@ -184,8 +175,8 @@ class DaoCuentas implements IDao
             if ($cuenta != false) {
                 if ($cuenta->getPassword() == $password) {
                     $_SESSION['cuenta'] = $cuenta;
-                }else return 2;
+                }
             }
-        }else return 1;
+        }
     }
 }

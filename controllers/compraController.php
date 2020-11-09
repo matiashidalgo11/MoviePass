@@ -3,32 +3,55 @@
 namespace controllers;
 
 use daos\DaoCompra as DaoCompra;
-
+use daos\DaoFunciones as DaoFunciones;
+use daos\DaoPagos as DaoPagos;
+use daos\DaoCuentas as DaoCuentas;
 use models\compra as Compra;
+use models\pago as Pago;
 use PDOException;
 
 class compraController
 {
 
     private $compraDao;
+    private $DaoFuncion;
+    private $DaoCuenta;
+    private $DaoPagos;
 
     public function __construct()
     {
         $this->compraDao= new DaoCompra();
+        $this->DaoFuncion= new DaoFunciones();
+        $this->DaoCuenta= DaoCuentas::GetInstance();
+        $this->DaoPagos=new DaoPagos();
     }
 
 
-    public function add($fecha,$totalTickets,$descuento,$cuenta)
+    public function add($idFuncion,$totalTickets,$descuento)
     {
-        $compra= new Compra($fecha,$totalTickets,$descuento,$cuenta);
+       
+        $funcion=$this->DaoFuncion->GetById($idFuncion);
+        $cuenta=$this->DaoCuenta->getById($_SESSION['cuenta']->getId());
+        $codigoPago= $_SESSION['cuenta']->getId()."/".$idFuncion."/".$funcion->getDate()."/".$totalTickets;
+        $compra= new Compra($funcion->getDate(),$funcion,$totalTickets,$descuento,$cuenta,$codigoPago);
 
-        try{
-
-            $this->compraDao->Add($compra);
-        }
-        catch(PDOException $e)
+        if($this->DaoFuncion->checkSeats($idFuncion,$totalTickets))
         {
-            echo $e->getMessage();
+                 try{
+                         $this->compraDao->Add($compra);
+                         $this->DaoFuncion->upDateSale($idFuncion,$totalTickets);
+                         $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
+                          require_once(VIEWS_PATH."template.php");
+                    }
+                     catch(PDOException $e)
+                    {
+                      echo $e->getMessage();
+                     }
+        }
+            
+        else
+        {
+            $this->buyMovie($idFuncion);
         }
 
     }
@@ -46,6 +69,13 @@ class compraController
         {
             echo $e->getMessage();
         }
+    }
+
+    public function buyMovie($idFuncion)
+    {
+        $funcion=$this->DaoFuncion->GetById($idFuncion);
+
+        require_once(VIEWS_PATH."buyMovie.php");
     }
 
 

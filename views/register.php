@@ -14,9 +14,6 @@
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">Email</label>
                         <input type="email" class="form-control" id="inputEmail4" name="email">
-                        <div class="invalid-feedback">
-                        el email ya esta utilizado
-                        </div>
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Password</label>

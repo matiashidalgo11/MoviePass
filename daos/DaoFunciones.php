@@ -58,29 +58,12 @@ class DaoFunciones {
                 $funcion->setRoom($room);
                 $funcion->setMovie($movie);
             }
+            return $funcion_list;
         }
-        catch (PDOException $e)
-        {
-            throw $e;
-        }
-        return $funcion;
-    }
-
-    public function remove ($id)
-    {
-        $value =0;
-        try
-        {
-            $parameters['id'] = $id;
-            $sql = "DELETE from funciones where id=:id";  
-             $this->connection=Connection::getInstance();
-             $value = $this->connection->ExecuteNonQuery($sql,$parameters);
-        }
-            catch(Exception $ex){
+        catch(Exception $ex){
             throw $ex;
         }
-        return $value;
-    }
+    }*/
 
     public function getAllMovies(){
         $moviesList=array();
@@ -245,7 +228,6 @@ class DaoFunciones {
         {
             throw $e;
         }
-        return funcion_list;
     }
     
 
@@ -263,6 +245,45 @@ class DaoFunciones {
             throw $e;
         }
         return $value;
+    }
+
+    public function checkSeats($idFuncion,$totalTicket)
+    {
+        $funcion=$this->GetById($idFuncion);
+
+        if($funcion->getSoldTickets()+$totalTicket <= $funcion->getRoom()->getCapacidad())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public function upDateSale($idFuncion,$totalTicket)
+    {
+        $funcion=$this->GetById($idFuncion);
+
+        $ventas=$funcion->getSoldTickets()+$totalTicket;
+
+        $parameters['idFuncion']=$idFuncion;
+        $parameters['soldTickets']=$ventas;
+
+        $sql="UPDATE funciones SET soldTickets=:soldTickets WHERE idFuncion=:idFuncion;";
+
+       
+
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $this->connection->ExecuteNonQuery($sql,$parameters);
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+
+
     }
 
 

@@ -26,15 +26,16 @@ class DaoCompra
 
     public function Add($compra)
     {
-        $sql= "INSERT INTO compras (totalTickets,fecha,descuento,idCuenta) VALUES (totalTickets,fecha,descuento,idCuenta);";
-
-        $cuenta=$compra->getCuenta();
+        $sql= "INSERT INTO compras (totalTickets,fecha,descuento,idCuenta,idFuncion,codigoPago) VALUES (:totalTickets,:fecha,:descuento,:idCuenta,:idFuncion,:codigoPago);";
 
         
+
         $parameters['totalTickets']=$compra->getTotalTickets();
         $parameters['fecha']=$compra->getFecha();
         $parameters['descuento']=$compra->getDescuento();
-        $parameters['idCuenta']=$cuenta->getId();
+        $parameters['idCuenta']=$compra->getCuenta()->getId();
+        $parameters['idFuncion']=$compra->getFuncion()->getId();
+        $parameters['codigoPago']=$compra->getCodigoPago();
 
 
         try
@@ -53,10 +54,11 @@ class DaoCompra
     public function parseToObject($value)
     {
         $daoCuenta = new DaoCuentas();
+        $daoFuncion = new DaoFunciones();
 
         $cuenta= $daoCuenta->getById($value[DaoCompra::TABLE_IDCUENTA]);
-
-        $compra = new Compra($value[DaoCompra::TABLE_FECHA],$value[DaoCompra::TABLE_TOTALTICKETS],$value[DaoCompra::TABLE_DESCUENTO],$cuenta);
+        $funcion=$daoFuncion->GetById($value['idFuncion']);
+        $compra = new Compra($value[DaoCompra::TABLE_FECHA],$funcion,$value[DaoCompra::TABLE_TOTALTICKETS],$value[DaoCompra::TABLE_DESCUENTO],$cuenta,$value['codigoPago']);
         $compra->setIdCompra($value[DaoCompra::TABLE_IDCOMPRA]);
 
         return $compra;

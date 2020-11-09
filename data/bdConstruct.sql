@@ -1,6 +1,6 @@
-create database IF NOT EXISTS MoviePass5;
+create database IF NOT EXISTS MoviePass;
 
-use MoviePass5;
+use MoviePass;
 
 #drop database  moviepass5;
 
@@ -56,8 +56,6 @@ primary key(idMovie , idGenero),
 constraint fk_idMovie foreign key (idMovie) references movies(idMovie),
 constraint fk_idGenero foreign key (idGenero) references generos(idGenero)
 );
-
-
 #drop table IF  moviesxgeneros;
 #drop table movies;
 
@@ -65,7 +63,7 @@ create table IF NOT EXISTS cines(
     idCine int not null auto_increment,
     nombre varchar(30) not null,
     direccion varchar(30) not null,
-    constraint pkCine primary key (idCine)
+    primary key (idCine)
 
 );
 
@@ -90,11 +88,53 @@ create table IF NOT EXISTS funciones(
     idRoom int ,
     dayFuncion varchar(30) not null,
     hour TIME(4),
-	constraint pk_idFuncion primary key (idFuncion),
+	primary key (idFuncion),
+    soldTickets int,
     constraint fk_idMovief foreign key (idMovie) references movies(idMovie),
     constraint fk_idRoom foreign key (idRoom) references rooms(idRoom)
 
 );
 #drop table funciones;
 
+create table IF NOT EXISTS compras(
+	idCompra int not null auto_increment,
+    fecha date not null,
+    totalTickets double not null,
+    descuento double not null,
+    idCuenta int not null,
+    primary key (idCompra),
+    constraint fk_idCuentaC foreign key (idCuenta) references cuentas(idCuenta)
+);
+#drop table compras;
 
+create table IF NOT EXISTS tickets(
+	idTicket int not null auto_increment,
+    idCompra int not null,
+    idFuncion int not null,
+    primary key (idTicket),
+    constraint fk_idCompraT foreign key (idCompra) references compras(idCompra),
+    constraint fk_idFuncionT foreign key (idFuncion) references funciones(idFuncion)
+);
+#drop table tickets;
+create table IF NOT EXISTS compras(
+	idCompra int not null auto_increment,
+    fecha date not null,
+    idFuncion int,
+    totalTickets double not null,
+    descuento double not null,
+    idCuenta int not null,
+    codigoPago varchar(100),
+    constraint pk_Compras primary key (idCompra),
+    constraint fk_idCuentaC foreign key (idCuenta) references cuentas(idCuenta),
+    constraint fk_idFuncionC foreign key (idFuncion) references funciones (idFuncion)
+
+create table IF NOT EXISTS pagos(
+    idPago int NOT null auto_increment,
+    codigoPago varchar(100),
+    total int,
+    constraint pk_Pagos primary key (idPago)
+    
+
+
+);
+#drop table pagos;

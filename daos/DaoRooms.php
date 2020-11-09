@@ -16,6 +16,12 @@ use models\Cine;
 class DaoRooms {
 
     private $connection;
+    const TABLE_NAME = "room";
+    const TABLE_IDROOM = "idRoom";
+    const TABLE_NOMBRE = "nombre";
+    const TABLE_CAPACIDAD ="capacidad";
+    const TABLE_PRECIO = "precio";
+    const TABLE_IDCINE = "idCine";
 
     public function __construct(){
               
@@ -177,7 +183,6 @@ class DaoRooms {
         }catch(Exception $ex){
             throw $ex;
         }
-        return $roomList;
     }
        
 

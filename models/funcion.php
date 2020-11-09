@@ -9,6 +9,7 @@ class Funcion
     private $room;
     private $date;
     private $hour;
+    private $soldTickets;
 /*
     public function __construct($id, $movie, $room, $date, $hour) {
         $this->id = $id;
@@ -59,6 +60,16 @@ class Funcion
 
     public function setHour($hour){
         $this->hour = $hour;
+    }
+
+    public function getSoldTickets()
+    {
+        return $this->soldTickets;
+    }
+
+    public function setSoldTickets($soldTickets)
+    {
+        $this->soldTickets=$soldTickets;
     }
 
     

@@ -1,7 +1,7 @@
 <?php namespace controllers;
 
     use daos\DaoCines as cineDao;
-    use models\Cine as cine;
+    use models\Cine as Cine;
 
     class CineController
     {
@@ -23,19 +23,27 @@
 
         public function GetAll(){
             return  $this->cineDao->GetAll();
+            
         }
 
         public function GetById($idCine){
             return $this->cineDao->GetById($idCine);
+            
         }
 
-        public function Update($idCine){
-            $cine = $this->cineDao->GetById($idCine);
-            require_once(VIEWS_PATH."updateCine.php");
+        public function Update($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada){
+            
+            $cine = new Cine($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada);
+
+            $this->cineDao->Update($cine);
+
+            $this->GetById($cine->idCine);
         }
 
-        public function remove($idCine){
-            $this->cineDao->remove($idCine);
+        public function Delete($id){
+            $this->cineDao->Delete($id);
+            $this->GetAll();
+
         }
 
         public function showList(){

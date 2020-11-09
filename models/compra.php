@@ -7,18 +7,23 @@ class compra
 {
     private $idCompra;
     private $fecha;
+    private $funcion;
     private $totalTickets;
     private $descuento;
     private $cuenta;
+    private $codigoPago;
+    
     private $tickets=array();
 
-    public function __construct($fecha="",$totalTickets="",$descuento="",$cuenta="")
+    public function __construct($fecha="",$funcion="",$totalTickets="",$descuento="",$cuenta="",$codigoPago="")
     {
         
         $this->fecha=$fecha;
+        $this->funcion=$funcion;
         $this->totalTickets=$totalTickets;
         $this->descuento=$descuento;
-        $this->user=$cuenta;
+        $this->cuenta=$cuenta;
+        $this->codigoPago=$codigoPago;
         
     }
 
@@ -86,15 +91,28 @@ class compra
 
     /**
      */
-    public function getTickets()
+    public function getFuncion()
     {
-        return $this->tickets;
+        return $this->funcion;
     }
     /**
      */
-    public function setTickets($tickets)
+    public function setFuncion($funcion)
     {
-        $this->tickets=$tickets;
+        $this->funcion=$funcion;
+    }
+
+    /**
+     */
+    public function getCodigoPago()
+    {
+        return $this->codigoPago;
+    }
+    /**
+     */
+    public function setCodigoPago($codigoPago)
+    {
+        $this->codigoPago=$codigoPago;
     }
 
 

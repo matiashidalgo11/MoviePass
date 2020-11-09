@@ -13,7 +13,27 @@
 		    </head>
 		    <body>'
 		    ; */
-		
+
+use daos\DaoFunciones as DaoFunciones;
+
+if(isset($_SESSION['cuenta']))
+		{
+			if ($_SESSION['cuenta']->getPrivilegios()==0)
+			{
+
+				require_once 'navAdm.php';
+				
+			}else if ($_SESSION['cuenta']->getPrivilegios()==2)
+			{
+				require_once "navCliente.php";
+			}
+			else if ($_SESSION['cuenta']->getPrivilegios()==1)
+			{	
+				$DaoFunciones= new DaoFunciones();
+				$funcionesList=$DaoFunciones->getAll();
+				require_once "cine.php";
+			}
+		}
 
 /* echo "</body>"; */
 ?>

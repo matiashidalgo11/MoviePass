@@ -25,8 +25,8 @@ class MoviesController {
         //Funcion que actualiza la cartelera de Movies(atributo enabled false para las peliculas que ya no esten) y los generos
         public function updateFromApi(){
             
-            $this->daoMovies->updateFromApi();
-            $moviesList = $this->daoMovies->getEnabled();
+            $this->movieDAO->updateFromApi();
+            $moviesList = $this->movieDAO->getEnabled();
 
             
             $this->genderDAO->updateFromApi();

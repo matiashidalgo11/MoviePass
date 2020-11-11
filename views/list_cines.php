@@ -12,7 +12,7 @@
                     <h2> Sucursales
                 </div>
                 <div class="col-3">
-                    <form method="get" action="<?php echo FRONT_ROOT?>cine/showAdd">
+                    <form method="get" action="<?php echo FRONT_ROOT?>CineController/showAdd">
                         <button type="submit" class="btn btn-dark">Agregar nuevo cine</button>
                     </form>
                 </div>
@@ -37,9 +37,10 @@
                         
                         <span class="h5 card-title">Direccion: <?php echo $cine->getDireccion(); ?></span></br>
                         <form class="" action="<?php echo FRONT_ROOT?>cine/remove" method="POST">
-                            <button type="submit" name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId($id) ?>">Eliminar</button>
+                            <button type="submit" name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId() ?>">Eliminar</button>
                         </form>
-                        <form action="<?php echo FRONT_ROOT?>room/showList" method="POST">
+                        <form action="<?php echo FRONT_ROOT?>RoomController/showList" method="POST">
+                            <?php var_dump($cine)?>
                             <button type="submit"  name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId(); ?>">Ver Salas</button>
                         </form>
                         </div>

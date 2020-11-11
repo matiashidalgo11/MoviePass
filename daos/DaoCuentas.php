@@ -94,8 +94,7 @@ class DaoCuentas implements IDao
 
     public function setIdFb($cuenta){
         if ($cuenta instanceof Cuenta) {
-            echo "PASO POR SETID";
-            var_dump($cuenta);
+
             try {
                 $query = "UPDATE " . DaoCuentas::TABLENAME . " SET ". DaoCuentas::TABLE_IDFB." = '". $cuenta->getIdFb() . "' WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $cuenta->getId() ." ;";
 
@@ -136,12 +135,13 @@ class DaoCuentas implements IDao
     {
         try {
 
-            $query = "SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $id;
+
+            $query = "SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $id . " ;";
 
             $this->connection = Connection::GetInstance();
 
             $resultSet = $this->connection->Execute($query);
-
+            
             $array = $this->mapeo($resultSet);
 
             $object = !empty($array) ? $array[0] : [];
@@ -149,6 +149,7 @@ class DaoCuentas implements IDao
             $daoPerfil = DaoProfiles::GetInstance();
 
             $object->setProfile($daoPerfil->getByIdCuenta($id));
+
 
             return $object;
 

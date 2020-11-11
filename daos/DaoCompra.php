@@ -4,6 +4,7 @@ namespace daos;
 
 use models\compra as Compra;
 use models\Cuenta as Cuenta;
+use PDO;
 use PDOException;
 
 class DaoCompra
@@ -51,12 +52,26 @@ class DaoCompra
 
     }
 
-    public function parseToObject($value)
+/*     public function parseToObject($value)
     {
-        $daoCuenta = new DaoCuentas();
+        $daoCuenta = DaoCuentas::GetInstance();
         $daoFuncion = new DaoFunciones();
 
         $cuenta= $daoCuenta->getById($value[DaoCompra::TABLE_IDCUENTA]);
+        $funcion=$daoFuncion->GetById($value['idFuncion']);
+        $compra = new Compra($value[DaoCompra::TABLE_FECHA],$funcion,$value[DaoCompra::TABLE_TOTALTICKETS],$value[DaoCompra::TABLE_DESCUENTO],$cuenta,$value['codigoPago']);
+        $compra->setIdCompra($value[DaoCompra::TABLE_IDCOMPRA]);
+
+        return $compra;
+    } */
+
+    public function parseToObject($value)
+    {
+
+        $daoCuenta = DaoCuentas::GetInstance();
+        $daoFuncion = new DaoFunciones();
+
+        $cuenta= $daoCuenta->getById($value['idCuenta']);
         $funcion=$daoFuncion->GetById($value['idFuncion']);
         $compra = new Compra($value[DaoCompra::TABLE_FECHA],$funcion,$value[DaoCompra::TABLE_TOTALTICKETS],$value[DaoCompra::TABLE_DESCUENTO],$cuenta,$value['codigoPago']);
         $compra->setIdCompra($value[DaoCompra::TABLE_IDCOMPRA]);
@@ -90,15 +105,17 @@ class DaoCompra
 
     public function GetById($id)
     {
-        $sql="SELECT * FROM compras WHERE id=".$id.";";
+        $sql="SELECT * FROM compras WHERE idCompra =".$id.";";
 
         try
         {
             $this->connection=Connection::GetInstance();
             $value=$this->connection->execute($sql);
 
-            
-            $compra=$this->parseToObject($value);
+            foreach ($value as $dato){
+                $compra=$this->parseToObject($dato);
+            }
+           
 
             return $compra;
         }

@@ -17,9 +17,12 @@ class CuentasController
 
         $validator = $DaoCuentas->verificar($email, $password);
 
+
         if (!isset($validator) && isset($_SESSION['cuenta'])) {
-            //vista cuando la entrada es correcta
-            include ROOT . VIEWS_PATH . "nav-bar.php";
+           
+            $statusController = new StatusController();
+            $statusController->verificar();
+
         } else {
             //Devuelve el login cuando no lo es
             if ($validator == 1) $emailValidator = "is-invalid";
@@ -142,6 +145,8 @@ class CuentasController
         unset($_SESSION['fb-userData']);
 
         unset($_SESSION['cuenta']);
+
+        session_destroy();
 
         echo "paso por cerrar sesion";
 

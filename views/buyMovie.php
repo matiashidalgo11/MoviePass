@@ -37,7 +37,7 @@ require_once(VIEWS_PATH."header.php");
 </div>
 </div>
 
-<form action="<?php echo FRONT_ROOT?>compra/add" method="POST">
+<form action="<?php echo FRONT_ROOT?>CompraController/add" method="POST">
 <table>
 <h2 class="text-light" >Comprar Tickets</h2>
         <input type="hidden" name="idFuncion" value="<?php echo $funcion->getId()?>">

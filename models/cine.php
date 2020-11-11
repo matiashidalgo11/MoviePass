@@ -7,11 +7,10 @@
         private $direccion;
         private $room;
         
-        public function __construct( $nombre = "",  $direccion = "",$room=""){
+        public function __construct( $nombre = "",  $direccion = ""){
             
             $this->nombre = $nombre;
             $this->direccion = $direccion;
-            $this->room=$room;
             
         }
 

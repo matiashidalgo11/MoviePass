@@ -16,3 +16,8 @@ define("DB_HOST", "localhost");
 define("DB_NAME", "MoviePass");
 define("DB_USER", "root");
 define("DB_PASS", "");
+
+//phpmailer  
+define("EMAIL","BoleteriaMoviePass@gmail.com"); 
+define("EMAIL_PASS","1BoleteriaMoviePass1"); 
+define("MAILER_PATH",FRONT_ROOT."PHPMailer/");

@@ -28,6 +28,9 @@ class StatusController {
                         }else if ($_SESSION['cuenta']->getPrivilegios()==1)
                         {
                             echo "Estoy logeado como usuario";
+                            $funcionDao = new funcionController();
+                            $funcionDao->listFunciones();
+
                         }
 
                     }else{

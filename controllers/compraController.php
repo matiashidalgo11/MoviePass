@@ -9,6 +9,8 @@ use daos\DaoCuentas as DaoCuentas;
 use models\compra as Compra;
 use models\pago as Pago;
 use PDOException;
+use phpmailer\email as email;
+use controllers\ticketController as ticketController;
 
 class compraController
 {
@@ -17,6 +19,7 @@ class compraController
     private $DaoFuncion;
     private $DaoCuenta;
     private $DaoPagos;
+   private $ticketController;
 
     public function __construct()
     {
@@ -24,6 +27,8 @@ class compraController
         $this->DaoFuncion= new DaoFunciones();
         $this->DaoCuenta= DaoCuentas::GetInstance();
         $this->DaoPagos=new DaoPagos();
+        $this->ticketController = new ticketController();
+        
     }
 
 
@@ -41,6 +46,7 @@ class compraController
                          $this->compraDao->Add($compra);
                          $this->DaoFuncion->upDateSale($idFuncion,$totalTickets);
                          $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
+                        $this->ticketController->add($compra,$funcion);
                           require_once(VIEWS_PATH."template.php");
                     }
                      catch(PDOException $e)

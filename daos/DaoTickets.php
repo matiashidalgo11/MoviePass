@@ -8,7 +8,7 @@ use models\compra as Compra;
 
 use daos\Connection as Connection;
 use daos\DaoCompra as DaoCompra;
-use daos\ProjectionDAO as DaoFuncion;
+use daos\DaoFunciones as DaoFuncion;
 
 use PDOException;
 
@@ -81,12 +81,12 @@ class DaoTickets
         $daoCompra=new DaoCompra();
         $daoFuncion=new DaoFuncion();
 
-        $compra=$daoCompra->GetById($value[DaoTickets::TABLE_IDCOMPRA]); /////hacer esta funcion
-        $funcion=$daoFuncion->GetById($value[DaoTickets::TABLE_IDFUNCION]);
+        $compra=$daoCompra->GetById($value['idCompra']); /////hacer esta funcion
+        $funcion=$daoFuncion->GetById($value['idFuncion']);
 
         $ticket = new Ticket($compra,$funcion);
-        $ticket->setId($value[DaoTickets::TABLE_IDTICKET]);
-
+        $ticket->setId($value['codigoPago']);
+       
         return $ticket;
     }
 
@@ -101,7 +101,7 @@ class DaoTickets
                 $objet =  new Ticket( 
                     $p[DaoTickets::TABLE_IDTICKET], 
                     $p[DaoTickets::TABLE_IDCOMPRA], 
-                    $p[DaoTickets::TABLE_IDFUNCION], 
+                    $p[DaoTickets::TABLE_IDFUNCION]
                  
                 ); 
  
@@ -110,6 +110,29 @@ class DaoTickets
             $value 
         ); 
         return count($resp) > 1 ? $resp : $resp['0']; 
+    }
+
+    public function ticketByUser($idCuenta)
+    {
+        $sql="SELECT idFuncion,idCompra,codigoPago FROM compras WHERE idCuenta=".$idCuenta.";";
+        $ticketList=array();
+        
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+
+            foreach($resultSet as $value)
+            {
+                
+                array_push($ticketList,$this->parseToObject($value));
+            }
+           
+            return $ticketList;
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
     }
 
 

@@ -42,5 +42,11 @@ require_once(VIEWS_PATH."header.php");
 
 </div>
 
+<div>
+
+    <a href="<?php echo FRONT_ROOT?>ticket/ticketViewByUser">Ver mis tickets</a>
+
+</div>
+
 
 <?php require_once(VIEWS_PATH."footer.php"); ?>

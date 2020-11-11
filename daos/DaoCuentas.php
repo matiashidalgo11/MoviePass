@@ -175,6 +175,7 @@ class DaoCuentas implements IDao
             if ($cuenta != false) {
                 if ($cuenta->getPassword() == $password) {
                     $_SESSION['cuenta'] = $cuenta;
+                    
                 }
             }
         }

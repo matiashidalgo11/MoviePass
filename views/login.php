@@ -7,7 +7,7 @@
             <div class="col-12 col-sm-6 col-md-3">
 
 
-                <form class="form-container border rounded-lg" action="<?= FRONT_ROOT ?>cuentas/verificar" method="POST">
+                <form class="form-container border rounded-lg" action="<?php echo FRONT_ROOT ?>cuentas/verificar" method="POST">
                         <h3 class="text-center font-eight-bol">Iniciar Sesion</h3>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email</label>

@@ -10,9 +10,11 @@ class CuentasController
         
         public function verificar($email="",$password=""){
             
+           
             $DaoCuentas = DaoCuentas::GetInstance();
             
             $DaoCuentas->verificar($email,$password);
+
             
             if(isset($_SESSION['cuenta']))
             {
@@ -42,10 +44,10 @@ class CuentasController
 
                 $DaoCuentas->add($cuenta);
 
-                require_once VIEWS_PATH . "login.php";
+                require_once(VIEWS_PATH . "login.php");
             }else {
                 
-                require_once "views/register.php";
+                require_once("views/register.php");
             }
             
         }

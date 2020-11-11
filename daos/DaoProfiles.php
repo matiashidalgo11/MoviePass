@@ -124,7 +124,7 @@ class DaoProfiles implements IDao
             $resultSet = $this->connection->Execute($query);
 
             $array = $this->mapeo($resultSet);
-
+            
             $object = !empty($array) ? $array[0] : [];
 
             return $object;

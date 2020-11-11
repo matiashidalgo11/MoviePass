@@ -13,21 +13,20 @@ class MoviesController {
 
     private $movieDAO;
     private $genderDAO;
-    private $genderMovieDAO;
+
 
         public function __construct()
         {
-            $this->movieDAO=new DaoMovies();
-            $this->genderDAO = new DaoGenres();
-            $this->genderMovieDAO= new DaogenderMovie();
+            $this->movieDAO=DaoMovies::GetInstance();
+            $this->genderDAO =DaoGenres::GetInstance();
 
         }
    
         //Funcion que actualiza la cartelera de Movies(atributo enabled false para las peliculas que ya no esten) y los generos
         public function updateFromApi(){
             
-            $this->daoMovies->updateFromApi();
-            $moviesList = $this->daoMovies->getEnabled();
+            $this->movieDAO->updateFromApi();
+            $moviesList = $this->movieDAO->getEnabled();
 
             
             $this->genderDAO->updateFromApi();

@@ -1,7 +1,7 @@
 <?php
 
 define('ROOT', dirname(__DIR__) . "/");
-define('FRONT_ROOT', 'http://localhost/xampp/MoviePass/');
+define('FRONT_ROOT', 'http://localhost/MoviePass/');
 define('VIEWS_PATH','views/');
 define("CSS_PATH", FRONT_ROOT.VIEWS_PATH . "css/");
 define("JS_PATH", FRONT_ROOT.VIEWS_PATH . "js/");
@@ -16,3 +16,8 @@ define("DB_HOST", "localhost");
 define("DB_NAME", "MoviePass");
 define("DB_USER", "root");
 define("DB_PASS", "");
+
+//phpmailer  
+define("EMAIL","BoleteriaMoviePass@gmail.com"); 
+define("EMAIL_PASS","1BoleteriaMoviePass1"); 
+define("MAILER_PATH",FRONT_ROOT."PHPMailer/");

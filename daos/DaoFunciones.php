@@ -18,20 +18,23 @@ class DaoFunciones {
 
     public function __construct() 
     {
-        $movieDao = new daoMovie();
+        $movieDao = DaoMovies::GetInstance();
     }
 
     public function Add($funcion)
     {
         try
         {
-            $sql = "INSERT into funciones (idMovie,idRoom,dateF,timeF) values (:idMovie,:idRoom,:date,:time);";
-                $parameters["idMovie"] =$funcion->getRoom()->getId();
-                $parameters["idRoom"] =$funcion->getMovie()>getId();
-                $parameters["date"]=$funcion->getDate();
-                $parameters["time"]=$funcion->getHour();
+            $sql = "INSERT into funciones (idMovie,idRoom, dayFuncion,hour, soldTickets) values (:idMovie , :idRoom , :dayFuncion , :hour , :soldTickets);";
+               
+                $parameters["idMovie"] =$funcion->getMovie()->getId();
+                $parameters["idRoom"] =$funcion->getRoom()->getId();
+                $parameters["dayFuncion"]=$funcion->getDate();
+                $parameters["hour"]=$funcion->getHour();
+                $parameters["soldTickets"] = "0";
+
                 $this->connection = Connection::getInstance();
-                return $this->connection->executeNonQuery($sql, $parameters);
+                return $this->connection->ExecuteNonQuery($sql, $parameters);
         }
         catch(Exception $ex)
         {
@@ -39,12 +42,12 @@ class DaoFunciones {
         }
     }
 
-   public function GetById($id) {
+   /* public function GetById($id) {
         $funcion = null;
         try
         {
             $parameters['id'] = $id;
-            $sql = "SELECT * from funciones where id=:id";
+            $sql = "SELECT * from funciones where idFuncion = $id";
             $this->connection = Connection::getInstance();
             $resultSet = $this->connection->Execute($sql, $parameters);
             if(!empty($resultSet)) {
@@ -63,15 +66,35 @@ class DaoFunciones {
         catch(Exception $ex){
             throw $ex;
         }
-        return $value;
-    }
-    
+    } */
+
+
+    public function GetById($id) {  
+        try {  
+             $sql = "SELECT * FROM funciones WHERE idFuncion = ".$id.";"; 
+             $this->connection = Connection::getInstance(); 
+             $resultSet = $this->connection->Execute($sql);
+ 
+                foreach ($resultSet as $value){    
+                     $funcion = $this->parseToObject($value);  } 
+                      return $funcion;  
+                    
+            } catch (PDOException $e)  { 
+                throw $e;  }
+            }
+
+
 
     public function GetAll() {
+       
         $funcionesList=array();
+
+        $dia = getdate();
+        $aux = $dia['year']. "-" . $dia['mon'] . "-" . $dia['mday'];
+
         try
         {
-            $sql = "SELECT * from funciones f where datediff(f.dateF,(curdate()-1)) > 0 order by dateF";
+            $sql="SELECT * FROM funciones WHERE dayFuncion>=".'"'.$aux.'";';
             $this->connection = Connection::getInstance();
             $resultSet = $this->connection->Execute($sql);
             foreach($resultSet as $value)
@@ -127,7 +150,7 @@ class DaoFunciones {
     {
         
         $funcion = new Funcion();
-        $movieDao= new daoMovie();
+        $movieDao= DaoMovie::GetInstance();
         $roomDao= new daoRoom();
         
         $funcion->SetId($value['idFuncion']);
@@ -259,6 +282,26 @@ class DaoFunciones {
         }
 
 
+    }
+
+    //Falta remove
+    public function removeByIdRoom($idRoom)
+	{
+      
+        try
+        {
+
+            $sql = "DELETE from funciones where idRoom = $idRoom";  
+             
+            $this->connection=Connection::getInstance();
+
+            $value = $this->connection->ExecuteNonQuery($sql);
+
+        }
+            catch(Exception $ex){
+            throw $ex;
+        }
+       
     }
 
 

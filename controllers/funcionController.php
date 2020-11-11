@@ -14,7 +14,7 @@
 
         function __construct(){
             $this->funcionDao = new funcionDao();
-            $this->movieDao = new movieDao();
+            $this->movieDao = movieDao::GetInstance();
             $this->roomDao = new roomDao();
         }
 
@@ -24,11 +24,15 @@
             $movie = $this->movieDao->GetById($idMovie);// No tiene get el DaoMovies
             $funcion->setMovie($movie);
             $room = $this->roomDao->GetById($idRoom);
+
             $funcion->setRoom($room);
             $funcion->setDate($date);
-            $funcion->setDate($hour);
+            $funcion->setHour($hour);
+
 
             $this->funcionDao->add($funcion);
+
+            $this->listFunciones();
         }
 
         public function GetAll(){
@@ -45,11 +49,21 @@
             $this->funcionDao->remove($id);
         }
 
-        public function showAdd(){
+        public function showAdd($idRoom){
             
-            $arrayMovie = $this->movieDao->getAll();
-            $arrayRoom = $this->roomDao->GetAll();
+
+            $moviesArray = $this->movieDao->getAll();
+
             require_once(VIEWS_PATH."addFuncion.php");
+        }
+
+        public function listFunciones(){
+
+            $funcionesList = $this->funcionDao->getAll();
+
+
+            require_once(VIEWS_PATH."cine.php");
+
         }
 
     }

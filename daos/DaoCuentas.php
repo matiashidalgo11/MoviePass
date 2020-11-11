@@ -19,6 +19,7 @@ class DaoCuentas implements IDao
     const TABLE_EMAIL = "email";
     const TABLE_PASSWORD = "password";
     const TABLE_PRIVILEGIOS = "privilegios";
+    const TABLE_IDFB = "idFacebook";
 
     private function __construct(){
         
@@ -60,12 +61,54 @@ class DaoCuentas implements IDao
 
                 $daoProfile->add($cuenta);
 
+                
+
             } catch (Exception $ex) {
                 throw $ex;
             }
         }
     }
 
+    public function addByFB($cuenta){
+        
+        if ($cuenta instanceof Cuenta) {
+
+
+            try {
+                $query = "INSERT INTO " . DaoCuentas::TABLENAME . " ( " . DaoCuentas::TABLE_EMAIL . " , " . DaoCuentas::TABLE_IDFB . " ) VALUES ( " . ":" . DaoCuentas::TABLE_EMAIL . " , " . ":" . DaoCuentas::TABLE_IDFB  . " );";
+
+                $parameters[DaoCuentas::TABLE_EMAIL] = $cuenta->getEmail();
+                $parameters[DaoCuentas::TABLE_IDFB] = $cuenta->getIdFb();
+ 
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->ExecuteNonQuery($query, $parameters);
+
+
+            } catch (Exception $ex) {
+                throw $ex;
+            }
+        }
+
+    }
+
+    public function setIdFb($cuenta){
+        if ($cuenta instanceof Cuenta) {
+
+            try {
+                $query = "UPDATE " . DaoCuentas::TABLENAME . " SET ". DaoCuentas::TABLE_IDFB." = '". $cuenta->getIdFb() . "' WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $cuenta->getId() ." ;";
+
+ 
+                $this->connection = Connection::GetInstance();
+
+                $this->connection->Execute($query);
+
+
+            } catch (Exception $ex) {
+                throw $ex;
+            }
+        }
+    }
 
     public function getAll()
     {
@@ -92,12 +135,13 @@ class DaoCuentas implements IDao
     {
         try {
 
-            $query = "SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $id;
+
+            $query = "SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $id . " ;";
 
             $this->connection = Connection::GetInstance();
 
             $resultSet = $this->connection->Execute($query);
-
+            
             $array = $this->mapeo($resultSet);
 
             $object = !empty($array) ? $array[0] : [];
@@ -105,6 +149,7 @@ class DaoCuentas implements IDao
             $daoPerfil = DaoProfiles::GetInstance();
 
             $object->setProfile($daoPerfil->getByIdCuenta($id));
+
 
             return $object;
 
@@ -166,8 +211,29 @@ class DaoCuentas implements IDao
 
             $result = $this->connection->Execute($query);
 
-            if ($result[0][0] != 1) return false;
-            else return true;
+            $rta = ($result[0][0] != 1)? false : true;
+
+            return $rta;
+
+        } catch (Exception $ex) {
+            throw $ex;
+        }
+    }
+
+    public function existIdFb($idFb)
+    {
+
+        try {
+
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDFB . " = " . "'" . $idFb . "'" . ");";
+
+            $this->connection = Connection::GetInstance();
+
+            $result = $this->connection->Execute($query);
+
+            $rta = ($result[0][0] != 1)? false : true;
+
+            return $rta;
 
         } catch (Exception $ex) {
             throw $ex;

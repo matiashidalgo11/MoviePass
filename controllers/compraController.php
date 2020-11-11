@@ -32,15 +32,24 @@ class compraController
 
         if($this->DaoFuncion->checkSeats($idFuncion,$totalTickets))
         {
+                 try{
+                         $this->compraDao->Add($compra);
+                         $this->DaoFuncion->upDateSale($idFuncion,$totalTickets);
+                         $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
+                         //hacer una funcion que retorne el idCompra por codigoPago
+                         //$this->ticketController->add($compra,$funcion);
+                         
+                         //Enviar un mail y luego mostrar
+                         //$this->email->sendTickets("santiago.mdp@gmail.com",$ticketList[0]);
+     
 
-            try{
-    
-                $this->compraDao->Add($compra);
-            }
-            catch(PDOException $e)
-            {
-                echo $e->getMessage();
-            }
+                         require_once(VIEWS_PATH."cine.php");
+
+                    }
+                     catch(PDOException $e)
+                    {
+                      echo $e->getMessage();
+                     }
         }
         else
         {
@@ -71,8 +80,3 @@ class compraController
         require_once(VIEWS_PATH."buyMovie.php");
     }
 }
-
-
-
-
-?>

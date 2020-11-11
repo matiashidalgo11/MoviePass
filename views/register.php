@@ -13,7 +13,7 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4" name="email">
+                        <input type="email" class="form-control" id="inputEmail4" name="email" value= " <?php if (isset($_SESSION['fb-userData'])) echo $_SESSION['fb-userData']['email'] ?>" >
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Password</label>
@@ -52,6 +52,16 @@
                         <input type="text" class="form-control" id="inputPassword4" name="direccion">
                     </div>
                 </div>
+
+                
+                <?php if (isset($_SESSION['fb-userData'])) {?>
+
+                <div class="form-group">
+                        <label for="inputIdFb">Id Facebook</label>
+                        <input type="text" class="form-control" id="inputIdFb" name="idFb" value= " <?= $_SESSION['fb-userData']['id'] ?>" >
+                </div>
+
+                <?php }?>
                 
                 <button type="submit" class="btn btn-primary">Registrarse</button>
             </form>

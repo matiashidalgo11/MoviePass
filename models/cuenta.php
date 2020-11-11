@@ -10,6 +10,7 @@ class Cuenta
 	private $password;
 	private $privilegios;
 	private $profile;
+	private $idFb;
 
 	function __construct ($id=0,$email="", $password="", $privilegios="") {
 
@@ -18,6 +19,7 @@ class Cuenta
 		$this->password = $password;
 		$this->privilegios = $privilegios;
 		$this->profile = new Profile();
+		
     }
 
 	/**
@@ -117,6 +119,26 @@ class Cuenta
 	public function setProfile($profile)
 	{
 		$this->profile = $profile;
+
+		return $this;
+	}
+
+	/**
+	 * Get the value of idFb
+	 */ 
+	public function getIdFb()
+	{
+		return $this->idFb;
+	}
+
+	/**
+	 * Set the value of idFb
+	 *
+	 * @return  self
+	 */ 
+	public function setIdFb($idFb)
+	{
+		$this->idFb = $idFb;
 
 		return $this;
 	}

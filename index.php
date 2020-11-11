@@ -12,6 +12,7 @@
 	 */
 	require "config/autoload.php";
 	require "config/config.php";
+	require 'Facebook/autoload.php';
 
 	/**
 	 * Alias
@@ -26,6 +27,7 @@
 	Autoload::Start();
 
 	session_start();
+
 	require_once(VIEWS_PATH . "header.php");
 
 

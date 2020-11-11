@@ -12,7 +12,7 @@
     <div class="collapse navbar-collapse " id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto ">
 
-        <?php if (-isset($_SESSION['cuenta'])) { ?>
+        <?php if (isset($_SESSION['cuenta'])) { ?>
         <?php if ($_SESSION['cuenta']->getPrivilegios() == 0) { ?>
           <li class="nav-item">
             <a class="nav-link" href="<?= FRONT_ROOT ?>#">Administrar Cines</a>
@@ -45,6 +45,8 @@
 
         <?php } }?>
 
+        <?php if (!isset($_SESSION['cuenta']) || $_SESSION['cuenta']->getPrivilegios() != 0 ) { ?> 
+
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               Generos
@@ -68,7 +70,7 @@
           
       </ul>
 
-
+        <?php } ?> 
 
 
 
@@ -103,7 +105,7 @@
               <a class="dropdown-item" href="#">Historial Entradas</a>
               <a class="dropdown-item" href="#">Entradas Proximas</a>
               <div class="dropdown-divider"></div>
-              <a class="dropdown-item" href="#">Cerrar Sesion</a>
+              <a class="dropdown-item" href="<?= FRONT_ROOT ?>CuentasController/cerrarSesion">Cerrar Sesion</a>
             </div>
           </li>
 
@@ -115,7 +117,7 @@
         <?php if ($_SESSION['cuenta']->getPrivilegios() == 0) { ?>
 
           <div class="userOff d-flex align-items-end">
-            <a class="nav-link" href="<?= FRONT_ROOT ?>LoginController/init">Admin</a>
+            <a class="nav-link" href="<?= FRONT_ROOT ?>CuentasController/cerrarSesion">Admin</a>
 
           </div>
 

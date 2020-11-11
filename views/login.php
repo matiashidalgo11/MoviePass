@@ -30,6 +30,7 @@
                        
                         <button type="submit" class="btn btn-primary">Entrar</button>
                         <a href="<?= FRONT_ROOT ?>CuentasController/registrarse" class="btn btn-success"> Registrarse</a>
+                        <a href="<?= $fullURL ?>">Entrar con Facebook</a>
                 </form>
             </div>
 

@@ -2,13 +2,14 @@ create database IF NOT EXISTS MoviePass;
 
 use MoviePass;
 
-#drop database  moviepass5;
+#drop database  moviepass;
 
 create table IF NOT EXISTS cuentas(
 idCuenta int not null auto_increment ,
 email varchar(50) not null,
-password varchar(50) not null,
+password varchar(50),
 privilegios int default 1,
+idFacebook bigint default null,
 primary key (idCuenta),
 constraint uniq_email unique (email)
 );
@@ -96,14 +97,18 @@ create table IF NOT EXISTS funciones(
 );
 #drop table funciones;
 
+
 create table IF NOT EXISTS compras(
 	idCompra int not null auto_increment,
     fecha date not null,
+    idFuncion int,
     totalTickets double not null,
     descuento double not null,
     idCuenta int not null,
+    codigoPago varchar(100),
     primary key (idCompra),
-    constraint fk_idCuentaC foreign key (idCuenta) references cuentas(idCuenta)
+    constraint fk_idCuentaC foreign key (idCuenta) references cuentas(idCuenta),
+    constraint fk_idFuncionC foreign key (idFuncion) references funciones (idFuncion)
 );
 #drop table compras;
 
@@ -116,25 +121,12 @@ create table IF NOT EXISTS tickets(
     constraint fk_idFuncionT foreign key (idFuncion) references funciones(idFuncion)
 );
 #drop table tickets;
-create table IF NOT EXISTS compras(
-	idCompra int not null auto_increment,
-    fecha date not null,
-    idFuncion int,
-    totalTickets double not null,
-    descuento double not null,
-    idCuenta int not null,
-    codigoPago varchar(100),
-    constraint pk_Compras primary key (idCompra),
-    constraint fk_idCuentaC foreign key (idCuenta) references cuentas(idCuenta),
-    constraint fk_idFuncionC foreign key (idFuncion) references funciones (idFuncion)
 
 create table IF NOT EXISTS pagos(
     idPago int NOT null auto_increment,
     codigoPago varchar(100),
     total int,
-    constraint pk_Pagos primary key (idPago)
-    
-
+    primary key (idPago)
 
 );
 #drop table pagos;

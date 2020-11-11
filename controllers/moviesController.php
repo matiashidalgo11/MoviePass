@@ -13,13 +13,12 @@ class MoviesController {
 
     private $movieDAO;
     private $genderDAO;
-    private $genderMovieDAO;
+
 
         public function __construct()
         {
-            $this->movieDAO=new DaoMovies();
-            $this->genderDAO = new DaoGenres();
-            $this->genderMovieDAO= new DaogenderMovie();
+            $this->movieDAO=DaoMovies::GetInstance();
+            $this->genderDAO =DaoGenres::GetInstance();
 
         }
    

@@ -29,11 +29,11 @@ class DaoRooms {
     public function Add($room)
     {
         try { 
-        $sql = "INSERT into rooms (nombre, capacidad, precio,cine) values ( :nombre,:capacidad,:precio,:cine)";
+        $sql = "INSERT into rooms (nombre, capacidad, precio,idCine) values ( :nombre,:capacidad,:precio,:cine)";
         $parameters['nombre'] =  $room->getNombre();
         $parameters['capacidad'] =  $room->getCapacidad();
         $parameters['precio'] =  $room->getPrecio();
-        $parameters['cine'] =  $room->getCine();
+        $parameters['cine'] =  $room->getCine()->getId();
         $this->connection = Connection::GetInstance(); 
         return $this->connection->ExecuteNonQuery($sql,$parameters);
         } catch (Exception $ex) { 
@@ -41,10 +41,12 @@ class DaoRooms {
         } 
     }
 
-       public function getRoomsXcinema($cine)
+    //le pasas un cine objeto
+       public function getRoomsXcinema($idCine)
        {
 
-        $sql = "SELECT * FROM  rooms WHERE cine=".$cine.";"; 
+        $sql = "SELECT * FROM  rooms WHERE idCine = " . $idCine ." ;"; 
+        echo $sql;
         $roomList=array();
 
         try 
@@ -73,13 +75,13 @@ class DaoRooms {
 
        public function getById($idRoom){ 
         $room = null;
+
         try { 
-            $sql = "SELECT r.idRoom,r.nombre,r.precio,r.capacidad,c.cine from rooms r innner join cines c on c.cine=r.cine where idRoom = :idRoom;"; 
-            $parameters['idRoom'] = $idRoom;
+            $sql = "SELECT * FROM rooms  where idRoom = $idRoom ;"; 
             $this->connection = Connection::GetInstance();
-            $resultSet = $this->connection->Execute($sql, $parameters);
+            $resultSet = $this->connection->Execute($sql);
             if(!empty($resultSet)){ 
-                 $room = $this->parseToObject($resultSet);   
+                 $room = $this->parseToObject($resultSet[0]);   
             }
         } catch (Exception $ex) { 
             throw $ex; 
@@ -97,6 +99,7 @@ class DaoRooms {
         return $room;
     }
     
+    //faltaria testear
     public function Update($idRoom){
         $sql = "UPDATE rooms (:nombre,:capacidad,:precio,:cine) where idRoom=:idRoom";
         try{
@@ -112,12 +115,14 @@ class DaoRooms {
     }
     
     public function GetAll(){
-        $sql = "SELECT from r.idRooms, r.nombre, r.precio, r.capacidad, c.cine from rooms r inner join cines c on c.cine=r.cine ";
+        $sql = "SELECT *  from rooms r ; ";
         $roomList = array();
         try{
             $this->connection = Connection::GetInstance();
             $resultSet = $this->connection->Execute($sql);
-            if(!empty($resultSet) && $object instanceof Room){ 
+            
+
+            if(!empty($resultSet)){ 
  
                 foreach ($resultSet as $row) {
                     $aux = $this->parseToObject($row);
@@ -135,23 +140,26 @@ class DaoRooms {
 
     public function remove($idRoom)
 	{
-        $value =0;
+      
         try
         {
-            $parameters['id'] = $id;
-            $sql = "DELETE from rooms where idRoom=:idRoom";  
-             $this->connection=Connection::getInstance();
-             $value = $this->connection->ExecuteNonQuery($sql,$parameters);
+
+            $sql = "DELETE from rooms where idRoom = $idRoom";  
+             
+            $this->connection=Connection::getInstance();
+
+            $value = $this->connection->ExecuteNonQuery($sql);
+
         }
             catch(Exception $ex){
             throw $ex;
         }
-        return $value;
+       
     }
 
     public function parseToObject($value)
     {   
-       
+
         $cinemaDao= new DaoCines();
         $room= new room();
         
@@ -160,20 +168,20 @@ class DaoRooms {
            $room->setCapacidad($value['capacidad']);
            $room->setPrecio($value['precio']);
            $room->setNombre($value['nombre']);
-           $room->setCine($cinemaDao->getById($value['cine']));
+           $room->setCine($cinemaDao->getById($value['idCine']));
    
        
 
         return $room;
     }
     
-    public function getArrayByCine($cine){
+    public function getArrayByCine($idCine){
         $roomList=array();
         try{
-            $sql="SELECT * from rooms where cine = :cine ;";
+            $sql="SELECT * from rooms where idCine = $idCine ;";
             $this->connection=Connection::getInstance();
             $resultSet=$this->connection->execute($sql);
-            foreach ($resultSet as $room) {
+            foreach ($resultSet[0] as $room) {
                 $roomList[]=new Room($room["idRoom"],
                     $room["nombre"],
                     $room["capacidad"],

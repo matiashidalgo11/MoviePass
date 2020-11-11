@@ -5,7 +5,7 @@
 
 <?php foreach($moviesList as $movie){ ?>
 
-    <form action="<?= FRONT_ROOT ?>movies/viewMovie" method="POST">
+    <form action="<?= FRONT_ROOT ?>MoviesController/viewMovie" method="POST">
 
         <input type="hidden" value="<?php echo $movie->getId();?>" name="idMovie">
 

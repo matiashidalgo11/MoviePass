@@ -11,9 +11,9 @@
             $this->cineDao = new cineDao();
         }
 
-        public function add( $nombre,  $direccion, $room){
+        public function add( $nombre, $direccion){
 
-            $cine = new Cine($nombre,  $direccion, $room);
+            $cine = new Cine($nombre,  $direccion);
 
             $this->cineDao->add($cine);
 

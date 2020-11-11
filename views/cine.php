@@ -28,7 +28,7 @@ require_once(VIEWS_PATH."header.php");
                                     <li class="list-group-item">DIRECCION: <?php echo $funcion->getRoom()->getCine()->getDireccion()?></li>
                                 </ul>
                                <div class="card-body">
-                                   <form action="<?php echo FRONT_ROOT?>compra/buyMovie" method="POST">  <button type="submit" name="idFuncion" value="<?php echo $funcion->getId()?>" >Tickets</button> </form>
+                                   <form action="<?php echo FRONT_ROOT?>CompraController/buyMovie" method="POST">  <button type="submit" name="idFuncion" value="<?php echo $funcion->getId()?>" >Tickets</button> </form>
                                   
                                 </div>
                 </div>

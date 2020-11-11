@@ -33,7 +33,7 @@ public function GetById($idCine){
         $this->connection = Connection::GetInstance();
         $resultSet = $this->connection->Execute($sql,$parameters);
         if(!empty($resultSet)){ 
-             $cine = $this->parseToObject($resultSet);   
+             $cine = $this->parseToObject($resultSet[0]);   
         }
     } catch (Exception $ex) { 
         throw $ex; 
@@ -68,11 +68,12 @@ public function Update($idCine){
 }
 
 public function GetAll(){
-    $sql = "SELECT from cines";
+    $sql = "SELECT * FROM cines";
     $cineList = array();
     try{
         $this->connection = Connection::GetInstance();
         $resultSet = $this->connection->Execute($sql);
+        
         if(!empty($resultSet)){ 
             foreach ($resultSet as $row) {
                 $aux = $this->parseToObject($row);
@@ -102,7 +103,8 @@ public function remove($idCine){
 
     public function parseToObject($value)
     {
-        $cine=new Cine($value['nombre'],$value['direccion'],$value['idCine']);
+        $cine=new Cine($value['nombre'],$value['direccion']);
+        $cine->setId($value['idCine']);
         return $cine;
     }
 }

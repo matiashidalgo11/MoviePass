@@ -41,7 +41,15 @@ class compraController
                          $this->compraDao->Add($compra);
                          $this->DaoFuncion->upDateSale($idFuncion,$totalTickets);
                          $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
-                          require_once(VIEWS_PATH."template.php");
+                         //hacer una funcion que retorne el idCompra por codigoPago
+                         //$this->ticketController->add($compra,$funcion);
+                         
+                         //Enviar un mail y luego mostrar
+                         //$this->email->sendTickets("santiago.mdp@gmail.com",$ticketList[0]);
+     
+
+                         require_once(VIEWS_PATH."cine.php");
+
                     }
                      catch(PDOException $e)
                     {
@@ -82,9 +90,3 @@ class compraController
 
 
 }
-
-
-
-
-
-?>

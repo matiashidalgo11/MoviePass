@@ -31,19 +31,18 @@
             
         }
 
-        public function Update($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada){
-            
-            $cine = new Cine($idCine,$nombre, $capacidad_total, $direccion, $valor_entrada);
-
+        public function Update($nombre,$direccion){
+            $cine = new Cine($nombre, $direccion,);
             $this->cineDao->Update($cine);
+        }
 
-            $this->GetById($cine->idCine);
+        public function showUpdate(){
+            require_once(VIEWS_PATH."updateCine.php");
         }
 
         public function Delete($id){
-            $this->cineDao->Delete($id);
+            $this->cineDao->remove($id);
             $this->GetAll();
-
         }
 
         public function showList(){

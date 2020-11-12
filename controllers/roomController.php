@@ -34,11 +34,19 @@ class RoomController{
     }
 
     public function remove($idRoom){
-        //Agregar estado enabled y setear el valor como false
+        $this->DaoCine->remove($idRoom);
+        $this->GetAll();
     } 
 
-    public function update(){
-        //Desarrollar
+    public function Update($nombre, $precio, $capacidad){
+        $cine = $DaoRoom->getCine();
+        $room = new Room($nombre, $precio, $capacidad, $cine);
+        $this->DaoRoom->Update($room);
+    }
+
+    public function showUpdate(){
+        require_once(VIEWS_PATH."updateRoom.php");
+
     }
 
     public function showList($idCine)

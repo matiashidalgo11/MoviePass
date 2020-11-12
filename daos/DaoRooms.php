@@ -101,12 +101,11 @@ class DaoRooms {
     
     //faltaria testear
     public function Update($idRoom){
-        $sql = "UPDATE rooms (:nombre,:capacidad,:precio,:cine) where idRoom=:idRoom";
+        $sql = "UPDATE rooms (:nombre,:capacidad,:precio) where idRoom= $idRoom";
         try{
         $parameters['nombre'] = $room->getNombre(); 
         $parameters['capacidad'] = $room->getCapacidad(); 
         $parameters['precio'] = $room->getPrecio(); 
-        $parameters['cine'] = $room->getCine(); 
             $this->connection = Connection::GetInstance(); 
             return $this->connection->ExecuteNonQuery($sql, $parameters); 
         } catch (Exception $ex) { 

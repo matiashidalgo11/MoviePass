@@ -45,7 +45,7 @@ include_once(VIEWS_PATH."header.php");
                                         <td><?php echo $room->getCapacidad();?> personas</td>
                                         <td>$<?php echo $room->getPrecio(); ?></td>
                                         <td><form action = "<?php echo FRONT_ROOT?>RoomController/Remove" method = "POST"><button class="btn-xs btn btn-danger" type = "submit" name = "remove" value = "<?php echo $room->getId(); ?>">Eliminar</button></form>
-                                            <form action = "<?php echo FRONT_ROOT?>RoomController/Edit" method = "POST"><button class="btn-xs btn btn-danger" type = "submit" name = "remove" value = "<?php echo $room->getId(); ?>">Editar</button></form> 
+                                            <form action = "<?php echo FRONT_ROOT?>RoomController/showUpdate" method = "POST"><button class="btn-xs btn btn-danger" type = "submit" name = "remove" value = "<?php echo $room->getId(); ?>">Actualizar</button></form> 
                                             <form action = "<?php echo FRONT_ROOT?>funcionController/showAdd" method = "POST">
                                                <input type="hidden" name="idRoom" value="<?php echo $room->getId()?>">
                                                <button class="btn-xs btn btn-danger" type = "submit" name = "remove" >AddShow</button>

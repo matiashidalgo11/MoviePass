@@ -56,7 +56,7 @@ public function mapeo($row){
 }
 
 public function Update($idCine){
-        $sql = "UPDATE  cines (:nombre,:direccion) where idCine=:idCine";
+        $sql = "UPDATE  cines (:nombre,:direccion) where idCine= $idCine";
         $parameters['nombre'] = $cine->getNombre(); 
         $parameters['direccion'] = $cine->getDireccion(); 
         try{

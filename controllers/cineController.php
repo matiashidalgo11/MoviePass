@@ -36,7 +36,8 @@
             $this->cineDao->Update($cine);
         }
 
-        public function showUpdate(){
+        public function showUpdate($idCine){
+            $cine = $this->cineDao->getById($idCine);
             require_once(VIEWS_PATH."updateCine.php");
         }
 

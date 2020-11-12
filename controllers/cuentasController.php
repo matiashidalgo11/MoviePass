@@ -25,9 +25,9 @@ class CuentasController
 
         } else {
             //Devuelve el login cuando no lo es
-            if ($validator == 1) $emailValidator = "is-invalid";
-            else if ($validator == 2) $passValidator = "is-invalid";
-            $emailIngresado = $email;
+            if ($validator == 1) $_SESSION['loginValidator']['emailValidator']= "is-invalid"; 
+            else if ($validator == 2) $_SESSION['loginValidator']['passValidator'] = "is-invalid"; 
+            $_SESSION['loginValidator']['emailIngresado'] = $email; 
 
             $loginController = new LoginController();
             $loginController->init();
@@ -148,9 +148,7 @@ class CuentasController
 
         session_destroy();
 
-        echo "paso por cerrar sesion";
-
-        var_dump($_SESSION);
+        unset($_SESSION['loginValidator']); 
 
         $loginController = new LoginController();
         $loginController->init();

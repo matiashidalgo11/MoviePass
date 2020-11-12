@@ -40,7 +40,6 @@
                             <button type="submit" name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId() ?>">Eliminar</button>
                         </form>
                         <form action="<?php echo FRONT_ROOT?>RoomController/showList" method="POST">
-                            <?php var_dump($cine)?>
                             <button type="submit"  name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId(); ?>">Ver Salas</button>
                         </form>
                         </div>

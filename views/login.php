@@ -12,7 +12,7 @@
 
                         <div class="form-group">
                             <label for="exampleInputEmail1">Email</label>
-                            <input type="email" class="form-control <?=(isset($emailValidator))? $emailValidator : "";?>" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" value="<?=(isset($emailIngresado))? $emailIngresado : "";?>" >
+                            <input type="email" class="form-control <?=(isset($_SESSION['loginValidator']['emailValidator']))? $_SESSION['loginValidator']['emailValidator'] : "";?>" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" value="<?=(isset($_SESSION['loginValidator']['emailIngresado']))? $_SESSION['loginValidator']['emailIngresado'] : "";?>" >
                             <div class="invalid-feedback">
                              El email es invalido
                             </div>
@@ -22,7 +22,7 @@
 
                         <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control <?=(isset($passValidator))? $passValidator : "";?>" id="exampleInputPassword1" name="password">
+                            <input type="password" class="form-control <?=(isset($_SESSION['loginValidator']['passValidator']))? $_SESSION['loginValidator']['passValidator'] : "";?>" id="exampleInputPassword1" name="password">
                             <div class="invalid-feedback">
                              Password incorrecto
                             </div>

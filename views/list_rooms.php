@@ -10,16 +10,16 @@ include_once(VIEWS_PATH."header.php");
 
 
 <div class="container">
-        <h1 class="text-info">Cine: <?php echo $roomList[0]->getCine()->getNombre();?></h1>
+        <h1 class="text-info">Cine: <?= $idCine;?></h1>
         
-
+       
         <form class="form-inline" action="<?php echo FRONT_ROOT?>RoomController/ShowAdd" method = "POST">
                     <label><h2 style="color:black">LISTADO DE SALAS</h2></label>
-                    <input type = "hidden" name = "id" id = "idCine" required value="<?php echo $roomList[0]->getCine()->getId();?>">
+                    <input type = "hidden" name = "id" id = "idCine" required value="<?= $idCine?>">
                     <input type="submit" value="Crear Sala" style="color:black">
         </form>
         
-
+        <?php if(isset($roomList[0])){?>
         <table class="table table-dark">
             <thead>
                 <tr>
@@ -62,6 +62,8 @@ include_once(VIEWS_PATH."header.php");
     
             </tbody>
         </table>
+
+                    <?php }?>
 
     </div>
 

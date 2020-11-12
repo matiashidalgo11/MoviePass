@@ -43,12 +43,12 @@ class RoomController{
 
     public function showList($idCine)
     {
-        echo "<br>" . $idCine . "<br>" ;
-       
+      
         $roomList=array();
 
-        $roomList=$this->DaoRoom->getRoomsXcinema($idCine);
+        $roomList = $this->DaoRoom->getRoomsXcinema($idCine);
 
+ 
         require_once(VIEWS_PATH."list_rooms.php");
     
     }

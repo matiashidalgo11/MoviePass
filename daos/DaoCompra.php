@@ -125,6 +125,27 @@ class DaoCompra
         }
     }
 
+    public function getidBypayCode($codigoPago)
+    {
+        $sql="SELECT idCompra FROM compras WHERE codigoPago=".'"'.$codigoPago.'"'.";";
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $resultSet= $this->connection->Execute($sql);
+            foreach ($resultSet as $value)
+            {
+
+                $id=$value['idCompra'];
+            }
+
+            return $id;
+        }
+        catch(PDOException $e)
+        {
+            throw $e;
+        }
+    }
+
 
 
 }

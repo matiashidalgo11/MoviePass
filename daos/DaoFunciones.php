@@ -36,7 +36,7 @@ class DaoFunciones {
                 $this->connection = Connection::getInstance();
                 return $this->connection->ExecuteNonQuery($sql, $parameters);
         }
-        catch(Exception $ex)
+        catch(PDOException $ex)
         {
             throw $ex;
         }
@@ -69,19 +69,7 @@ class DaoFunciones {
     } */
 
 
-    public function GetById($id) {  
-        try {  
-             $sql = "SELECT * FROM funciones WHERE idFuncion = ".$id.";"; 
-             $this->connection = Connection::getInstance(); 
-             $resultSet = $this->connection->Execute($sql);
  
-                foreach ($resultSet as $value){    
-                     $funcion = $this->parseToObject($value);  } 
-                      return $funcion;  
-                    
-            } catch (PDOException $e)  { 
-                throw $e;  }
-            }
 
 
 
@@ -158,6 +146,7 @@ class DaoFunciones {
         $funcion->setHour($value['hour']);
         $funcion->setRoom($roomDao->getById($value['idRoom']));
         $funcion->setMovie($movieDao->getById($value['idMovie']));
+        $funcion->setSoldTickets($value['soldTickets']);
 
         return $funcion;
     }
@@ -259,19 +248,29 @@ class DaoFunciones {
         }
     }
 
+    public function GetById($id) {  
+        try {  
+             $sql = "SELECT * FROM funciones WHERE idFuncion = ".$id.";"; 
+             $this->connection = Connection::getInstance(); 
+             $resultSet = $this->connection->Execute($sql);
+            
+                foreach ($resultSet as $value){    
+                     $funcion = $this->parseToObject($value);  } 
+                     
+                      return $funcion;  
+                    
+            } catch (PDOException $e)  { 
+                throw $e;  }
+            }
+
     public function upDateSale($idFuncion,$totalTicket)
     {
         $funcion=$this->GetById($idFuncion);
 
         $ventas=$funcion->getSoldTickets()+$totalTicket;
-
         $parameters['idFuncion']=$idFuncion;
         $parameters['soldTickets']=$ventas;
-
         $sql="UPDATE funciones SET soldTickets=:soldTickets WHERE idFuncion=:idFuncion;";
-
-       
-
         try
         {
             $this->connection=Connection::GetInstance();
@@ -280,25 +279,19 @@ class DaoFunciones {
         {
             throw $e;
         }
-
-
     }
 
     //Falta remove
     public function removeByIdRoom($idRoom)
 	{
-      
         try
         {
-
             $sql = "DELETE from funciones where idRoom = $idRoom";  
-             
             $this->connection=Connection::getInstance();
-
             $value = $this->connection->ExecuteNonQuery($sql);
 
         }
-            catch(Exception $ex){
+            catch(PDOException $ex){
             throw $ex;
         }
        

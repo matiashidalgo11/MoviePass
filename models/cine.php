@@ -5,6 +5,7 @@
         private $idCine;
         private $nombre;
         private $direccion;
+        //eliminar ?)
         private $room;
         
         public function __construct( $nombre = "",  $direccion = ""){

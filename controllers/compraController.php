@@ -10,6 +10,9 @@ use models\compra as Compra;
 use models\pago as Pago;
 use PDOException;
 
+use controllers\TicketController as TicketController;
+use controllers\funcionController as FuncionesController;
+
 class compraController
 {
 
@@ -17,6 +20,8 @@ class compraController
     private $DaoFuncion;
     private $DaoCuenta;
     private $DaoPagos;
+    private $ControllerTicket;
+    private $ControllerFunciones;
 
     public function __construct()
     {
@@ -24,6 +29,8 @@ class compraController
         $this->DaoFuncion= new DaoFunciones();
         $this->DaoCuenta= DaoCuentas::GetInstance();
         $this->DaoPagos=new DaoPagos();
+        $this->ControllerTicket = new TicketController();
+        $this->ControllerFunciones = new FuncionesController();
     }
 
 
@@ -41,14 +48,9 @@ class compraController
                          $this->compraDao->Add($compra);
                          $this->DaoFuncion->upDateSale($idFuncion,$totalTickets);
                          $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
-                         //hacer una funcion que retorne el idCompra por codigoPago
-                         //$this->ticketController->add($compra,$funcion);
-                         
-                         //Enviar un mail y luego mostrar
-                         //$this->email->sendTickets("santiago.mdp@gmail.com",$ticketList[0]);
-     
-
-                         require_once(VIEWS_PATH."cine.php");
+                         $compra->setIdCompra($this->compraDao->getidBypayCode($codigoPago));
+                         $this->ControllerTicket->add($compra,$funcion);
+                         $this->ControllerFunciones->listFunciones();
 
                     }
                      catch(PDOException $e)

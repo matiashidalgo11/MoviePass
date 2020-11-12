@@ -28,19 +28,21 @@ class DaoTickets
 
     public function Add($ticket)
     {
-            $sql= "INSERT INTO tickets (idCompra,idFuncion) VALUES (idCompra,idFuncion);" ;
-
-
+            $sql= "INSERT INTO tickets (idCompra,idFuncion) VALUES (:idCompra,:idFuncion);" ;
+            
             try
             {
                 $funcion= $ticket->getFuncion();
                 $compra=$ticket->getCompra();
                 
                 $parameters['idCompra']=$compra->getIdCompra();
-                $parameters['idFunciom']=$funcion->getId();
+                $parameters['idFuncion']=$funcion->getId();
+
+                
                 
                 $this->connection=Connection::GetInstance();
                 $this->connection->executeNonQuery($sql,$parameters);
+                
             }
             catch(PDOException $e)
             {

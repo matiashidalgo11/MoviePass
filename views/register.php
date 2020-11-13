@@ -13,7 +13,14 @@
                 <div class="form-row">
                     <div class="form-group col-md-6">
                         <label for="inputEmail4">Email</label>
-                        <input type="email" class="form-control" id="inputEmail4" name="email" value= " <?php if (isset($_SESSION['fb-userData'])) echo $_SESSION['fb-userData']['email'] ?>" >
+                        <input type="email" class="form-control" id="inputEmail4" name="email" value= " <?php if (isset($_SESSION['fb-userData'])) echo $_SESSION['fb-userData']['email'] ?>" <?php if (isset($_SESSION['fb-userData'])) echo "disabled" ?>>
+                        
+                        <?php if (isset($_SESSION['fb-userData'])){?>
+
+                            <input type = "hidden" name = "email" id = "emailF" required value="<?php  echo $_SESSION['fb-userData']['email'] ?>">
+
+                        <?php }?>
+
                     </div>
                     <div class="form-group col-md-6">
                         <label for="inputPassword4">Password</label>
@@ -31,15 +38,36 @@
                         <input type="number" class="form-control" id="inputEmail4" name="dni">
                 </div>
 
+                
                 <div class="form-row">
+
                     <div class="form-group col-md-6">
+
                         <label for="inputEmail4">Nombre</label>
-                        <input type="text" class="form-control" id="inputEmail4" name="nombre">
+                        <input type="text" class="form-control" id="inputEmail4" name="nombre" value= " <?php if (isset($_SESSION['fb-userData'])) echo $_SESSION['fb-userData']['first_name'] ?>" <?php if (isset($_SESSION['fb-userData'])) echo "disabled" ?>>
+                            
+                        <?php if (isset($_SESSION['fb-userData'])){?>
+
+                            <input type = "hidden" name = "nombre" id = "nombreF" required value="<?php  echo $_SESSION['fb-userData']['first_name'] ?>">
+
+                        <?php }?>
+
                     </div>
+
+
                     <div class="form-group col-md-6">
+
                         <label for="inputPassword4">Apellido</label>
-                        <input type="text" class="form-control" id="inputPassword4" name="apellido">
+                        <input type="text" class="form-control" id="inputPassword4" name="apellido" value= " <?php if (isset($_SESSION['fb-userData'])) echo $_SESSION['fb-userData']['last_name'] ?>" <?php if (isset($_SESSION['fb-userData'])) echo "disabled" ?>>
+                            
+                        <?php if (isset($_SESSION['fb-userData'])){?>
+
+                            <input type = "hidden" name = "apellido" id = "apellidoF" required value="<?php  echo $_SESSION['fb-userData']['last_name'] ?>">
+
+                        <?php }?>       
+                    
                     </div>
+
                 </div>
 
                 <div class="form-row">
@@ -58,7 +86,9 @@
 
                 <div class="form-group">
                         <label for="inputIdFb">Id Facebook</label>
-                        <input type="text" class="form-control" id="inputIdFb" name="idFb" value= " <?= $_SESSION['fb-userData']['id'] ?>" >
+                        <input type="text" class="form-control" id="inputIdFb" name="idFb" value= " <?= $_SESSION['fb-userData']['id'] ?>" disabled >
+                        <input type="hidden" class="form-control" id="inputIdFb" name="idFb" value= " <?= $_SESSION['fb-userData']['id'] ?>" >
+
                 </div>
 
                 <?php }?>

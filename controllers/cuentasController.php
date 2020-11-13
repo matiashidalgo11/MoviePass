@@ -9,33 +9,55 @@ use PDOException;
 
 class CuentasController
 {
+    private $daoCuenta;
+    private $statusController;
+    private $loginController;
 
+    function __construct()
+    {
+        $this->daoCuenta = DaoCuentas::GetInstance();
+        $this->statusController = new StatusController();
+        $this->loginController = new LoginController();
+    }
+
+
+    //Verificacion normal ingresando email y password;
     public function verificar($email = "", $password = "")
     {
 
-        $DaoCuentas = DaoCuentas::GetInstance();
+        
+        if($this->daoCuenta->exist($email)){
+            //Se encuentra el email;
+            $cuenta = $this->daoCuenta->getByEmail($email);
 
-        $validator = $DaoCuentas->verificar($email, $password);
+            if ($cuenta->getPassword() == $password) {
+                //Login existoso
+                $_SESSION['cuenta'] = $cuenta;
 
 
-        if (!isset($validator) && isset($_SESSION['cuenta'])) {
-           
-            $statusController = new StatusController();
-            $statusController->verificar();
+                $this->statusController->typeSession();
 
-        } else {
-            //Devuelve el login cuando no lo es
+            }else {
+                //pass incorrecto
+                $_SESSION['loginValidator']['emailIngresado'] = $email;
+                $_SESSION['loginValidator']['passValidator'] = "is-invalid";
 
-            if ($validator == 1) $_SESSION['loginValidator']['emailValidator']= "is-invalid";
-            else if ($validator == 2) $_SESSION['loginValidator']['passValidator'] = "is-invalid";
+
+                $this->loginController->init();
+            }
+
+        }else{
+            //no existe una cuenta;
             $_SESSION['loginValidator']['emailIngresado'] = $email;
+            $_SESSION['loginValidator']['emailValidator']= "is-invalid";
 
-            $loginController = new LoginController();
-            $loginController->init();
 
+            $this->loginController->init();
         }
+
     }
 
+    //Verificacion via api de fb
     public function verificarByFb()
     {
 
@@ -45,36 +67,30 @@ class CuentasController
             $email = $_SESSION['fb-userData']['email'];
             $idFb = $_SESSION['fb-userData']['id'];
 
-            
 
-            echo "Estoy logeado como facebook user";
+            if ($this->daoCuenta->exist($email)) {
 
-            $daoCuentas = DaoCuentas::GetInstance();
-
-            if ($daoCuentas->exist($email)) {
+                
                 //borro los datos traidos de la api
                 unset($_SESSION['fb-userData']);
 
-                $cuenta = $daoCuentas->getByEmail($email);
+                $cuenta = $this->daoCuenta->getByEmail($email);
                 
-                if (!($daoCuentas->existIdFb($idFb))) {
+                //Si no existe un idFb asociado se lo setea
+                if (!($this->daoCuenta->existIdFb($idFb))) {
 
-                    echo "PASO POR DONDE NO EXISTE EL IDFB";
                     $cuenta->setIdFb($idFb);
-                    $daoCuentas->setIdFb($cuenta);
-                    //llamo statuscontroller para mostrar una vista a un usuario que le faltan datos que rellenar
-                    //existe el mail pero no existe una entrada desde fb
+                    $this->daoCuenta->setIdFb($cuenta);
 
                 }
-                $_SESSION['cuenta'] = $cuenta;
-                $statusController = new StatusController();
-                $statusController->verificar();
-                //llamo statuscontroller para mostrar la vista de usuario normal
 
-                
+                $_SESSION['cuenta'] = $cuenta;
+
+                $this->statusController->typeSession();
+         
 
             } else {
-
+                //llamo a registrarse con los datos de fb api desde el sesion
                 $this->registrarse();
 
             }
@@ -87,42 +103,40 @@ class CuentasController
         include "views/register.php";
     }
 
-    public function crear($email, $password, $rPassword, $dni, $nombre, $apellido, $telefono, $direccion, $idFb)
+    public function crear($email, $password, $rPassword, $dni, $nombre, $apellido, $telefono, $direccion, $idFb = "")
     {
 
         if ($password == $rPassword) {
-
-            $profile = new Profile($dni, $nombre, $apellido, $direccion, $telefono);
 
             $cuenta = new Cuenta(0, $email, $password, 1);
 
             $cuenta->setIdFb($idFb);
 
-            $cuenta->setProfile($profile);
+            $cuenta->setProfile(new Profile($dni, $nombre, $apellido, $direccion, $telefono));
 
             try {
-                $DaoCuentas = DaoCuentas::GetInstance();
-
-                $DaoCuentas->add($cuenta);
-
-                $DaoCuentas->setIdFb($cuenta);
+                
+                $this->daoCuenta->add($cuenta);
 
             } catch (PDOException $p) {
                 if (strpos($p, "SQLSTATE[23000]")) {
                     echo "Accion para la exception";
+                    //verificar que no se cargo un dni invalido
                 }
             }
-            //Registro por fb
+
+
+            //Finalizacion del registro por fb y entra directamente a la aplicacion
             if (isset($_SESSION['fb-userData'])){
 
                 unset($_SESSION['fb-userData']);
 
                 $_SESSION['cuenta'] = $cuenta;
                 $statusController = new StatusController();
-                $statusController->verificar();
+                $statusController->typeSession();
 
             }else{
-                //Registro normal
+                //Finalizacion de Registro normal y devuelve la vista del login para ingresar su usuario
                 $loginController = new LoginController();
                 $loginController->init();
 
@@ -165,5 +179,17 @@ class CuentasController
         } else {
             require_once "views/login.php";
         }
+    }
+
+    public function testGetAll(){
+
+        echo "<br>" . "Estoy en el getAll" . "<br>";
+
+        $DaoCuentas = DaoCuentas::GetInstance();
+
+        var_dump($DaoCuentas->getAll());
+
+
+
     }
 }

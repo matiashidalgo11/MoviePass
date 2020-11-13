@@ -15,13 +15,13 @@ class DaoProfiles implements IDao
     private static $instance = null;
 
     //Info db
-    const TABLENAME = "profiles";
-    const TABLE_DNI = "dni";
-    const TABLE_NOMBRE = "nombre";
-    const TABLE_APELLIDO = "apellido";
-    const TABLE_DIRECCION = "direccion";
-    const TABLE_TELEFONO = "telefono";
-    const TABLE_IDCUENTA = "idCuenta";
+    const TABLE_NAME = "profiles";
+    const COLUMN_DNI = "dni";
+    const COLUMN_NOMBRE = "nombre";
+    const COLUMN_APELLIDO = "apellido";
+    const COLUMN_DIRECCION = "direccion";
+    const COLUMN_TELEFONO = "telefono";
+    const COLUMN_IDCUENTA = "idCuenta";
 
 
     private function __construct()
@@ -36,32 +36,6 @@ class DaoProfiles implements IDao
         return self::$instance;
     }
 
-    //Falta testear
-    public function delete($object)
-    {
-        if($object instanceof Profile){
-
-            if($this->exist($object)){
-                try{
-
-                $query = "DELETE FROM ". DaoProfiles::TABLENAME . 
-                " WHERE " . DaoProfiles::TABLE_DNI ." = " . $object->getDni() ." ; ";
-
-                $this->connection = Connection::GetInstance();
-
-                $this->connection->ExecuteNonQuery($query);
-
-                
-
-            }
-            catch (Exception $ex) {
-                throw $ex;
-            }
-            }
-        }
-      
-    }
-
     public function update($profile){
        
         if($profile instanceof Profile){
@@ -70,12 +44,12 @@ class DaoProfiles implements IDao
 
                 try{
 
-                $query = "UPDATE " . DaoProfiles::TABLENAME .
-                " SET " . DaoProfiles::TABLE_NOMBRE . " = :" . DaoProfiles::TABLE_NOMBRE . " , ".
-                DaoProfiles::TABLE_APELLIDO . " = :" . DaoProfiles::TABLE_APELLIDO . " , ".
-                DaoProfiles::TABLE_DIRECCION . " = :". DaoProfiles::TABLE_DIRECCION . " , ".
-                DaoProfiles::TABLE_TELEFONO . " = :" . DaoProfiles::TABLE_TELEFONO . 
-                " WHERE " . DaoProfiles::TABLE_DNI . " = " . $profile->getDni() . " ;";
+                $query = "UPDATE " . DaoProfiles::TABLE_NAME .
+                " SET " . DaoProfiles::COLUMN_NOMBRE . " = :" . DaoProfiles::COLUMN_NOMBRE . " , ".
+                DaoProfiles::COLUMN_APELLIDO . " = :" . DaoProfiles::COLUMN_APELLIDO . " , ".
+                DaoProfiles::COLUMN_DIRECCION . " = :". DaoProfiles::COLUMN_DIRECCION . " , ".
+                DaoProfiles::COLUMN_TELEFONO . " = :" . DaoProfiles::COLUMN_TELEFONO . 
+                " WHERE " . DaoProfiles::COLUMN_DNI . " = " . $profile->getDni() . " ;";
 
                 $parameters = $this->toArray($profile,1);
 
@@ -98,7 +72,7 @@ class DaoProfiles implements IDao
         if($profile instanceof Profile){
         try {
 
-            $query = "SELECT EXISTS ( SELECT * FROM " . DaoProfiles::TABLENAME . " WHERE " . DaoProfiles::TABLE_DNI . " = " . "'" . $profile->getDni() . "'" . ");";
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoProfiles::TABLE_NAME . " WHERE " . DaoProfiles::COLUMN_DNI . " = " . "'" . $profile->getDni() . "'" . ");";
 
             $this->connection = Connection::GetInstance();
 
@@ -117,7 +91,7 @@ class DaoProfiles implements IDao
     {
 
         try {
-            $query = "SELECT * FROM " . DaoProfiles::TABLENAME . " WHERE " . DaoProfiles::TABLE_IDCUENTA . " = " . "'" . $idCuenta . "'" . " ;";
+            $query = "SELECT * FROM " . DaoProfiles::TABLE_NAME . " WHERE " . DaoProfiles::COLUMN_IDCUENTA . " = " . "'" . $idCuenta . "'" . " ;";
 
             $this->connection = Connection::GetInstance();
 
@@ -137,7 +111,7 @@ class DaoProfiles implements IDao
     {
 
         try {
-            $query = "SELECT * FROM " . DaoProfiles::TABLENAME . " WHERE " . DaoProfiles::TABLE_DNI . " = " . "'" . $dni . "'" . " ;";
+            $query = "SELECT * FROM " . DaoProfiles::TABLE_NAME . " WHERE " . DaoProfiles::COLUMN_DNI . " = " . "'" . $dni . "'" . " ;";
 
             $this->connection = Connection::GetInstance();
 
@@ -157,7 +131,7 @@ class DaoProfiles implements IDao
     public function getAll()
     {
         try {
-            $query = "SELECT * FROM " . DaoProfiles::TABLENAME . " ;";
+            $query = "SELECT * FROM " . DaoProfiles::TABLE_NAME . " ;";
 
             $this->connection = Connection::GetInstance();
 
@@ -171,24 +145,22 @@ class DaoProfiles implements IDao
         }
     }
 
-    //Recibe vacio el profile;
     public function add($cuenta)
     {
-        echo "estoy en DaoProfiles";
 
         if (($cuenta instanceof Cuenta) && ($cuenta->getProfile() instanceof Profile)) {
-            echo "Paso el filtro en el dao profile";
 
             try {
-                $query = "INSERT INTO " . DaoProfiles::TABLENAME . "( " . DaoProfiles::TABLE_DNI . " , " . DaoProfiles::TABLE_NOMBRE . " , " . DaoProfiles::TABLE_APELLIDO . " , " . DaoProfiles::TABLE_DIRECCION . " , "  . DaoProfiles::TABLE_TELEFONO . " , "  . DaoProfiles::TABLE_IDCUENTA . " ) " .
-                    " VALUES ( " . ":" . DaoProfiles::TABLE_DNI . " , " . ":" . DaoProfiles::TABLE_NOMBRE . " , " . ":" . DaoProfiles::TABLE_APELLIDO . " , " . ":" . DaoProfiles::TABLE_DIRECCION . " , " . ":" . DaoProfiles::TABLE_TELEFONO . " , " . ":" . DaoProfiles::TABLE_IDCUENTA . " ) ; ";
+                $query = "INSERT INTO " . DaoProfiles::TABLE_NAME . "( " . DaoProfiles::COLUMN_DNI . " , " . DaoProfiles::COLUMN_NOMBRE . " , " . DaoProfiles::COLUMN_APELLIDO . " , " . DaoProfiles::COLUMN_DIRECCION . " , "  . DaoProfiles::COLUMN_TELEFONO . " , "  . DaoProfiles::COLUMN_IDCUENTA . " ) " .
+                    " VALUES ( " . ":" . DaoProfiles::COLUMN_DNI . " , " . ":" . DaoProfiles::COLUMN_NOMBRE . " , " . ":" . DaoProfiles::COLUMN_APELLIDO . " , " . ":" . DaoProfiles::COLUMN_DIRECCION . " , " . ":" . DaoProfiles::COLUMN_TELEFONO . " , " . ":" . DaoProfiles::COLUMN_IDCUENTA . " ) ; ";
 
                 $parameters = $this->toArray($cuenta->getProfile());
-                $parameters[DaoProfiles::TABLE_IDCUENTA] = $cuenta->getId();
+                $parameters[DaoProfiles::COLUMN_IDCUENTA] = $cuenta->getId();
 
                 $this->connection = Connection::GetInstance();
 
                 $this->connection->ExecuteNonQuery($query, $parameters);
+
             } catch (Exception $ex) {
                 throw $ex;
             }
@@ -204,13 +176,13 @@ class DaoProfiles implements IDao
         if ($object instanceof Profile) {
            
             if($type == 0){
-                $parameters[DaoProfiles::TABLE_DNI] = $object->getDni();
+                $parameters[DaoProfiles::COLUMN_DNI] = $object->getDni();
             }
             
-            $parameters[DaoProfiles::TABLE_NOMBRE] = $object->getNombre();
-            $parameters[DaoProfiles::TABLE_APELLIDO] = $object->getApellido();
-            $parameters[DaoProfiles::TABLE_DIRECCION] = $object->getDireccion();
-            $parameters[DaoProfiles::TABLE_TELEFONO] = $object->getTelefono();
+            $parameters[DaoProfiles::COLUMN_NOMBRE] = $object->getNombre();
+            $parameters[DaoProfiles::COLUMN_APELLIDO] = $object->getApellido();
+            $parameters[DaoProfiles::COLUMN_DIRECCION] = $object->getDireccion();
+            $parameters[DaoProfiles::COLUMN_TELEFONO] = $object->getTelefono();
         }
 
         return $parameters;
@@ -223,7 +195,7 @@ class DaoProfiles implements IDao
 
         $resp = array_map(
             function ($p) {
-                return new Profile($p[DaoProfiles::TABLE_DNI], $p[DaoProfiles::TABLE_NOMBRE], $p[DaoProfiles::TABLE_APELLIDO], $p[DaoProfiles::TABLE_DIRECCION], $p[DaoProfiles::TABLE_TELEFONO]);
+                return new Profile($p[DaoProfiles::COLUMN_DNI], $p[DaoProfiles::COLUMN_NOMBRE], $p[DaoProfiles::COLUMN_APELLIDO], $p[DaoProfiles::COLUMN_DIRECCION], $p[DaoProfiles::COLUMN_TELEFONO]);
             },
             $value
         );

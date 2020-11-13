@@ -21,7 +21,7 @@
                 $this->controller = ucwords(array_shift($urlArray));
 
             if(empty($urlArray))
-                $this->method = "verificar";
+                $this->method = "typeSession";
             else
                 $this->method = array_shift($urlArray);
 

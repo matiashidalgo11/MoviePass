@@ -80,6 +80,17 @@ class MoviesController {
             include(ROOT . 'views/view-movie.php');
         }
 
+        public function testGetAll(){
+
+            echo "<br>" . "Estoy en el getAll" . "<br>";
+
+            var_dump($this->movieDAO->getAll());
+
+            
+
+
+        }
+
         
 
 

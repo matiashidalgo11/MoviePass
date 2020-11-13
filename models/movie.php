@@ -7,7 +7,7 @@
         private $poster_path;
         private $id;
         private $original_language;
-        private $genre_ids;
+        private $genres;//objeto de generos
         private $title;
         private $overview;
         private $release_date;
@@ -22,7 +22,7 @@
             $this->poster_path = $poster_path;
             $this->id = $id;
             $this->original_language = $original_language;
-            $this->genre_ids = array();
+            $this->genres = array();
             $this->title = $title;
             $this->overview = $overview;
             $this->release_date = $release_date;
@@ -132,21 +132,21 @@
         }
 
         /**
-         * Get the value of genre_ids
+         * Get the value of genres
          */ 
-        public function getGenre_ids()
+        public function getGenres()
         {
-                return $this->genre_ids;
+                return $this->genres;
         }
 
         /**
-         * Set the value of genre_ids
+         * Set the value of genres
          *
          * @return  self
          */ 
-        public function setGenre_ids($genre_ids)
+        public function setGenres($genres)
         {
-                $this->genre_ids = $genre_ids;
+                $this->genres = $genres;
 
                 return $this;
         }

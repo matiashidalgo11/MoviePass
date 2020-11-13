@@ -14,12 +14,12 @@ class DaoCuentas implements IDao
     private static $instance = null;
 
     //Info db
-    const TABLENAME = "cuentas";
-    const TABLE_IDCUENTA = "idCuenta";
-    const TABLE_EMAIL = "email";
-    const TABLE_PASSWORD = "password";
-    const TABLE_PRIVILEGIOS = "privilegios";
-    const TABLE_IDFB = "idFacebook";
+    const TABLE_NAME = "cuentas";
+    const COLUMN_IDCUENTA = "idCuenta";
+    const COLUMN_EMAIL = "email";
+    const COLUMN_PASSWORD = "password";
+    const COLUMN_PRIVILEGIOS = "privilegios";
+    const COLUMN_IDFB = "idFacebook";
 
     private function __construct(){
         
@@ -43,11 +43,13 @@ class DaoCuentas implements IDao
 
 
             try {
-                $query = "INSERT INTO " . DaoCuentas::TABLENAME . " ( " . DaoCuentas::TABLE_EMAIL . " , " . DaoCuentas::TABLE_PASSWORD . " , " . DaoCuentas::TABLE_PRIVILEGIOS . " ) VALUES ( " . ":" . DaoCuentas::TABLE_EMAIL . " , " . ":" . DaoCuentas::TABLE_PASSWORD . " , " . ":" . DaoCuentas::TABLE_PRIVILEGIOS . " );";
+                $query = "INSERT INTO " . DaoCuentas::TABLE_NAME . " ( " . DaoCuentas::COLUMN_EMAIL . " , " . DaoCuentas::COLUMN_PASSWORD . " , " . DaoCuentas::COLUMN_PRIVILEGIOS . " , " . DaoCuentas::COLUMN_IDFB . " ) VALUES ( " . ":" . DaoCuentas::COLUMN_EMAIL . " , " . ":" . DaoCuentas::COLUMN_PASSWORD . " , " . ":" . DaoCuentas::COLUMN_PRIVILEGIOS . " , " .":" . DaoCuentas::COLUMN_IDFB  . " );";
 
-                $parameters[DaoCuentas::TABLE_EMAIL] = $cuenta->getEmail();
-                $parameters[DaoCuentas::TABLE_PASSWORD] = $cuenta->getPassword();
-                $parameters[DaoCuentas::TABLE_PRIVILEGIOS] = $cuenta->getPrivilegios();
+                $parameters[DaoCuentas::COLUMN_EMAIL] = $cuenta->getEmail();
+                $parameters[DaoCuentas::COLUMN_PASSWORD] = $cuenta->getPassword();
+                $parameters[DaoCuentas::COLUMN_PRIVILEGIOS] = $cuenta->getPrivilegios();
+                $parameters[DaoCuentas::COLUMN_IDFB] = $cuenta->getIdFb();
+
 
                 $this->connection = Connection::GetInstance();
 
@@ -55,6 +57,7 @@ class DaoCuentas implements IDao
 
                 //el id se genera en la base de datos, por eso tengo que pedir nuevamente el objeto.
                 $object = $this->getByEmail($cuenta->getEmail());
+
                 $cuenta->setId($object->getId());
             
                 $daoProfile = DaoProfiles::GetInstance();
@@ -69,16 +72,16 @@ class DaoCuentas implements IDao
         }
     }
 
-    public function addByFB($cuenta){
+  /*   public function addByFB($cuenta){
         
         if ($cuenta instanceof Cuenta) {
 
 
             try {
-                $query = "INSERT INTO " . DaoCuentas::TABLENAME . " ( " . DaoCuentas::TABLE_EMAIL . " , " . DaoCuentas::TABLE_IDFB . " ) VALUES ( " . ":" . DaoCuentas::TABLE_EMAIL . " , " . ":" . DaoCuentas::TABLE_IDFB  . " );";
+                $query = "INSERT INTO " . DaoCuentas::TABLE_NAME . " ( " . DaoCuentas::COLUMN_EMAIL . " , " . DaoCuentas::COLUMN_IDFB . " ) VALUES ( " . ":" . DaoCuentas::COLUMN_EMAIL . " , " . ":" . DaoCuentas::COLUMN_IDFB  . " );";
 
-                $parameters[DaoCuentas::TABLE_EMAIL] = $cuenta->getEmail();
-                $parameters[DaoCuentas::TABLE_IDFB] = $cuenta->getIdFb();
+                $parameters[DaoCuentas::COLUMN_EMAIL] = $cuenta->getEmail();
+                $parameters[DaoCuentas::COLUMN_IDFB] = $cuenta->getIdFb();
  
                 $this->connection = Connection::GetInstance();
 
@@ -90,13 +93,14 @@ class DaoCuentas implements IDao
             }
         }
 
-    }
+    } */
 
     public function setIdFb($cuenta){
         if ($cuenta instanceof Cuenta) {
 
             try {
-                $query = "UPDATE " . DaoCuentas::TABLENAME . " SET ". DaoCuentas::TABLE_IDFB." = '". $cuenta->getIdFb() . "' WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $cuenta->getId() ." ;";
+
+                $query = "UPDATE " . DaoCuentas::TABLE_NAME . " SET ". DaoCuentas::COLUMN_IDFB." = '". $cuenta->getIdFb() . "' WHERE " . DaoCuentas::COLUMN_IDCUENTA . " = " . $cuenta->getId() ." ;";
 
  
                 $this->connection = Connection::GetInstance();
@@ -113,17 +117,19 @@ class DaoCuentas implements IDao
     public function getAll()
     {
         try {
-            $cuentaList = array();
+            $listCuentas = array();
 
-            $query = "SELECT * FROM " . DaoCuentas::TABLENAME;
+            $query = "SELECT * FROM " . DaoCuentas::TABLE_NAME;
 
             $this->connection = Connection::GetInstance();
 
             $resultSet = $this->connection->Execute($query);
 
-            $cuentaList = $this->mapeo($resultSet);
+            $listCuentas = $this->mapeo($resultSet);
 
-            return $cuentaList;
+            var_dump($listCuentas);
+
+            /* return $listCuentas; */
 
         } catch (Exception $ex) {
             throw $ex;
@@ -136,7 +142,7 @@ class DaoCuentas implements IDao
         try {
 
 
-            $query = "SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDCUENTA . " = " . $id . " ;";
+            $query = "SELECT * FROM " . DaoCuentas::TABLE_NAME . " WHERE " . DaoCuentas::COLUMN_IDCUENTA . " = " . $id . " ;";
 
             $this->connection = Connection::GetInstance();
 
@@ -162,7 +168,7 @@ class DaoCuentas implements IDao
     {
         try {
 
-            $query = " SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_EMAIL . " = " . "'" . $email . "'";
+            $query = " SELECT * FROM " . DaoCuentas::TABLE_NAME . " WHERE " . DaoCuentas::COLUMN_EMAIL . " = " . "'" . $email . "'";
 
             $this->connection = Connection::GetInstance();
 
@@ -185,27 +191,11 @@ class DaoCuentas implements IDao
     }
 
 
-    public function mapeo($value)
-    {
-
-        $value = is_array($value) ? $value : [];
-
-        $resp = array_map(
-            function ($p) {
-                return new Cuenta($p[DaoCuentas::TABLE_IDCUENTA], $p[DaoCuentas::TABLE_EMAIL], $p[DaoCuentas::TABLE_PASSWORD], $p[DaoCuentas::TABLE_PRIVILEGIOS]);
-            },
-            $value
-        );
-
-
-        return $resp;
-    }
-
     public function exist($email)
     {
         try {
 
-            $query = "SELECT EXISTS ( SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_EMAIL . " = " . "'" . $email . "'" . ");";
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoCuentas::TABLE_NAME . " WHERE " . DaoCuentas::COLUMN_EMAIL . " = " . "'" . $email . "'" . ");";
 
             $this->connection = Connection::GetInstance();
 
@@ -225,7 +215,7 @@ class DaoCuentas implements IDao
 
         try {
 
-            $query = "SELECT EXISTS ( SELECT * FROM " . DaoCuentas::TABLENAME . " WHERE " . DaoCuentas::TABLE_IDFB . " = " . "'" . $idFb . "'" . ");";
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoCuentas::TABLE_NAME . " WHERE " . DaoCuentas::COLUMN_IDFB . " = " . "'" . $idFb . "'" . ");";
 
             $this->connection = Connection::GetInstance();
 
@@ -240,18 +230,32 @@ class DaoCuentas implements IDao
         }
     }
 
-    public function verificar($email, $password)
-    {
+       //Agregar el perfil tambien
+       public function mapeo($value)
+       {
+   
+           $value = is_array($value) ? $value : [];
+   
+           $resp = array_map(
+               function ($p) {
 
-        if ($this->exist($email)) {
+                   $object =  new Cuenta($p[DaoCuentas::COLUMN_IDCUENTA], $p[DaoCuentas::COLUMN_EMAIL], $p[DaoCuentas::COLUMN_PASSWORD], $p[DaoCuentas::COLUMN_PRIVILEGIOS]);
 
-            $cuenta = $this->getByEmail($email);
+                   $daoProfile = DaoProfiles::GetInstance();
 
-            if ($cuenta != false) {
-                if ($cuenta->getPassword() == $password) {
-                    $_SESSION['cuenta'] = $cuenta;
-                }else return 2;
-            }
-        }else return 1;
-    }
+                   $object->setProfile($daoProfile->getByIdCuenta($object->getId()));
+
+                   return $object;
+               
+                },
+               $value
+           );
+   
+   
+           return $resp;
+       }
+
+    
+
+
 }

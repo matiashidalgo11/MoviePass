@@ -46,7 +46,7 @@
                 $mail->isHTML(true);                                  // Set email format to HTML
                 $mail->Subject = 'Tickets';
             
-                $mail->Body= "";
+                $mail->Body= "le enviamos los tickets";
 
                 $mail->send();
                 echo 'Message has been sent';

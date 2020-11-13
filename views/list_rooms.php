@@ -12,7 +12,7 @@ include_once(VIEWS_PATH."header.php");
 <div class="container">
     <h1 class="text-info">Cine: <?= $idCine;?></h1>
         
-
+       
         <form class="form-inline" action="<?php echo FRONT_ROOT?>RoomController/ShowAdd" method = "POST">
                     <label><h2 style="color:black">LISTADO DE SALAS</h2></label>
                     <input type = "hidden" name = "id" id = "idCine" required value="<?= $idCine?>">

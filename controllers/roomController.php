@@ -59,6 +59,7 @@ class RoomController{
 
         $roomList = $this->DaoRoom->getRoomsXcinema($idCine);
 
+ 
         require_once(VIEWS_PATH."list_rooms.php");
     
     }

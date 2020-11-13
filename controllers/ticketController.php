@@ -21,11 +21,10 @@ class TicketController
     public function add($compra,$funcion)
     {
         $ticket=new Ticket($compra,$funcion);
-
         try
         {
-
             $this->ticketDao->Add($ticket);
+            $this->email->sendTickets("santiago.mdp@gmail.com",$ticket);
         }
         catch(PDOException $e)
         {

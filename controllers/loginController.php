@@ -4,8 +4,8 @@
 
         function init(){
 
+            //Creo la url para redireccionar cuando vuelva de facebook si entra por fb
             require_once ('config/configFB.php');
-
 
             $redirectTo = "http://localhost/MoviePass/fb-callback.php";
             $data = ['email'];

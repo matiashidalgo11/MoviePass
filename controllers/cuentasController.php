@@ -29,6 +29,10 @@ class CuentasController
             else if ($validator == 2) $_SESSION['loginValidator']['passValidator'] = "is-invalid"; 
             $_SESSION['loginValidator']['emailIngresado'] = $email; 
 
+            if ($validator == 1) $_SESSION['loginValidator']['emailValidator']= "is-invalid";
+            else if ($validator == 2) $_SESSION['loginValidator']['passValidator'] = "is-invalid";
+            $_SESSION['loginValidator']['emailIngresado'] = $email;
+
             $loginController = new LoginController();
             $loginController->init();
 
@@ -145,6 +149,8 @@ class CuentasController
         unset($_SESSION['fb-userData']);
 
         unset($_SESSION['cuenta']);
+
+        unset($_SESSION['loginValidator']);
 
         session_destroy();
 

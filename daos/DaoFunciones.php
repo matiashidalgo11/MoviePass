@@ -101,17 +101,17 @@ class DaoFunciones {
         $funcion_list =array();
         try
         {
-            $sql = "SELECT * from funciones order by dateF";
+            $sql = "SELECT * from funciones order by dayFuncion;";
             $this->connection = Connection::getInstance();
-            $resultSet = $this->connection->Execute($sql, $parameters);
+            $resultSet = $this->connection->Execute($sql);
             if(!empty($resultSet)) {
                 foreach ($resultSet as $row) {
-                    return $this->parseToObject($row);
+                   $funcion= $this->parseToObject($row);
                     $idRoom = $row["idRoom"];
                     $idMovie = $row["idMovie"];
-                    $DaoRoom = new roomDao();
+                    $DaoRoom = new daoRoom();
                     $room = $DaoRoom->GetById($idRoom);
-                    $DaoMovie = new movieDao();
+                    $DaoMovie = DaoMovies::GetInstance();
                     $movie = $DaoMovie->GetById($idMovie);
                     $funcion->setRoom($room);
                     $funcion->setMovie($movie);
@@ -201,9 +201,9 @@ class DaoFunciones {
                     $funcion =$this->parseToObject($row);
                     $idRoom = $row["idRoom"];
                     $idMovie = $row["idMovie"];
-                    $DaoRoom = new roomDao();
+                    $DaoRoom = new DaoRooms();
                     $room = $DaoRoom->GetById($idRoom);
-                    $DaoMovie = new movieDao();
+                    $DaoMovie = DaoMovies::GetInstance();
                     $movie = $DaoMovie->GetById($idMovie);
                     $funcion->setRoom($room);
                     $funcion->setMovie($movie);

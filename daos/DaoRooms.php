@@ -100,8 +100,9 @@ class DaoRooms {
     }
     
     //faltaria testear
-    public function Update($idRoom){
-        $sql = "UPDATE rooms (:nombre,:capacidad,:precio) where idRoom= $idRoom";
+    public function Update($room){
+        $sql = "UPDATE rooms set nombre= :nombre, capacidad= :capacidad, precio= :precio where idRoom= " . $room->getId() . ";";
+        echo $sql;
         try{
         $parameters['nombre'] = $room->getNombre(); 
         $parameters['capacidad'] = $room->getCapacidad(); 

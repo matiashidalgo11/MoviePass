@@ -35,13 +35,14 @@ class RoomController{
     }
 
     public function remove($idRoom){
-        $this->DaoCine->remove($idRoom);
-        $this->GetAll();
+        $this->DaoRoom->remove($idRoom);
+        $this->DaoRoom->GetAll();
     } 
 
-    public function Update($nombre, $precio, $capacidad,$idCine){
+    public function Update($idRoom, $nombre, $precio, $capacidad, $idCine){
         $cine = $this->DaoCine->getById($idCine);
         $room = new Room($nombre, $precio, $capacidad, $cine);
+        $room->setId($idRoom);
         $this->DaoRoom->Update($room);
     }
 

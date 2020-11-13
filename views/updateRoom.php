@@ -17,7 +17,9 @@
                 </div>
             </div>
 
-        <form action="<?php echo FRONT_ROOT ;?>/RoomController/Update" method="POST"> 
+        <form action="<?php echo FRONT_ROOT ;?> RoomController/Update" method="POST"> 
+
+                <input type="hidden" name="idRoom" value='<?php echo $room->getId(); ?>'>
 
                 <label class="text-light">Nombre: </label>
                 <input type="text" name="nombre"></input>
@@ -27,10 +29,10 @@
 
                 <label class="text-light">Capacidad:</label>
                 <input type="number" name="capacity"></input>
+                
+                <input type="hidden" name="idCine" value="<?php echo $room->getCine()->getId(); ?>"> 
 
-                <input type="hidden" name="idCine" value="<?php echo $room->getCine(); ?>"/> 
-
-                <button type="submit" class='btn text-light'> 
+                <button type="submit" name="actualizar" class='btn text-light'> 
                 Actualizar
             </button>
 

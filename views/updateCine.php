@@ -13,7 +13,7 @@
             </div>
 
         <form action="<?php echo FRONT_ROOT ;?>/CineController/Update" method="POST"> 
-                <input type="hidden" name="ID" value='<?php echo $cine->getId(); ?>'>
+                <input type="hidden" name="idCine" value='<?php echo $cine->getId(); ?>'>
 
                 <label class="text-light">Nombre: </label>
                 <input type="text" name="nombre"></input>

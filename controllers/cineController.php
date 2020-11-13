@@ -31,8 +31,9 @@
             
         }
 
-        public function Update($nombre,$direccion){
-            $cine = new Cine($nombre, $direccion,);
+        public function Update($idCine, $nombre, $direccion){
+            $cine = new Cine($nombre, $direccion);
+            $cine->setId($idCine);
             $this->cineDao->Update($cine);
         }
 

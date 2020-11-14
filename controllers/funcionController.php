@@ -20,17 +20,17 @@
 
         public function Add( $idMovie, $idRoom, $date, $hour){
 
-            $funcion = new Funcion();
-            $movie = $this->movieDao->GetById($idMovie);// No tiene get el DaoMovies
-            $funcion->setMovie($movie);
-            $room = $this->roomDao->GetById($idRoom);
-
-            $funcion->setRoom($room);
-            $funcion->setDate($date);
-            $funcion->setHour($hour);
-
-
-            $this->funcionDao->add($funcion);
+            if(!($this->funcionDao->funcionExistence($idMovie,$date)))
+            {
+                $funcion = new Funcion();
+                $movie = $this->movieDao->GetById($idMovie);
+                $funcion->setMovie($movie);
+                $room = $this->roomDao->GetById($idRoom);
+                $funcion->setRoom($room);
+                $funcion->setDate($date);
+                $funcion->setHour($hour);
+                $this->funcionDao->add($funcion);
+            }
 
             $this->listFunciones();
         }

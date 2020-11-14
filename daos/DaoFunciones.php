@@ -297,5 +297,47 @@ class DaoFunciones {
        
     }
 
+    public function funcionExistence($idMovie,$day)
+    {
+        $sql="SELECT COUNT(idMovie) as MovieScreen FROM funciones WHERE dayFuncion=".'"'.$day.'"'. "and idMovie=".$idMovie.  ";";
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $value=$this->connection->Execute($sql);
+
+            foreach($value as $valueArray)
+            {
+                if($valueArray['MovieScreen']>0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        catch(PDOException $e)
+        {
+            throw $e;
+        }  
+    }
+
+   public function consultSales()
+   {
+       $sql="SELECT f.idFuncion,f.soldTickets,(r.capacidad-f.soldTickets) as remanentes from funciones as f INNER JOIN rooms as r ON f.idRoom=r.idRoom
+                GROUP by f.idFuncion;";
+
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            return $resultSet;
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+   }
+
 
 }

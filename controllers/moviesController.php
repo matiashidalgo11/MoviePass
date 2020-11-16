@@ -69,8 +69,8 @@ class MoviesController {
             
             $movie = $this->movieDAO->getById($idMovie);
             $daoFunciones = new DaoFunciones();
-            $funcionList = $daoFunciones->searchByName($movie->getTitle());
-            var_dump($funcionList);
+            $funcionesList = $daoFunciones->searchByName($movie->getTitle());
+            var_dump($funcionesList);
             $this->homeController->navBar();
             include(ROOT . 'views/view-movie.php');
         }

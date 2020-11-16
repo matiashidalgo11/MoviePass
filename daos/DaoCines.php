@@ -12,6 +12,8 @@ class DaoCines {
    
 private $connection;
 
+const COLUMN_ENABLED = "enabled";
+
     public function __construct(){
 
     }
@@ -91,20 +93,39 @@ public function Update($cine){
             return $cineList;
         }
 
-    public function remove($idCine){
-            $value =0;
-            try
-            {
-                $parameters['idCine'] = $idCine;
-                $sql = "DELETE from cines where idCine=:idCine";  
-                $this->connection=Connection::getInstance();
-                $value = $this->connection->ExecuteNonQuery($sql,$parameters);
-            }
-                catch(PDOException $ex){
-                throw $ex;
-            }
-            return $value;
+public function GetEnabled(){
+    $sql = "SELECT * FROM cines where" . DaoCines::COLUMN_ENABLED . "=1";
+    $cineList = array();
+    try{
+        $this->connection = Connection::GetInstance();
+        $resultSet = $this->connection->Execute($sql);
+        
+        if(!empty($resultSet)){ 
+            foreach ($resultSet as $row) {
+                $aux = $this->parseToObject($row);
+                array_push($cineList,$aux);
+            }  
         }
+        } catch (PDOException $ex) { 
+            throw $ex; 
+        } 
+    return $cineList;
+}
+
+public function remove($idCine){
+    $value =0;
+    try
+    {
+        $parameters['idCine'] = $idCine;
+        $sql = "UPDATE cines set" . DaoCines::COLUMN_ENABLED . " = 0 where idCine= $idCine";  
+         $this->connection=Connection::getInstance();
+         $value = $this->connection->ExecuteNonQuery($sql,$parameters);
+    }
+        catch(PDOException $ex){
+        throw $ex;
+    }
+    return $value;
+}
 
     public function parseToObject($value)
     {

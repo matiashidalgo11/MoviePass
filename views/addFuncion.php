@@ -20,7 +20,7 @@
                                         <form action="<?php echo FRONT_ROOT; ?>funcionController/Add" method="POST"> 
                                             <div>
                                                 <label class="text-light">Pelicula</label>
-                                                <select name="idMovie" id="funcionMovie">
+                                                <select name="idMovie" id="funcionMovie" required>
                                                     <?php foreach ($moviesArray as $value): ?> 
                                                     <option value="<?php echo $value->getId();?>">
                                                         <?php echo $value->getTitle();?>
@@ -40,7 +40,6 @@
                                                 <label class="text-light" for="funcionHour">Hora</label>
                                                 <input type="time" name="hour" id="funcionHour" placeholder="Ingrese una fecha" required>
                                             </div>
-                                        </form>
 	                                </div>
                                 </td>
                             </tr>
@@ -52,23 +51,6 @@
                 </td>
             <tr>
         </div>
+        </form>
     </table>
 </body>
-
-               
-                <div>
-                    <label>Fecha</label>
-                    <input type="date" name="date" id="funcionDate" placeholder="Ingrese una fecha" required>
-                </div>
-                <div class="col-md">
-                    <label for="funcionHour">Hora</label>
-                    <input type="time" name="hour" id="funcionHour" placeholder="Ingrese una fecha" required>
-                </div>
-            </div>
-            <div>
-                <input type="submit" name="submit" style="text-align: right;" value="Agregar">
-            </div>
-        </form>
-	</div>
-	</body>
-</main>

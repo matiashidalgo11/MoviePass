@@ -154,26 +154,18 @@ textbox {
             <div class="row" >   
                 <div class="col-md-8">
                             
-                                    <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Generos
-                                    </a>
-                                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <?php foreach ($listGenres as $genre) { ?>
-
-                                        <form action="<? echo FRONT_ROOT ?> funcionController/SearchByGenre" method="post">
-
-                                        <input type="hidden" value="<?= $genre->getId(); ?>" name="idGenre">
-
-                                        <button class="dropdown-item" type="submit"> <?= $genre->getName(); ?> </button>
-
-                                        </form>
-
-                                    <?php } ?>
-                                    <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Todo</a>
-                                    </div>
-                                </li>
+                                
+                  <form action="<?php echo FRONT_ROOT?> funcionController/SearchByGenre" method="POST">
+                  <label for="cars">Elija genero:</label>
+                  <select id="idGender" name="idGender">
+                             <?php foreach ($listGenres as $genre) { ?>
+                                              <option value="<?= $genre->getId(); ?>"><?= $genre->getName(); ?></option>
+                                              <?php } ?>
+                                          
+                    </select>
+                             <input type="submit">
+                    </form>
+       
                     <div class="textbox">
                         <form  action="<?php echo FRONT_ROOT?> funcionController/SearchByDate" method = "POST">
                             <input id="inputDate" type="date" name="date">

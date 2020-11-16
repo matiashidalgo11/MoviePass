@@ -42,15 +42,6 @@ class DaoFunciones {
         }
     }
 
-    public function GetById($id) {  
-        try {  
-             $sql = "SELECT * FROM funciones WHERE idFuncion = ".$id.";"; 
-             $this->connection = Connection::getInstance(); 
-             $resultSet = $this->connection->Execute($sql);
- 
-
-
-
     public function GetAll() {
        
         $funcionesList=array();

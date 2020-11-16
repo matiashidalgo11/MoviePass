@@ -256,6 +256,26 @@ class DaoFunciones {
         {
             $this->connection=Connection::GetInstance();
             $value=$this->connection->Execute($sql);
+    
+
+            foreach($value as $valueArray)
+            {
+                if($valueArray['MovieScreen']>0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        catch(PDOException $e)
+        {
+            throw $e;
+        }  
+    }
+
     public function getAllByDateRoom($date,$idRoom){
         $sql="SELECT f.id, f.date ,f.time, r.id, r.capacidad, r.precio, m.popularity, m.video, m.id, m.original_language, m.genre_ids, m.title, m.overview, m.release_date, m.enabled from funciones f inner join movies m on f.idMovie = m.id inner join rooms r on r.idRoom = f.idRoom where f.date = :date and r.idRoom = :idRoom";
         try {
@@ -281,24 +301,6 @@ class DaoFunciones {
             throw $e;
         }
         return $funcion_list;
-    }
-
-            foreach($value as $valueArray)
-            {
-                if($valueArray['MovieScreen']>0)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-        }
-        catch(PDOException $e)
-        {
-            throw $e;
-        }  
     }
 
    public function consultSales()

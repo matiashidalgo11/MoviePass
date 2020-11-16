@@ -37,9 +37,7 @@ class TicketController
         $ticketList=array();
         try
         {
-
-            $ticketList=$this->ticketDao->getAll();
-            
+            $ticketList=$this->ticketDao->getAll();    
         }
         catch(PDOException $e)
         {
@@ -49,25 +47,17 @@ class TicketController
     
     public function ticketViewByUser()
     {
-
         $cuentaId=$_SESSION['cuenta']->getId();
-
         $ticketList=array();
-
         try
         {
             $ticketList=$this->ticketDao->ticketByUser($cuentaId);
-
-
         }
         catch(PDOException $e)
         {
 
             echo $e->getMessage();
         }
-
-
-
         require_once(VIEWS_PATH."ticketView.php");
     }
 

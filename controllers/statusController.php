@@ -1,8 +1,9 @@
 <?php namespace controllers;
 
-    use config\ConfigFb as ConfigFb;
+use config\ConfigFb as ConfigFb;
 use daos\DaoCuentas;
 use models\Cuenta;
+use daos\DaoGenres as DaoGenres;
 
 class StatusController {
 
@@ -30,7 +31,6 @@ class StatusController {
                             echo "Estoy logeado como usuario";
                             $funcionDao = new funcionController();
                             $funcionDao->listFunciones();
-
                         }
 
                     }else{

@@ -4,18 +4,21 @@
     use daos\DaoMovies as movieDao;
     use daos\DaoRooms as roomDao;
     use models\Funcion as funcion;
-    
+    use daos\DaoGenres as DaoGenders;
+use PDOException;
 
-    class funcionController
+class funcionController
     {
         private $funcionDao;
         private $movieDao;
         private $roomDao;
+        private $genderDao;
 
         function __construct(){
             $this->funcionDao = new funcionDao();
             $this->movieDao = movieDao::GetInstance();
             $this->roomDao = new roomDao();
+            $this-> genderDao = DaoGenders::GetInstance();
         }
 
         public function Add( $idMovie, $idRoom, $date, $hour){
@@ -50,8 +53,6 @@
         }
 
         public function showAdd($idRoom){
-            
-
             $moviesArray = $this->movieDao->getAll();
 
             require_once(VIEWS_PATH."addFuncion.php");
@@ -60,10 +61,46 @@
         public function listFunciones(){
 
             $funcionesList = $this->funcionDao->getAll();
-
-
+            $listGenres= $this->genderDao->getAll();
             require_once(VIEWS_PATH."cine.php");
 
+        }
+
+        public function SearchByName($nameMovie)
+        {
+            echo $nameMovie;
+            $funcionesList=array();
+            $listGenres= $this->genderDao->getAll();
+            try
+            {
+             $funcionesList=$this->funcionDao->searchByName($nameMovie);    
+            }catch(PDOException $e)
+            { $e->getMessage();}
+            require_once(VIEWS_PATH."cine.php");
+        }
+
+        public function SearchByDate($date)
+        {
+            $funcionesList=array();
+            $listGenres= $this->genderDao->getAll();
+            try
+            {
+             $funcionesList=$this->funcionDao->searchByDate($date);    
+            }catch(PDOException $e)
+            { $e->getMessage();}
+            require_once(VIEWS_PATH."cine.php");
+        }
+
+        public function SearchByGenre($idGenre)
+        {
+            $funcionesList=array();
+            $listGenres= $this->genderDao->getAll();
+            try
+            {
+             $funcionesList=$this->funcionDao->searchByGenre($idGenre);    
+            }catch(PDOException $e)
+            { $e->getMessage();}
+            require_once(VIEWS_PATH."cine.php");
         }
 
     }

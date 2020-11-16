@@ -339,5 +339,67 @@ class DaoFunciones {
         }
    }
 
+   public function searchByName($nameMovie)
+   {
+       $funcionesList=array();
+       $sql="SELECT * FROM funciones as f INNER JOIN movies as m ON f.idMovie=m.idMovie WHERE m.title LIKE '%". $nameMovie . "%';";
+       echo $sql;
+       try
+       {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            foreach($resultSet as $value)
+            {
+                array_push($funcionesList,$this->parseToObject($value));
+            }
+            return $funcionesList;
+
+       }catch(PDOException $e)
+       {
+           throw $e;
+       }
+   }
+
+   public function searchByDate($date)
+   {
+       $funcionesList=array();
+       $sql="SELECT * FROM funciones WHERE dayFuncion=".'"'.$date.'"'.";";
+       try
+       {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            foreach($resultSet as $value)
+            {
+                array_push($funcionesList,$this->parseToObject($value));
+            }
+            return $funcionesList;
+
+       }catch(PDOException $e)
+       {
+           throw $e;
+       }
+   }
+
+   public function searchByGenre($idGender)
+   {
+       $funcionesList=array();
+      $sql="SELECT * FROM funciones as f INNER JOIN moviesxgeneros as mxg ON f.idMovie=mxg.idMovie WHERE mxg.idGenero=".$idGender.";";
+      try
+      {
+        $this->connection=Connection::GetInstance();
+        $resultSet=$this->connection->Execute($sql);
+        foreach($resultSet as $value)
+        {
+            array_push($funcionesList,$this->parseToObject($value));
+        }
+        return $funcionesList;
+      }catch(PDOException $e)
+      {
+          throw $e;
+      }
+
+        
+   }
+
 
 }

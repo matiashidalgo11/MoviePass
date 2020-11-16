@@ -21,7 +21,7 @@ class DaoPagos
     {
         $sql="INSERT INTO pagos (idCompra,total) VALUES (:idCompra,:total);";
 
-        $parameters['codigoPago']=$compra->getIdCompra();
+        $parameters['idCompra']=$compra->getIdCompra();
         $parameters['total']=$total;
 
         try
@@ -61,6 +61,8 @@ class DaoPagos
         $pago= new Pago($value['idPago'],$value['total'],$value['idCompra']);
         return $pago;
     }
+
+    
 
 
 

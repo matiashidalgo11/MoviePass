@@ -40,7 +40,7 @@ class DaoProfiles implements IDao
        
         if($profile instanceof Profile){
             
-            if($this->exist($profile)){
+            if($this->exist($profile->getDni())){
 
                 try{
 

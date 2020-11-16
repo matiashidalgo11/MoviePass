@@ -33,8 +33,59 @@ class DaoCuentas implements IDao
         return self::$instance;
     }
 
-    public function delete($dato){
-        //desarrollar
+    public function update($cuenta){
+        
+       
+            if($cuenta instanceof Cuenta){
+                
+                if($this->exist($cuenta->getEmail())){
+    
+                    try{
+    
+                    $query = "UPDATE " . DaoCuentas::TABLE_NAME .
+                    " SET " . DaoCuentas::COLUMN_EMAIL . " = :" . DaoCuentas::COLUMN_EMAIL . " , ".
+                    DaoCuentas::COLUMN_PASSWORD . " = :" . DaoCuentas::COLUMN_PASSWORD . " , ".
+                    DaoCuentas::COLUMN_PRIVILEGIOS . " = :". DaoCuentas::COLUMN_PRIVILEGIOS . " , ".
+                    DaoCuentas::COLUMN_IDFB . " = :" . DaoCuentas::COLUMN_IDFB . 
+                    " WHERE " . DaoCuentas::COLUMN_IDCUENTA . " = " . $cuenta->getId() . " ;";
+    
+                    $parameters = $this->toArray($cuenta,1);
+    
+                    $this->connection = Connection::GetInstance();
+    
+                    $this->connection->ExecuteNonQuery($query, $parameters);
+    
+                    $daoProfile = DaoProfiles::GetInstance();
+                    $daoProfile->update($cuenta->getProfile());
+    
+                    }
+                    catch (Exception $ex) {
+                        throw $ex;
+                    }
+    
+                }
+            }
+        
+    }
+
+    public function toArray($object, $type = 0)
+    {
+
+        $parameters = array();
+
+        if ($object instanceof Cuenta) {
+           
+            if($type == 0){
+                $parameters[DaoCuentas::COLUMN_IDCUENTA] = $object->getId();
+            }
+
+            $parameters[DaoCuentas::COLUMN_EMAIL] = $object->getEmail();
+            $parameters[DaoCuentas::COLUMN_PASSWORD] = $object->getPassword();
+            $parameters[DaoCuentas::COLUMN_PRIVILEGIOS] = $object->getPrivilegios();
+            $parameters[DaoCuentas::COLUMN_IDFB] = $object->getIdFb();
+        }
+
+        return $parameters;
     }
     
     public function add($cuenta)

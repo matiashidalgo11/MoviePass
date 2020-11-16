@@ -20,16 +20,12 @@
                                       <form action="<?php echo FRONT_ROOT?>CineController/add" method="POST">
                                         <div>
                                           <label for="cine" class="text-light" style="width: 68px">Nombre</label>
-                                          <input type="text" name="nombre_cine" id="nombre_cine" require>
+                                          <input type="text" name="nombre_cine" id="nombre_cine" required>
                                         </div>
                                         <div>
                                           <label for="cine" class="text-light">Direccion</label>
-                                          <input type="text" name="direccion" id="direccion" require>
+                                          <input type="text" name="direccion" id="direccion" required>
                                         </div>
-                                        <div>
-                                            <button type="submit" class='btn text-light' style="background-color: red; font-size: 17px; border-radius: 4px; width: 150px">Agregar</button>
-                                        </div>
-                                        </form>
 	                                </div>
                                 </td>
                             </tr>
@@ -38,5 +34,6 @@
                 </td>
             <tr>
         </div>
+        </form>
     </table>
 </body>

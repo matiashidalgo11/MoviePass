@@ -16,11 +16,11 @@
                     <p>
                         <div>
                             <label class="text-light">Nombre</label>
-                            <input type="text" name="nombre" id="nombre" disabled placeholder="<?php echo $cine->getNombre();?>" required>
+                            <input type="text" name="nombre" id="nombre" disabled placeholder="<?php echo $cine->getNombre();?>" >
                         </div>
                         <div>
                             <label class="text-light">Direccion</label>
-                            <input type="text" name="direccion" id="direccion" disabled placeholder="<?php echo $cine->getDireccion();?>" required>
+                            <input type="text" name="direccion" id="direccion" disabled placeholder="<?php echo $cine->getDireccion();?>" >
                         </div><hr>
                     </p>
 		        </td>
@@ -34,11 +34,11 @@
                                 <tr>
                                     <td>
                                         <div>
-                                            <label class="text-light" style="width: 70px">Nombre: </label>
+                                            <label class="text-light" style="width: 70px" required>Nombre: </label>
                                             <input type="text" name="nombre"></input>
                                         </div>
                                         <div>
-                                            <label class="text-light" >Direccion:</label>
+                                            <label class="text-light" required>Direccion:</label>
                                             <input type="text" name="direccion"></input>
                                         </div>
                                     </td>

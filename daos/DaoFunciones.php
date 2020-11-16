@@ -13,6 +13,7 @@ use PDOException;
 
 class DaoFunciones {
     private $connection;
+    const COLUMN_ENABLED = "enabled";
 
     private $movieDao;
 
@@ -234,7 +235,44 @@ class DaoFunciones {
         }
     }
 
-    //Falta remove
+
+    public function GetEnabled(){
+        $sql = "SELECT * FROM funciones where" . DaoFunciones::COLUMN_ENABLED . "=1";
+        $funcionList = array();
+        try{
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($sql);
+            if(!empty($resultSet)){ 
+                foreach ($resultSet as $row) {
+                    $aux = $this->parseToObject($row);
+                    array_push($funcionList,$aux);
+                }  
+            }
+            } catch (PDOException $ex) { 
+                throw $ex; 
+            } 
+        return $funcionList;
+    }
+
+    public function remove($idFuncion)
+	{
+      
+        try
+        {
+
+            $sql = "UPDATE funcion set " . DaoRooms::COLUMN_ENABLED . " = 0 where idFuncion = $idFuncion";  
+             
+            $this->connection=Connection::getInstance();
+
+            $value = $this->connection->ExecuteNonQuery($sql);
+
+        }
+            catch(Exception $ex){
+            throw $ex;
+        }
+       
+    }
+
     public function removeByIdRoom($idRoom)
 	{
         try

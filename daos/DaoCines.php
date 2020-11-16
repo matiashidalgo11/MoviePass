@@ -130,7 +130,7 @@ public function remove($idCine){
     public function consultTotal()
     {
         $sql= "SELECT r.idCine,  IFNULL(SUM(p.total),0) as recaudacion FROM rooms as r INNER JOIN funciones as f ON r.idRoom=f.idRoom INNER JOIN compras as c ON f.idFuncion=c.idFuncion INNER JOIN pagos as p ON p.idCompra=c.idCompra
-                    GROUP BY f.idRoom;";
+                    GROUP BY r.idCine;";
 
         try
         {

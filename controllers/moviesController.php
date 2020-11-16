@@ -68,6 +68,17 @@ class MoviesController {
         }
        
 
+        public function testGetAll(){
+
+            echo "<br>" . "Estoy en el getAll" . "<br>";
+
+            var_dump($this->movieDAO->getAll());
+
+            
+
+
+        }
+
         
 
 

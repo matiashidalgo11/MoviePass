@@ -7,8 +7,10 @@ use daos\DaoGenres as DaoGenres;
 
 class StatusController {
 
-        function verificar(){  
+        //Verifica que tipo se sesion se encuentra activa (Admin, usuario) y devulve la vista inicial
+        function typeSession(){  
             
+            //Filtro para el callback de la api de facebook
             if(isset($_SESSION['fb-userData'])){
 
                 $cuentasController = new CuentasController();

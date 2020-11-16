@@ -28,8 +28,8 @@
 
 	session_start();
 
+	//Colocar en las views
 	require_once(VIEWS_PATH . "header.php");
-
 
 	Router::Route(new Request());
 

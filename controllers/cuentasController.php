@@ -3,39 +3,59 @@
 namespace controllers;
 
 use daos\DaoCuentas as DaoCuentas;
+use daos\DaoProfiles;
 use models\Cuenta as Cuenta;
 use models\Profile as Profile;
 use PDOException;
 
 class CuentasController
 {
+    private $daoCuenta;
+    private $statusController;
+    private $loginController;
 
+    function __construct()
+    {
+        $this->daoCuenta = DaoCuentas::GetInstance();
+        $this->statusController = new StatusController();
+        $this->loginController = new LoginController();
+    }
+
+
+    //Verificacion normal ingresando email y password;
     public function verificar($email = "", $password = "")
     {
 
-        $DaoCuentas = DaoCuentas::GetInstance();
+        
+        if($this->daoCuenta->exist($email)){
+            //Se encuentra el email;
+            $cuenta = $this->daoCuenta->getByEmail($email);
 
-        $validator = $DaoCuentas->verificar($email, $password);
+            if ($cuenta->getPassword() == $password) {
+                //Login existoso
+                $_SESSION['cuenta'] = $cuenta;
 
 
-        if (!isset($validator) && isset($_SESSION['cuenta'])) {
-           
-            $statusController = new StatusController();
-            $statusController->verificar();
+                $this->statusController->typeSession();
 
-        } else {
-            //Devuelve el login cuando no lo es
+            }else {
+                //pass incorrecto
+                $_SESSION['loginValidator']['passValidator'] = "is-invalid";
+                $_SESSION['loginValidator']['emailValidator']= "is-valid";
+                $this->loginController->init();
+            }
 
-            if ($validator == 1) $_SESSION['loginValidator']['emailValidator']= "is-invalid";
-            else if ($validator == 2) $_SESSION['loginValidator']['passValidator'] = "is-invalid";
-            $_SESSION['loginValidator']['emailIngresado'] = $email;
+        }else{
+            //no existe una cuenta;
+            $_SESSION['loginValidator']['emailValidator']= "is-invalid";
 
-            $loginController = new LoginController();
-            $loginController->init();
 
+            $this->loginController->init();
         }
+
     }
 
+    //Verificacion via api de fb
     public function verificarByFb()
     {
 
@@ -45,36 +65,30 @@ class CuentasController
             $email = $_SESSION['fb-userData']['email'];
             $idFb = $_SESSION['fb-userData']['id'];
 
-            
 
-            echo "Estoy logeado como facebook user";
+            if ($this->daoCuenta->exist($email)) {
 
-            $daoCuentas = DaoCuentas::GetInstance();
-
-            if ($daoCuentas->exist($email)) {
+                
                 //borro los datos traidos de la api
                 unset($_SESSION['fb-userData']);
 
-                $cuenta = $daoCuentas->getByEmail($email);
+                $cuenta = $this->daoCuenta->getByEmail($email);
                 
-                if (!($daoCuentas->existIdFb($idFb))) {
+                //Si no existe un idFb asociado se lo setea
+                if (!($this->daoCuenta->existIdFb($idFb))) {
 
-                    echo "PASO POR DONDE NO EXISTE EL IDFB";
                     $cuenta->setIdFb($idFb);
-                    $daoCuentas->setIdFb($cuenta);
-                    //llamo statuscontroller para mostrar una vista a un usuario que le faltan datos que rellenar
-                    //existe el mail pero no existe una entrada desde fb
+                    $this->daoCuenta->setIdFb($cuenta);
 
                 }
-                $_SESSION['cuenta'] = $cuenta;
-                $statusController = new StatusController();
-                $statusController->verificar();
-                //llamo statuscontroller para mostrar la vista de usuario normal
 
-                
+                $_SESSION['cuenta'] = $cuenta;
+
+                $this->statusController->typeSession();
+         
 
             } else {
-
+                //llamo a registrarse con los datos de fb api desde el sesion
                 $this->registrarse();
 
             }
@@ -87,53 +101,49 @@ class CuentasController
         include "views/register.php";
     }
 
-    public function crear($email, $password, $rPassword, $dni, $nombre, $apellido, $telefono, $direccion, $idFb)
+    public function crear($email, $password, $rPassword, $dni, $nombre, $apellido, $telefono, $direccion, $idFb = "")
     {
+        $daoProfile = DaoProfiles::GetInstance();
+ 
+        $_SESSION['registerValidator']['email'] = ($this->daoCuenta->exist($email))? 'is-invalid' : 'is-valid';
+        
+        $_SESSION['registerValidator']['dni'] = ($daoProfile->exist($dni)) ? 'is-invalid' : 'is-valid';
 
-        if ($password == $rPassword) {
+        $_SESSION['registerValidator']['password'] = ($password != $rPassword) ? 'is-invalid' : 'is-valid';
+    
 
-            $profile = new Profile($dni, $nombre, $apellido, $direccion, $telefono);
+        if($_SESSION['registerValidator']['email'] == 'is-invalid' || $_SESSION['registerValidator']['dni'] == 'is-invalid' || $_SESSION['registerValidator']['password'] == 'is-invalid'){
+            //Muestro el register
+            $this->registrarse();
 
+        }else{
+
+            //borro la sesion de register
+            unset($_SESSION['registerValidator']);
+
+            //Creo y guardo el objeto cuenta
             $cuenta = new Cuenta(0, $email, $password, 1);
 
             $cuenta->setIdFb($idFb);
 
-            $cuenta->setProfile($profile);
+            $cuenta->setProfile(new Profile($dni, $nombre, $apellido, $direccion, $telefono));
 
             try {
-                $DaoCuentas = DaoCuentas::GetInstance();
-
-                $DaoCuentas->add($cuenta);
-
-                $DaoCuentas->setIdFb($cuenta);
-
-            } catch (PDOException $p) {
-                if (strpos($p, "SQLSTATE[23000]")) {
-                    echo "Accion para la exception";
-                }
-            }
-            //Registro por fb
-            if (isset($_SESSION['fb-userData'])){
-
-                unset($_SESSION['fb-userData']);
-
+                        
+                $this->daoCuenta->add($cuenta);
+                //Elimino la session de fb
+                if (isset($_SESSION['fb-userData'])) unset($_SESSION['fb-userData']);
+                //creo la session de cuenta
                 $_SESSION['cuenta'] = $cuenta;
+
                 $statusController = new StatusController();
-                $statusController->verificar();
-
-            }else{
-                //Registro normal
-                $loginController = new LoginController();
-                $loginController->init();
-
+                $statusController->typeSession();
+                      
+            } catch (PDOException $p) {
+                //Mostrar una vista de error de base de datos
             }
-            
-        } else {
-
-            $passValidator = "is-invalid";
-
-            $this->registrarse();
-        }
+        }            
+       
     }
 
     public function cerrarSesion()
@@ -161,9 +171,10 @@ class CuentasController
 
         if (isset($_SESSION['cuenta'])) {
             include ROOT . VIEWS_PATH . "nav-bar.php";
-            include ROOT . VIEWS_PATH . "view-profile.php";
+            include ROOT . VIEWS_PATH . "view-cuenta.php";
         } else {
             require_once "views/login.php";
         }
     }
+
 }

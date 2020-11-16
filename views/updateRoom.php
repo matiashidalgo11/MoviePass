@@ -37,15 +37,15 @@
                                 <tr>
                                     <td>
                                         <div>
-                                            <label class="text-light" style="width: 80px">Nombre: </label>
+                                            <label class="text-light" style="width: 80px" required>Nombre: </label>
                                             <input type="text" name="nombre"></input>
                                         </div>
                                         <div>
-                                            <label class="text-light" style="width: 80px">Precio:</label>
+                                            <label class="text-light" style="width: 80px" required>Precio:</label>
                                             <input type="number" name="precio"></input>
                                         </div>
                                         <div>
-                                            <label class="text-light">Capacidad:</label>
+                                            <label class="text-light" required>Capacidad:</label>
                                             <input type="number" name="capacity"></input>
                                         </div>
                                         <input type="hidden" name="idCine" value="<?php echo $room->getCine()->getId(); ?>"> 

@@ -16,6 +16,7 @@ use models\Cine;
 class DaoRooms {
 
     private $connection;
+    const COLUMN_ENABLED = "enabled";
     const TABLE_NAME = "room";
     const TABLE_IDROOM = "idRoom";
     const TABLE_NOMBRE = "nombre";
@@ -138,13 +139,32 @@ class DaoRooms {
         return $roomList;
     }
 
+    
+    public function GetEnabled(){
+        $sql = "SELECT * FROM rooms where" . DaoRooms::COLUMN_ENABLED . "=1";
+        $roomList = array();
+        try{
+            $this->connection = Connection::GetInstance();
+            $resultSet = $this->connection->Execute($sql);
+            if(!empty($resultSet)){ 
+                foreach ($resultSet as $row) {
+                    $aux = $this->parseToObject($row);
+                    array_push($roomList,$aux);
+                }  
+            }
+            } catch (PDOException $ex) { 
+                throw $ex; 
+            } 
+        return $roomList;
+    }
+
     public function remove($idRoom)
 	{
       
         try
         {
 
-            $sql = "DELETE from rooms where idRoom = $idRoom";  
+            $sql = "UPDATE rooms set " . DaoRooms::COLUMN_ENABLED . " = 0 where idRoom = $idRoom";  
              
             $this->connection=Connection::getInstance();
 

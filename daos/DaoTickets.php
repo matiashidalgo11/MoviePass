@@ -95,10 +95,10 @@ class DaoTickets
 
     public function ticketByUser($idCuenta)
     {
-        $sql="SELECT idFuncion,idCompra,codigoPago FROM compras WHERE idCuenta = ". $idCuenta . ";";
+        $date=getdate();
+        $day=$date['year']."-".$date['mon']."-".$date['mday'];
         $ticketList=array();
-        
-
+        $sql="SELECT idFuncion,idCompra,codigoPago FROM compras WHERE idCuenta = ". $idCuenta . " AND fecha>=".'"'.$day.'"'.";";
         try
         {
             $this->connection=Connection::GetInstance();
@@ -107,6 +107,26 @@ class DaoTickets
             foreach($resultSet as $value)
             {
 
+                array_push($ticketList,$this->parseToObject($value));
+            }
+
+            return $ticketList;
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+    }
+
+    public function ticketHistoryByUser($cuentaId)
+    {
+        $sql="SELECT idFuncion,idCompra,codigoPago FROM compras WHERE idCuenta = ". $cuentaId .";";
+        $ticketList=array();
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            foreach($resultSet as $value)
+            {
                 array_push($ticketList,$this->parseToObject($value));
             }
 

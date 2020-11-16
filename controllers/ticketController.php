@@ -47,6 +47,7 @@ class TicketController
     
     public function ticketViewByUser()
     {
+        
         $cuentaId=$_SESSION['cuenta']->getId();
         $ticketList=array();
         try
@@ -56,6 +57,20 @@ class TicketController
         catch(PDOException $e)
         {
 
+            echo $e->getMessage();
+        }
+        require_once(VIEWS_PATH."ticketView.php");
+    }
+    public function ticketHistoryByUser()
+    {
+        $cuentaId=$_SESSION['cuenta']->getId();
+        $ticketList=array();
+        try
+        {
+            $ticketList=$this->ticketDao->ticketHistoryByUser($cuentaId);
+        }
+        catch(PDOException $e)
+        {
             echo $e->getMessage();
         }
         require_once(VIEWS_PATH."ticketView.php");

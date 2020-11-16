@@ -151,41 +151,43 @@ textbox {
 
 
 <div id="box" class="container" style="background-color: rgba(230, 230, 230, 0.5);">
-            <div class="row" >   
-                <div class="col-md-8">
-                            
-                                
-                  <form action="<?php echo FRONT_ROOT?> funcionController/SearchByGenre" method="POST">
-                  <label for="cars">Elija genero:</label>
-                  <select id="idGender" name="idGender">
-                             <?php foreach ($listGenres as $genre) { ?>
-                                              <option value="<?= $genre->getId(); ?>"><?= $genre->getName(); ?></option>
-                                              <?php } ?>
-                                          
-                    </select>
-                             <input type="submit">
-                    </form>
        
-                    <div class="textbox">
-                        <form  action="<?php echo FRONT_ROOT?> funcionController/SearchByDate" method = "POST">
-                            <input id="inputDate" type="date" name="date">
-                            <button type="submit" class="btn btn-primary">Buscar</button>
-                        </form>			
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                    <form id ="searchBox" action="<?php echo FRONT_ROOT ?>funcionController/SearchByName" method = "POST">
-                        <input id ="inputSearch" type="search" name="nameMovie">
-                            <i class="fa fa-search" id="inputConfig"></i>
-                    </form>				 
-            </div>
+                  <div class="row" >   
+                      <div class="col-md-8">
+                                  
+                                      
+                        <form action="<?php echo FRONT_ROOT?> funcionController/SearchByGenre" method="POST">
+                        <label for="generos">Elija genero:</label>
+                        <select id="idGender" name="idGender">
+                                  <?php foreach ($listGenres as $genre) { ?>
+                                                    <option value="<?= $genre->getId(); ?>"><?= $genre->getName(); ?></option>
+                                                    <?php } ?>
+                                                
+                          </select>
+                                  <button type="submit" class="btn btn-primary">Enviar</button>
+                          </form>
+            
+                          <div class="textbox">
+                              <form  action="<?php echo FRONT_ROOT?> funcionController/SearchByDate" method = "POST">
+                                  <input id="inputDate" type="date" name="date">
+                                  <button type="submit" class="btn btn-primary">Buscar</button>
+                              </form>			
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-4">
+                          <form id ="searchBox" action="<?php echo FRONT_ROOT ?>funcionController/SearchByName" method = "POST">
+                              <input id ="inputSearch" type="search" name="nameMovie">
+                                  <i class="fa fa-search" id="inputConfig"></i>
+                          </form>				 
+                  </div>
+        
             <div class="row">
-                    <div class="scrollmenu">
-                            <div class="row row-cols-1 row-cols-md-4">
+                    <div class="scrollmenu" align="center">
+                            <div class="row row-cols-1 row-cols-md-3">
                                     <?php foreach($funcionesList as $funcion){ ?>
 
-                                            <div class="column">
+                                            <div class="column-md-3">
                                                     <div class="card" style="width: 20rem;">
                                                             <img class="card-img-top" src=<?php echo IMG_BASE_TMBD . "w220_and_h330_face" . $funcion->getMovie()->getPoster_path() ?> alt="Card image cap">
                                                                     <div class="card-body">

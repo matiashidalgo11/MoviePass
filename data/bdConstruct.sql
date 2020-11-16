@@ -130,3 +130,7 @@ create table IF NOT EXISTS pagos(
 
 );
 #drop table pagos;
+
+ALTER table funciones ADD enabled boolean;
+ALTER table rooms ADD enabled boolean;
+ALTER table cines ADD enabled boolean;

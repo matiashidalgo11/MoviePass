@@ -146,6 +146,24 @@ class DaoCompra
         }
     }
 
+    public function consultTotalbetweenDates($minDate,$maxDate)
+    {
+        $sql="SELECT SUM(p.total) as recaudado FROM pagos as p INNER JOIN compras as c ON p.idCompra=c.idCompra WHERE c.fecha>".'"'.$minDate.'"'." AND c.fecha<".'"'.$maxDate.'"'.";";
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            foreach($resultSet as $value)
+            {
+                $recaudado=$value['recaudado'];
+                return $recaudado;
+            }
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+    }
+
 
 
 }

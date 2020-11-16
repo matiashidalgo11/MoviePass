@@ -249,6 +249,33 @@ class DaoFunciones {
        
     }
 
+    public function funcionExistence($idMovie,$day)
+    {
+        $sql="SELECT COUNT(idMovie) as MovieScreen FROM funciones WHERE dayFuncion=".'"'.$day.'"'. "and idMovie=".$idMovie.  ";";
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $value=$this->connection->Execute($sql);
+    
+
+            foreach($value as $valueArray)
+            {
+                if($valueArray['MovieScreen']>0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        catch(PDOException $e)
+        {
+            throw $e;
+        }  
+    }
+
     public function getAllByDateRoom($date,$idRoom){
         $sql="SELECT f.id, f.date ,f.time, r.id, r.capacidad, r.precio, m.popularity, m.video, m.id, m.original_language, m.genre_ids, m.title, m.overview, m.release_date, m.enabled from funciones f inner join movies m on f.idMovie = m.id inner join rooms r on r.idRoom = f.idRoom where f.date = :date and r.idRoom = :idRoom";
         try {
@@ -275,6 +302,85 @@ class DaoFunciones {
         }
         return $funcion_list;
     }
+
+   public function consultSales()
+   {
+       $sql="SELECT f.idFuncion,f.soldTickets,(r.capacidad-f.soldTickets) as remanentes from funciones as f INNER JOIN rooms as r ON f.idRoom=r.idRoom
+                GROUP by f.idFuncion;";
+
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            return $resultSet;
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+   }
+
+   public function searchByName($nameMovie)
+   {
+       $funcionesList=array();
+       $sql="SELECT * FROM funciones as f INNER JOIN movies as m ON f.idMovie=m.idMovie WHERE m.title LIKE '%". $nameMovie . "%';";
+       echo $sql;
+       try
+       {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            foreach($resultSet as $value)
+            {
+                array_push($funcionesList,$this->parseToObject($value));
+            }
+            return $funcionesList;
+
+       }catch(PDOException $e)
+       {
+           throw $e;
+       }
+   }
+
+   public function searchByDate($date)
+   {
+       $funcionesList=array();
+       $sql="SELECT * FROM funciones WHERE dayFuncion=".'"'.$date.'"'.";";
+       try
+       {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            foreach($resultSet as $value)
+            {
+                array_push($funcionesList,$this->parseToObject($value));
+            }
+            return $funcionesList;
+
+       }catch(PDOException $e)
+       {
+           throw $e;
+       }
+   }
+
+   public function searchByGenre($idGender)
+   {
+       $funcionesList=array();
+      $sql="SELECT * FROM funciones as f INNER JOIN moviesxgeneros as mxg ON f.idMovie=mxg.idMovie WHERE mxg.idGenero=".$idGender.";";
+      try
+      {
+        $this->connection=Connection::GetInstance();
+        $resultSet=$this->connection->Execute($sql);
+        foreach($resultSet as $value)
+        {
+            array_push($funcionesList,$this->parseToObject($value));
+        }
+        return $funcionesList;
+      }catch(PDOException $e)
+      {
+          throw $e;
+      }
+
+        
+   }
+
 
 
 }

@@ -1,13 +1,16 @@
 <?php namespace controllers;
 
-    use config\ConfigFb as ConfigFb;
+use config\ConfigFb as ConfigFb;
 use daos\DaoCuentas;
 use models\Cuenta;
+use daos\DaoGenres as DaoGenres;
 
 class StatusController {
 
-        function verificar(){  
+        //Verifica que tipo se sesion se encuentra activa (Admin, usuario) y devulve la vista inicial
+        function typeSession(){  
             
+            //Filtro para el callback de la api de facebook
             if(isset($_SESSION['fb-userData'])){
 
                 $cuentasController = new CuentasController();
@@ -30,7 +33,6 @@ class StatusController {
                             echo "Estoy logeado como usuario";
                             $funcionDao = new funcionController();
                             $funcionDao->listFunciones();
-
                         }
 
                     }else{

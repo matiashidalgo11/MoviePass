@@ -129,3 +129,11 @@ create table IF NOT EXISTS pagos(
 
 );
 #drop table pagos;
+
+ALTER table funciones ADD enabled boolean;
+ALTER table rooms ADD enabled boolean;
+ALTER table cines ADD enabled boolean;
+
+ALTER table pagos ADD idCompra int;
+ALTER table pagos ADD constraint foreign key (idCompra) references compras(idCompra);
+ALTER TABLE pagos DROP COLUMN codigoPago;

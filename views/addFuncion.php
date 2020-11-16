@@ -54,3 +54,21 @@
         </div>
     </table>
 </body>
+
+               
+                <div>
+                    <label>Fecha</label>
+                    <input type="date" name="date" id="funcionDate" placeholder="Ingrese una fecha" required>
+                </div>
+                <div class="col-md">
+                    <label for="funcionHour">Hora</label>
+                    <input type="time" name="hour" id="funcionHour" placeholder="Ingrese una fecha" required>
+                </div>
+            </div>
+            <div>
+                <input type="submit" name="submit" style="text-align: right;" value="Agregar">
+            </div>
+        </form>
+	</div>
+	</body>
+</main>

@@ -13,9 +13,9 @@ class DaoGenres implements IDao
     private static $instance = null;
 
     //Info db
-    const TABLENAME = "generos";
-    const TABLE_IDGENRE = "idGenero";
-    const TABLE_NOMBRE = "nombre";
+    const TABLE_NAME = "generos";
+    const COLUMN_IDGENRE = "idGenero";
+    const COLUMN_NOMBRE = "nombre";
 
     private function __construct(){
         
@@ -29,19 +29,13 @@ class DaoGenres implements IDao
         return self::$instance;
     }
 
-    public function delete($dato)
-    {
-        //desarrollar
-    }
-
-    
 
     public function getAll()
     {
         try {
             $genreList = array();
 
-            $query = "SELECT * FROM " . DaoGenres::TABLENAME;
+            $query = "SELECT * FROM " . DaoGenres::TABLE_NAME;
 
             $this->connection = Connection::GetInstance();
 
@@ -61,7 +55,7 @@ class DaoGenres implements IDao
     {
         try {
 
-            $query = "SELECT EXISTS ( SELECT * FROM " . DaoGenres::TABLENAME . " WHERE " . DaoGenres::TABLE_NOMBRE . " = " . "'" . $genre->getName() . "'" . ");";
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoGenres::TABLE_NAME . " WHERE " . DaoGenres::COLUMN_NOMBRE . " = " . "'" . $genre->getName() . "'" . ");";
 
             $this->connection = Connection::GetInstance();
 
@@ -79,7 +73,7 @@ class DaoGenres implements IDao
     {
 
         try {
-            $query = "SELECT * FROM " . DaoGenres::TABLENAME . " WHERE " . DaoGenres::TABLE_IDGENRE . " = " . "'" . $idGenre . "'" . " ;";
+            $query = "SELECT * FROM " . DaoGenres::TABLE_NAME . " WHERE " . DaoGenres::COLUMN_IDGENRE . " = " . "'" . $idGenre . "'" . " ;";
 
             $this->connection = Connection::GetInstance();
 
@@ -96,12 +90,14 @@ class DaoGenres implements IDao
         }
     }
 
+    //Recibe un arreglo de idsGeneros y los convierte en un arreglo de objetos generos
     public function arrayToGenre(array $genreIds)
     {
         $arregloGeneros = array();
 
         foreach ($genreIds as $id) {
             if (is_int($id)) {
+
                 $object = $this->getById($id);
 
                 if (!empty($object)) {
@@ -119,10 +115,10 @@ class DaoGenres implements IDao
 
 
             try {
-                $query = "INSERT INTO " . DaoGenres::TABLENAME . " ( " . DaoGenres::TABLE_IDGENRE ." , " . DaoGenres::TABLE_NOMBRE . " )  VALUES ( " . ":" . DaoGenres::TABLE_IDGENRE ." , " . ":" . DaoGenres::TABLE_NOMBRE ." ) ;";
+                $query = "INSERT INTO " . DaoGenres::TABLE_NAME . " ( " . DaoGenres::COLUMN_IDGENRE ." , " . DaoGenres::COLUMN_NOMBRE . " )  VALUES ( " . ":" . DaoGenres::COLUMN_IDGENRE ." , " . ":" . DaoGenres::COLUMN_NOMBRE ." ) ;";
 
-                $parameters[DaoGenres::TABLE_IDGENRE] = $genre->getId();
-                $parameters[DaoGenres::TABLE_NOMBRE] = $genre->getName();
+                $parameters[DaoGenres::COLUMN_IDGENRE] = $genre->getId();
+                $parameters[DaoGenres::COLUMN_NOMBRE] = $genre->getName();
 
 
                 $this->connection = Connection::GetInstance();
@@ -167,6 +163,26 @@ class DaoGenres implements IDao
         return $genre_list;
     }
 
+    //Devuelve un arreglo con los generos que se relacionan con el idMovie
+    public function movieGenres(int $idMovie)
+    {
+
+        $query = " SELECT g.idGenero , g.nombre
+            FROM moviesxgeneros AS x 
+            INNER JOIN generos  AS g ON x.idGenero = g.idGenero
+            WHERE x.idMovie = " . $idMovie . " ;";
+
+        $this->connection = Connection::GetInstance();
+
+        $resultSet = $this->connection->Execute($query);
+
+        $genreList = $this->mapeo($resultSet);
+
+        $genreList = !empty($genreList) ? $genreList : [];
+
+        return $genreList;
+    }
+
 
     public function mapeo($value)
     {
@@ -175,7 +191,7 @@ class DaoGenres implements IDao
 
         $resp = array_map(
             function ($p) {
-                return new Genre($p[DaoGenres::TABLE_IDGENRE], $p[DaoGenres::TABLE_NOMBRE]);
+                return new Genre($p[DaoGenres::COLUMN_IDGENRE], $p[DaoGenres::COLUMN_NOMBRE]);
             },
             $value
         );

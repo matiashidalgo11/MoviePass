@@ -7,14 +7,14 @@ class pago
 {
     private $idPago;
     private $total;
-    private $codigoPago;
+    private $idCompra;
 
 
-    public function __construct($idPago="",$total="",$codigoPago="")
+    public function __construct($idPago="",$total="",$idCompra="")
     {
         $this->idPago=$idPago;
         $this->total=$total;
-        $this->idCompra=$codigoPago;
+        $this->idCompra=$idCompra;
     }
 
 
@@ -36,14 +36,14 @@ class pago
     {
         $this->total=$total;
     }
-    public function getcodigoPago()
+    public function getIdCompra()
     {
         return $this->idCompra;
     }
 
-    public function setcodigoPago($codigoPago)
+    public function setIdCompra($idCompra)
     {
-        $this->codigoPago=$codigoPago;
+        $this->idCompra=$idCompra;
     }
 
 

@@ -1,7 +1,7 @@
 <div class='container-fluid'>
 
   <nav id="menuNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="<?= FRONT_ROOT ?>StatusController/typeSession">
       <i class="fas fa-video"> MoviePass</i>
     </a>
 

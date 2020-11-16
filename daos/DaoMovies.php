@@ -63,6 +63,24 @@ class DaoMovies implements IDao
         return $movies;
     }
 
+    public function searchByName($nameMovie)
+    {
+        $funcionesList=array();
+        $sql="SELECT * FROM movies as m WHERE m.title LIKE '%". $nameMovie . "%';";
+        echo $sql;
+        try
+        {
+             $this->connection=Connection::GetInstance();
+             $resultSet=$this->connection->Execute($sql);
+             $movieList = $this->mapeo($resultSet);
+             return $movieList;
+ 
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+    }
+
     public function update($movie){
        
         if($movie instanceof Movie){

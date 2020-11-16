@@ -21,7 +21,7 @@
                          
                 </div>
 
-                
+               
                 <div>
                     <label>Fecha</label>
                     <input type="date" name="date" id="funcionDate" placeholder="Ingrese una fecha" required>

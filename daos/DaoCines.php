@@ -2,7 +2,9 @@
 
 
 use models\Cine as cine;
-use daos\Connection as Connection; 
+use daos\Connection as Connection;
+use PDO;
+use PDOException;
 
 class DaoCines {
    
@@ -20,7 +22,7 @@ private $connection;
         try { 
         $this->connection = Connection::GetInstance(); 
         return $this->connection->ExecuteNonQuery($sql,$parameters);
-    } catch (Exception $ex) { 
+    } catch (PDOException $ex) { 
         throw $ex; 
     } 
 } 
@@ -35,7 +37,7 @@ public function GetById($idCine){
         if(!empty($resultSet)){ 
              $cine = $this->parseToObject($resultSet[0]);   
         }
-    } catch (Exception $ex) { 
+    } catch (PDOException $ex) { 
         throw $ex; 
     } 
     return $cine;
@@ -55,14 +57,14 @@ public function mapeo($row){
     return $cine;
 }
 
-public function Update($idCine){
-        $sql = "UPDATE  cines (:nombre,:direccion) where idCine=:idCine";
+public function Update($cine){
+        $sql = "UPDATE  cines (:nombre,:direccion) where idCine=".$cine->getId().";";
         $parameters['nombre'] = $cine->getNombre(); 
         $parameters['direccion'] = $cine->getDireccion(); 
         try{
             $this->connection = Connection::GetInstance(); 
             return $this->connection->ExecuteNonQuery($sql, $parameters); 
-        } catch (Exception $ex) { 
+        } catch (PDOException $ex) { 
             throw $ex; 
         }
 }
@@ -80,7 +82,7 @@ public function GetAll(){
                 array_push($cineList,$aux);
             }  
         }
-        } catch (Exception $ex) { 
+        } catch (PDOException $ex) { 
             throw $ex; 
         } 
     return $cineList;
@@ -95,7 +97,7 @@ public function remove($idCine){
          $this->connection=Connection::getInstance();
          $value = $this->connection->ExecuteNonQuery($sql,$parameters);
     }
-        catch(Exception $ex){
+        catch(PDOException $ex){
         throw $ex;
     }
     return $value;
@@ -107,5 +109,27 @@ public function remove($idCine){
         $cine->setId($value['idCine']);
         return $cine;
     }
+
+    public function consultSales()
+    {
+        $sql = "SELECT c.idCine, c.nombre, SUM(f.soldTickets) as ventas,SUM(r.capacidad) as capacidadTotal FROM
+                    funciones as f INNER JOIN rooms as r ON r.idRoom=f.idRoom INNER JOIN cines as c ON c.idCine=r.idCine GROUP BY c.nombre;";
+        
+        try
+        {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+            return $resultSet;
+        }
+        catch(PDOException $e)
+        {
+            throw $e;
+        }
+
+
+
+    }
+
+
 }
 ?>

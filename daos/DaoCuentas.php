@@ -152,9 +152,9 @@ class DaoCuentas implements IDao
 
             $object = !empty($array) ? $array[0] : [];
 
-            $daoPerfil = DaoProfiles::GetInstance();
+        /*     $daoPerfil = DaoProfiles::GetInstance();
 
-            $object->setProfile($daoPerfil->getByIdCuenta($id));
+            $object->setProfile($daoPerfil->getByIdCuenta($id)); */
 
 
             return $object;
@@ -178,9 +178,9 @@ class DaoCuentas implements IDao
 
             $object = !empty($array) ? $array[0] : [];
 
-            $daoPerfil = DaoProfiles::GetInstance();
+            /* $daoPerfil = DaoProfiles::GetInstance();
 
-            $object->setProfile($daoPerfil->getByIdCuenta($object->getId()));
+            $object->setProfile($daoPerfil->getByIdCuenta($object->getId())); */
 
             return $object;
 

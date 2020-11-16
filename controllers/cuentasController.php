@@ -3,6 +3,7 @@
 namespace controllers;
 
 use daos\DaoCuentas as DaoCuentas;
+use daos\DaoProfiles;
 use models\Cuenta as Cuenta;
 use models\Profile as Profile;
 use PDOException;
@@ -39,16 +40,13 @@ class CuentasController
 
             }else {
                 //pass incorrecto
-                $_SESSION['loginValidator']['emailIngresado'] = $email;
                 $_SESSION['loginValidator']['passValidator'] = "is-invalid";
-
-
+                $_SESSION['loginValidator']['emailValidator']= "is-valid";
                 $this->loginController->init();
             }
 
         }else{
             //no existe una cuenta;
-            $_SESSION['loginValidator']['emailIngresado'] = $email;
             $_SESSION['loginValidator']['emailValidator']= "is-invalid";
 
 
@@ -105,9 +103,25 @@ class CuentasController
 
     public function crear($email, $password, $rPassword, $dni, $nombre, $apellido, $telefono, $direccion, $idFb = "")
     {
+        $daoProfile = DaoProfiles::GetInstance();
+ 
+        $_SESSION['registerValidator']['email'] = ($this->daoCuenta->exist($email))? 'is-invalid' : 'is-valid';
+        
+        $_SESSION['registerValidator']['dni'] = ($daoProfile->exist($dni)) ? 'is-invalid' : 'is-valid';
 
-        if ($password == $rPassword) {
+        $_SESSION['registerValidator']['password'] = ($password != $rPassword) ? 'is-invalid' : 'is-valid';
+    
 
+        if($_SESSION['registerValidator']['email'] == 'is-invalid' || $_SESSION['registerValidator']['dni'] == 'is-invalid' || $_SESSION['registerValidator']['password'] == 'is-invalid'){
+            //Muestro el register
+            $this->registrarse();
+
+        }else{
+
+            //borro la sesion de register
+            unset($_SESSION['registerValidator']);
+
+            //Creo y guardo el objeto cuenta
             $cuenta = new Cuenta(0, $email, $password, 1);
 
             $cuenta->setIdFb($idFb);
@@ -115,39 +129,21 @@ class CuentasController
             $cuenta->setProfile(new Profile($dni, $nombre, $apellido, $direccion, $telefono));
 
             try {
-                
+                        
                 $this->daoCuenta->add($cuenta);
-
-            } catch (PDOException $p) {
-                if (strpos($p, "SQLSTATE[23000]")) {
-                    echo "Accion para la exception";
-                    //verificar que no se cargo un dni invalido
-                }
-            }
-
-
-            //Finalizacion del registro por fb y entra directamente a la aplicacion
-            if (isset($_SESSION['fb-userData'])){
-
-                unset($_SESSION['fb-userData']);
-
+                //Elimino la session de fb
+                if (isset($_SESSION['fb-userData'])) unset($_SESSION['fb-userData']);
+                //creo la session de cuenta
                 $_SESSION['cuenta'] = $cuenta;
+
                 $statusController = new StatusController();
                 $statusController->typeSession();
-
-            }else{
-                //Finalizacion de Registro normal y devuelve la vista del login para ingresar su usuario
-                $loginController = new LoginController();
-                $loginController->init();
-
+                      
+            } catch (PDOException $p) {
+                //Mostrar una vista de error de base de datos
             }
-            
-        } else {
-
-            $passValidator = "is-invalid";
-
-            $this->registrarse();
-        }
+        }            
+       
     }
 
     public function cerrarSesion()
@@ -175,21 +171,10 @@ class CuentasController
 
         if (isset($_SESSION['cuenta'])) {
             include ROOT . VIEWS_PATH . "nav-bar.php";
-            include ROOT . VIEWS_PATH . "view-profile.php";
+            include ROOT . VIEWS_PATH . "view-cuenta.php";
         } else {
             require_once "views/login.php";
         }
     }
 
-    public function testGetAll(){
-
-        echo "<br>" . "Estoy en el getAll" . "<br>";
-
-        $DaoCuentas = DaoCuentas::GetInstance();
-
-        var_dump($DaoCuentas->getAll());
-
-
-
-    }
 }

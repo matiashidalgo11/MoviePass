@@ -101,7 +101,7 @@
             </a>
 
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="#">Perfil</a>
+              <a class="dropdown-item" href="<?= FRONT_ROOT ?>CuentasController/viewPerfil">Perfil</a>
               <a class="dropdown-item" href="#">Historial Entradas</a>
               <a class="dropdown-item" href="<?php echo FRONT_ROOT?>TicketController/ticketViewByUser">Ver mis Tickets</a>
               <div class="dropdown-divider"></div>

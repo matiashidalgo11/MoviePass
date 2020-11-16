@@ -67,24 +67,25 @@ class DaoProfiles implements IDao
         }
     }
 
-    public function exist($profile)
+    public function exist($dni)
     {   
-        if($profile instanceof Profile){
+        
         try {
 
-            $query = "SELECT EXISTS ( SELECT * FROM " . DaoProfiles::TABLE_NAME . " WHERE " . DaoProfiles::COLUMN_DNI . " = " . "'" . $profile->getDni() . "'" . ");";
+            $query = "SELECT EXISTS ( SELECT * FROM " . DaoProfiles::TABLE_NAME . " WHERE " . DaoProfiles::COLUMN_DNI . " = " . "'" . $dni . "'" . ");";
 
             $this->connection = Connection::GetInstance();
 
             $result = $this->connection->Execute($query);
 
-            if ($result[0][0] != 1) return false;
-            else return true;
+            $rta = ($result[0][0] != 1)? false : true;
+
+            return $rta;
             
         } catch (Exception $ex) {
             throw $ex;
         }
-        }else return false;
+        
     }
 
     public function getByIdCuenta(int $idCuenta)

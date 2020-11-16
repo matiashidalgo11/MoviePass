@@ -17,11 +17,11 @@ class DaoPagos
     }
 
 
-    public function Add($total,$codigoPago)
+    public function Add($total,$compra)
     {
-        $sql="INSERT INTO pagos (codigoPago,total) VALUES (:codigoPago,:total);";
+        $sql="INSERT INTO pagos (idCompra,total) VALUES (:idCompra,:total);";
 
-        $parameters['codigoPago']=$codigoPago;
+        $parameters['codigoPago']=$compra->getIdCompra();
         $parameters['total']=$total;
 
         try
@@ -58,7 +58,7 @@ class DaoPagos
 
     public function parseToObject($value)
     {
-        $pago= new Pago($value['idPago'],$value['total'],$value['codigoPago']);
+        $pago= new Pago($value['idPago'],$value['total'],$value['idCompra']);
         return $pago;
     }
 

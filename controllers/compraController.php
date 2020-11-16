@@ -48,8 +48,8 @@ class compraController
                          $this->compraDao->Add($compra);
                          $this->DaoFuncion->upDateSale($idFuncion,$totalTickets);
                          $compra->setIdCompra($this->compraDao->getidBypayCode($codigoPago));
-                         
-                         $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
+
+                         $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$compra);
                          $this->ControllerTicket->add($compra,$funcion);
                          $this->ControllerFunciones->listFunciones();
 
@@ -57,9 +57,8 @@ class compraController
                      catch(PDOException $e)
                     {
                       echo $e->getMessage();
-                     }
-        }
-            
+                   }
+        }  
         else
         {
             $this->buyMovie($idFuncion);
@@ -72,9 +71,7 @@ class compraController
         $compraList=array();
         try
         {
-
-            $compraList= $this->compraDao->getAll();
-            
+            $compraList= $this->compraDao->getAll();  
         }
         catch(PDOException $e)
         {
@@ -85,7 +82,6 @@ class compraController
     public function buyMovie($idFuncion)
     {
         $funcion=$this->DaoFuncion->GetById($idFuncion);
-
         require_once(VIEWS_PATH."buyMovie.php");
     }
 

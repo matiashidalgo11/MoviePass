@@ -17,44 +17,64 @@
 
         </div>
 
-<!--         <table>
-    <thead>
-      <tr>
-           <th>Id</th>
-           <th>Nombre de la Pelicula</th>
-           <th>Nombre de la Sala</th>
-           <th>Fecha</th>
-           <th>Hora</th>
-           <th>Id del Cine</th>
-           <th>Precio de la Entrada</th>
-      </tr>
-    </thead>
-    <tbody>
-    <?php
-          foreach ($funcionList as $value):?>
-          <tr>
-             <td> <?php echo $value->getId(); ?></td>
-             <td> <?php echo $value->getMovie()->getTitle(); ?></td>
-             <td> <?php echo $value->getRoom()->getNombre(); ?></td>
-             <td> <?php echo $value->getDate(); ?> </td>  
-             <td> <?php $open_time_date=strtotime($value->getOpeningTime());
-                        echo date("h:i A", $open_time_date);?> 
-            </td> 
-             <td> <?php echo $value->getRoom()->getIdCine();?> </td>
-             <td> <?php echo $value->getPrecio();?> </td>
-            <td>
-              <form action="<?php echo FRONT_ROOT ;?>/funcionController/Delete" method="POST"> 
-                  <input type="hidden" value='<?php echo $value->getId(); ?>'>
-                  <button type="submit" class='btn text-light'>Eliminar
-                </button>
-              </form> 
-            </td>
-          </tr>
-        <?php endforeach; ?>
-  </tbody>
-</table> -->
 
     </div>
 
 </div>
 
+
+<div class="container-fluid">
+<div class="row">
+                <div class="scrollmenu" align="center">
+                       <div class="row row-cols-1 row-cols-md-3">
+                            
+                    <?php foreach ($funcionesList as $funcion)
+                    {
+                        ?>
+
+                          <div class="movie-card">
+                          <div class="" >
+                                <div class="header-icon-container">
+                                  <a href="#">
+                                          <img src="<?php echo  IMG_BASE_TMBD . "w220_and_h330_face" . $funcion->getMovie()->getPoster_path();?>" alt="Card image">
+                                  </a>
+                                </div>
+                          </div><!--movie-header-->
+                                      <div class="movie-content">
+                                    <div class="movie-content-header">
+                                            <a href="#">
+                                              <h3 class="movie-title"><?php echo $funcion->getMovie()->getTitle();?></h3>
+                                            </a>
+                                            <div class="imax-logo"></div>
+                                    </div>
+                                    <div class="movie-info">
+                                            <div class="info-section">
+                                              <label>Date & Time</label>
+                                              <span><?php echo $funcion->getDate(); ?>- <?php echo $funcion->getHour(); ?></span>
+                                            </div><!--date,time-->
+                                              <div class="info-section">
+                                                <label>Cine: </label>
+                                                <span><?php echo $funcion->getRoom()->getCine()->getNombre(); ?></span>
+                                              </div><!--screen-->
+                                                  <div class="info-section">
+                                                  <label>Sala: </label>
+                                                  <span><?php echo $funcion->getRoom()->getNombre(); ?></span>
+                                                </div><!--row-->
+                                                <div class="info-section">
+                                                  <label>Direccion: </label>
+                                                  <span><?php echo $funcion->getRoom()->getCine()->getDireccion(); ?></span>
+                                                </div><!--seat-->
+                                                <div class="card-body">
+                                                  <form action="<?php echo FRONT_ROOT?>CompraController/buyMovie" method="POST">  <button type="submit" class="btn btn-primary" name="idFuncion" value="<?php echo $funcion->getId()?>" >Tickets</button> </form>                 
+                                                 </div>
+                                    </div>
+                                  </div><!--movie-content-->
+                          </div><!--movie-card-->
+
+                    <?php   } ?>
+                          
+                    </div><!--container-->  
+               </div>
+         </div>
+
+         </div>

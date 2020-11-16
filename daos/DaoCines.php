@@ -1,4 +1,6 @@
-<?php namespace daos;
+<?php 
+
+namespace daos;
 
 
 use models\Cine as cine;
@@ -16,9 +18,10 @@ private $connection;
 
     public function Add($cine)
     {
-        $sql = "INSERT into cines (nombre, direccion) values (:nombre,:direccion)";
+        $sql = "INSERT into cines (nombre, direccion,enabled) values (:nombre,:direccion,:enabled);";
         $parameters['nombre'] =  $cine->getNombre();
         $parameters['direccion'] =  $cine->getDireccion();
+        $parameters['enabled']=1;
         try { 
         $this->connection = Connection::GetInstance(); 
         return $this->connection->ExecuteNonQuery($sql,$parameters);
@@ -69,39 +72,39 @@ public function Update($cine){
         }
 }
 
-public function GetAll(){
-    $sql = "SELECT * FROM cines";
-    $cineList = array();
-    try{
-        $this->connection = Connection::GetInstance();
-        $resultSet = $this->connection->Execute($sql);
-        
-        if(!empty($resultSet)){ 
-            foreach ($resultSet as $row) {
-                $aux = $this->parseToObject($row);
-                array_push($cineList,$aux);
-            }  
+    public function GetAll(){
+            $sql = "SELECT * FROM cines";
+            $cineList = array();
+            try{
+                $this->connection = Connection::GetInstance();
+                $resultSet = $this->connection->Execute($sql);
+                
+                if(!empty($resultSet)){ 
+                    foreach ($resultSet as $row) {
+                        $aux = $this->parseToObject($row);
+                        array_push($cineList,$aux);
+                    }  
+                }
+                } catch (PDOException $ex) { 
+                    throw $ex; 
+                } 
+            return $cineList;
         }
-        } catch (PDOException $ex) { 
-            throw $ex; 
-        } 
-    return $cineList;
-}
 
-public function remove($idCine){
-    $value =0;
-    try
-    {
-        $parameters['idCine'] = $idCine;
-        $sql = "DELETE from cines where idCine=:idCine";  
-         $this->connection=Connection::getInstance();
-         $value = $this->connection->ExecuteNonQuery($sql,$parameters);
-    }
-        catch(PDOException $ex){
-        throw $ex;
-    }
-    return $value;
-}
+    public function remove($idCine){
+            $value =0;
+            try
+            {
+                $parameters['idCine'] = $idCine;
+                $sql = "DELETE from cines where idCine=:idCine";  
+                $this->connection=Connection::getInstance();
+                $value = $this->connection->ExecuteNonQuery($sql,$parameters);
+            }
+                catch(PDOException $ex){
+                throw $ex;
+            }
+            return $value;
+        }
 
     public function parseToObject($value)
     {
@@ -119,7 +122,15 @@ public function remove($idCine){
         {
             $this->connection=Connection::GetInstance();
             $resultSet=$this->connection->Execute($sql);
-            return $resultSet;
+            $parameters=array();
+            foreach($resultSet as $value)
+            {
+                $valueArray['cine']=$this->GetById($value['idCine']);
+                $valueArray['ventas']=$value['ventas'];
+                $valueArray['capacidadTotal']=$value['capacidadTotal'];
+                array_push($parameters,$valueArray);
+            }
+            return $parameters;
         }
         catch(PDOException $e)
         {
@@ -129,19 +140,22 @@ public function remove($idCine){
 
     public function consultTotal()
     {
-        $sql= "SELECT r.idCine,  IFNULL(SUM(p.total),0) as recaudacion FROM rooms as r INNER JOIN funciones as f ON r.idRoom=f.idRoom INNER JOIN compras as c ON f.idFuncion=c.idFuncion INNER JOIN pagos as p ON p.idCompra=c.idCompra
-                    GROUP BY r.idCine;";
-
+        $sql= "SELECT r.idCine, IFNULL(SUM(p.total),0) as recaudacion FROM rooms as r INNER JOIN funciones as f ON r.idRoom=f.idRoom INNER JOIN compras as c ON f.idFuncion=c.idFuncion INNER JOIN pagos as p ON p.idCompra=c.idCompra GROUP BY r.idCine;";
         try
         {
             $this->connection=Connection::GetInstance();
             $resultSet=$this->connection->Execute($sql);
+            $parameters=array();
+            foreach($resultSet as $value)
+            {
+                $valueArray['cine']=$this->GetById($value['idCine']);
+                $valueArray['recaudacion']=$value['recaudacion'];
+                array_push($parameters,$valueArray);
+            }
         }catch(PDOException $e)
         {
             throw $e;
         }
     }
-
-
 }
 ?>

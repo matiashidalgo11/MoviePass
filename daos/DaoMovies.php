@@ -156,7 +156,7 @@ class DaoMovies implements IDao
         }
     }
 
-    public function getById(int $id)
+    public function getById($id)
     {
 
         try {
@@ -405,6 +405,14 @@ class DaoMovies implements IDao
          {
             $this->connection=Connection::GetInstance();
             $resultSet=$this->connection->Execute($sql);
+            $parameters=array();
+            foreach($resultSet as $value)
+            {
+                $valueArray['movie']=$this->getById($value['idMovie']);
+                $valueArray['recaudacion']=$value['recaudacion'];
+                array_push($parameter,$valueArray);
+            }
+            return $parameters;
          }catch(PDOException $e)
          {
              throw $e;

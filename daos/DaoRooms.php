@@ -22,6 +22,7 @@ class DaoRooms {
     const TABLE_CAPACIDAD ="capacidad";
     const TABLE_PRECIO = "precio";
     const TABLE_IDCINE = "idCine";
+    
 
     public function __construct(){
               
@@ -29,14 +30,15 @@ class DaoRooms {
     public function Add($room)
     {
         try { 
-        $sql = "INSERT into rooms (nombre, capacidad, precio,idCine) values ( :nombre,:capacidad,:precio,:cine)";
+        $sql = "INSERT into rooms (nombre, capacidad, precio,idCine,enabled) values ( :nombre,:capacidad,:precio,:cine,:enabled)";
         $parameters['nombre'] =  $room->getNombre();
         $parameters['capacidad'] =  $room->getCapacidad();
         $parameters['precio'] =  $room->getPrecio();
         $parameters['cine'] =  $room->getCine()->getId();
+        $parameters['enabled']=1;
         $this->connection = Connection::GetInstance(); 
         return $this->connection->ExecuteNonQuery($sql,$parameters);
-        } catch (Exception $ex) { 
+        } catch (PDOException $ex) { 
             throw $ex; 
         } 
     }

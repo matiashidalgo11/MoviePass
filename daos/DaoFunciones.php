@@ -25,13 +25,14 @@ class DaoFunciones {
     {
         try
         {
-            $sql = "INSERT into funciones (idMovie,idRoom, dayFuncion,hour, soldTickets) values (:idMovie , :idRoom , :dayFuncion , :hour , :soldTickets);";
+            $sql = "INSERT into funciones (idMovie,idRoom, dayFuncion,hour, soldTickets,enabled) values (:idMovie , :idRoom , :dayFuncion , :hour , :soldTickets,:enabled);";
                
                 $parameters["idMovie"] =$funcion->getMovie()->getId();
                 $parameters["idRoom"] =$funcion->getRoom()->getId();
                 $parameters["dayFuncion"]=$funcion->getDate();
                 $parameters["hour"]=$funcion->getHour();
                 $parameters["soldTickets"] = "0";
+                $parameters['enabled']=1;
 
                 $this->connection = Connection::getInstance();
                 return $this->connection->ExecuteNonQuery($sql, $parameters);
@@ -312,7 +313,16 @@ class DaoFunciones {
         {
             $this->connection=Connection::GetInstance();
             $resultSet=$this->connection->Execute($sql);
-            return $resultSet;
+            $parameters=array();
+            foreach($resultSet as $value)
+            {
+                $valueArray['funcion']=$this->GetById($value['idFuncion']);
+                $valueArray['remanentes']=$value['remanentes'];
+                $valueArray['soldTickets']=$value['soldTickets'];
+                array_push($parameters,$valueArray);
+
+            }
+            return $parameters;
         }catch(PDOException $e)
         {
             throw $e;

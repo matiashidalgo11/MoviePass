@@ -26,15 +26,15 @@
                                           <label for="cine" class="text-light">Direccion</label>
                                           <input type="text" name="direccion" id="direccion" require>
                                         </div>
+                                        <div>
+                                            <button type="submit" class='btn text-light' style="background-color: red; font-size: 17px; border-radius: 4px; width: 150px">Agregar</button>
+                                        </div>
                                         </form>
 	                                </div>
                                 </td>
                             </tr>
                         </table>
                     </p>
-                    <div>
-                        <button type="submit" class='btn text-light' style="background-color: red; font-size: 17px; border-radius: 4px; width: 150px">Agregar</button>
-                    </div>
                 </td>
             <tr>
         </div>

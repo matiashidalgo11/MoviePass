@@ -63,6 +63,24 @@ class DaoMovies implements IDao
         return $movies;
     }
 
+    public function searchByName($nameMovie)
+    {
+        $funcionesList=array();
+        $sql="SELECT * FROM movies as m WHERE m.title LIKE '%". $nameMovie . "%';";
+        echo $sql;
+        try
+        {
+             $this->connection=Connection::GetInstance();
+             $resultSet=$this->connection->Execute($sql);
+             $movieList = $this->mapeo($resultSet);
+             return $movieList;
+ 
+        }catch(PDOException $e)
+        {
+            throw $e;
+        }
+    }
+
     public function update($movie){
        
         if($movie instanceof Movie){
@@ -156,7 +174,7 @@ class DaoMovies implements IDao
         }
     }
 
-    public function getById(int $id)
+    public function getById($id)
     {
 
         try {
@@ -405,6 +423,14 @@ class DaoMovies implements IDao
          {
             $this->connection=Connection::GetInstance();
             $resultSet=$this->connection->Execute($sql);
+            $parameters=array();
+            foreach($resultSet as $value)
+            {
+                $valueArray['movie']=$this->getById($value['idMovie']);
+                $valueArray['recaudacion']=$value['recaudacion'];
+                array_push($parameter,$valueArray);
+            }
+            return $parameters;
          }catch(PDOException $e)
          {
              throw $e;

@@ -13,12 +13,14 @@ class MoviesController {
 
     private $movieDAO;
     private $genderDAO;
+    private $homeController;
 
 
         public function __construct()
         {
             $this->movieDAO=DaoMovies::GetInstance();
             $this->genderDAO =DaoGenres::GetInstance();
+            $this->homeController = new HomeController();
 
         }
    
@@ -28,8 +30,7 @@ class MoviesController {
             $this->movieDAO->updateFromApi();
             $moviesList = $this->movieDAO->getEnabled();
             $this->genderDAO->updateFromApi();
-            $listGenres = $this->genderDAO->getAll();
-            include(ROOT . VIEWS_PATH . "nav-bar.php");
+            $this->homeController->navBar();
             include(ROOT . 'views/list_movies.php');
         }
         
@@ -40,46 +41,40 @@ class MoviesController {
             $funcionesList=array();
             $moviesList = $this->movieDAO->getAll();
 
-           $daoGenres = DaoGenres::GetInstance();
-            $listGenres = $daoGenres->getAll();
 
             $daoFunciones= new DaoFunciones();
             $funcionesList= $daoFunciones->GetAll();
 
-            include(VIEWS_PATH . "nav-bar.php");
+            $this->homeController->navBar();
             include(VIEWS_PATH."list_movies.php");
         }
 
         public function listMovieByGenre($idGenre = 0){
 
             $genre = $this->genderDAO->getById($idGenre);
-            $listGenres = $this->genderDAO->getAll();
+
             $moviesList = $this->movieDAO->genreMovies($genre);
-            include(ROOT . VIEWS_PATH . "nav-bar.php");
+
+            $this->homeController->navBar();
+            include(ROOT . 'views/list_movies.php');
+        }
+
+        public function searchMovie($string){
+            $moviesList = $this->movieDAO->searchByName($string);
+            $this->homeController->navBar();
             include(ROOT . 'views/list_movies.php');
         }
 
         public function viewMovie($idMovie){
             
             $movie = $this->movieDAO->getById($idMovie);
-
-            include(VIEWS_PATH . "nav-bar.php");
+            $daoFunciones = new DaoFunciones();
+            $funcionList = $daoFunciones->searchByName($movie->getTitle());
+            var_dump($funcionList);
+            $this->homeController->navBar();
             include(ROOT . 'views/view-movie.php');
         }
        
-
-        public function testGetAll(){
-
-            echo "<br>" . "Estoy en el getAll" . "<br>";
-
-            var_dump($this->movieDAO->getAll());
-
-            
-
-
-        }
-
-        
 
 
         

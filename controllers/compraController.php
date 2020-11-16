@@ -4,6 +4,8 @@ namespace controllers;
 use daos\DaoCompra as DaoCompra;
 use daos\DaoFunciones as DaoFunciones;
 use daos\DaoCuentas as DaoCuentas;
+use daos\DaoPagos as DaoPagos;
+
 use models\compra as Compra;
 use models\pago as Pago;
 use PDOException;
@@ -36,7 +38,7 @@ class compraController
     {
         $funcion=$this->DaoFuncion->GetById($idFuncion);
         $cuenta=$this->DaoCuenta->getById($_SESSION['cuenta']->getId());
-
+        $codigoPago= $_SESSION['cuenta']->getId()."/".$idFuncion."/".$funcion->getDate()."/".$totalTickets;
         $compra= new Compra($funcion->getDate(),$totalTickets,$descuento,$cuenta);
 
         if($this->DaoFuncion->checkSeats($idFuncion,$totalTickets))

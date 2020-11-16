@@ -90,8 +90,8 @@
 
 
         <div class="userOff d-flex align-items-end">
-          <form class="form-inline my-2 my-lg-0 ">
-            <input class="form-control mr-sm-2" type="search" placeholder="Search Movie" aria-label="Search">
+          <form class="form-inline my-2 my-lg-0 " method="POST" action="<?= FRONT_ROOT ?>MoviesController/searchMovie">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search Movie" aria-label="Search" name="string">
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
           </form>
 

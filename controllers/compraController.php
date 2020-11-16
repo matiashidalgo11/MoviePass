@@ -36,10 +36,12 @@ class compraController
 
     public function add($idFuncion,$totalTickets,$descuento)
     {
+        $date=getdate();
+        $day=$date['year']."-".$date['mon'].'-'.$date['mday'];
         $funcion=$this->DaoFuncion->GetById($idFuncion);
         $cuenta=$this->DaoCuenta->getById($_SESSION['cuenta']->getId());
         $codigoPago= $_SESSION['cuenta']->getId()."/".$idFuncion."/".$funcion->getDate()."/".$totalTickets;
-        $compra= new Compra($funcion->getDate(),$totalTickets,$descuento,$cuenta);
+        $compra= new Compra($day,$funcion,$totalTickets,$descuento,$cuenta,$codigoPago);
 
         if($this->DaoFuncion->checkSeats($idFuncion,$totalTickets))
         {

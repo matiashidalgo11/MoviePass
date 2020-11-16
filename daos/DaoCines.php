@@ -5,6 +5,7 @@ namespace daos;
 
 use models\Cine as cine;
 use daos\Connection as Connection;
+use daos\DaoRooms as DaoRooms;
 use PDO;
 use PDOException;
 
@@ -114,12 +115,17 @@ public function GetEnabled(){
 
 public function remove($idCine){
     $value =0;
+
+    $roomDao= new DaoRooms();
+
     try
     {
         $parameters['idCine'] = $idCine;
-        $sql = "UPDATE cines set" . DaoCines::COLUMN_ENABLED . " = 0 where idCine= $idCine";  
+        $sql = "UPDATE cines set " . DaoCines::COLUMN_ENABLED . " = 0 where idCine= $idCine";  
+        
          $this->connection=Connection::getInstance();
          $value = $this->connection->ExecuteNonQuery($sql,$parameters);
+         $roomDao->removeAllroomFromCine($idCine);
     }
         catch(PDOException $ex){
         throw $ex;

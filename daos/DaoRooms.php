@@ -162,14 +162,10 @@ class DaoRooms {
 
     public function remove($idRoom)
 	{
-      
         try
         {
-
             $sql = "UPDATE rooms set " . DaoRooms::COLUMN_ENABLED . " = 0 where idRoom = $idRoom";  
-             
             $this->connection=Connection::getInstance();
-
             $value = $this->connection->ExecuteNonQuery($sql);
 
         }
@@ -177,6 +173,19 @@ class DaoRooms {
             throw $ex;
         }
        
+    }
+    public function removeAllroomFromCine($idCine)
+    {
+        $sql = "UPDATE rooms set " . DaoRooms::COLUMN_ENABLED . " = 0 where idCine = $idCine";
+        try
+        {
+            $this->connection=Connection::getInstance();
+            $value = $this->connection->ExecuteNonQuery($sql);
+
+        }
+            catch(PDOException $ex){
+            throw $ex;
+        }
     }
 
     public function parseToObject($value)

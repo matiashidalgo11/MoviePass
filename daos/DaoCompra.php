@@ -27,16 +27,15 @@ class DaoCompra
 
     public function Add($compra)
     {
-        $sql= "INSERT INTO compras (totalTickets,fecha,descuento,idCuenta) VALUES (:totalTickets,:fecha,:descuento,:idCuenta);";
+        $sql= "INSERT INTO compras (totalTickets,fecha,descuento,idCuenta,codigoPago,idFuncion) VALUES (:totalTickets,:fecha,:descuento,:idCuenta,:codigoPago,:idFuncion);";
 
-        
-
+      
         $parameters['totalTickets']=$compra->getTotalTickets();
         $parameters['fecha']=$compra->getFecha();
         $parameters['descuento']=$compra->getDescuento();
         $parameters['idCuenta']=$compra->getCuenta()->getId();
-        $parameters['idFuncion']=$compra->getFuncion()->getId();
         $parameters['codigoPago']=$compra->getCodigoPago();
+        $parameters['idFuncion']=$compra->getFuncion()->getId();
 
 
         try

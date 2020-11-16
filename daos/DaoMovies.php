@@ -7,7 +7,7 @@ use daos\Connection as Connection;
 use daos\DaoGenre as DaoGenre;
 use models\Movie as Movie;
 use models\Genre as Genre;
-
+use PDOException;
 
 class DaoMovies implements IDao
 {
@@ -394,5 +394,20 @@ class DaoMovies implements IDao
             $value
         );
         return $resp;
+    }
+
+    public function consultTotalPerMovie()
+    {
+        $sql="SELECT f.idMovie, SUM(p.total) as recaudacion FROM funciones as f INNER JOIN compras as c ON f.idFuncion=c.idFuncion INNER JOIN pagos as p ON p.idCompra=c.idCompra
+         GROUP BY f.idMovie";
+
+         try
+         {
+            $this->connection=Connection::GetInstance();
+            $resultSet=$this->connection->Execute($sql);
+         }catch(PDOException $e)
+         {
+             throw $e;
+         }
     }
 }

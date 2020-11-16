@@ -180,8 +180,8 @@ a:hover {
     margin: 0;
   }
 }
-</style></head><body>
-<p class="intro"><b><a href="https://dribbble.com/shots/2241918-Movie-Ticket-Card-Sketch-freebie" target="_blank">Mis Tickets</a></b><p>
+</style>
+<p class="intro"><b><a href="#" >Mis Tickets</a></b><p>
 	
 <div class="container">
 
@@ -220,7 +220,8 @@ a:hover {
 				<div class="info-section">
 					<label>Seat</label>
 					<span>21,22</span>
-				</div><!--seat-->
+        </div><!--seat-->
+        
 			</div>
 		</div><!--movie-content-->
 	</div><!--movie-card-->
@@ -228,7 +229,7 @@ a:hover {
 	<?php   } ?>
 </div><!--container-->
 
-</body></html>
+
 
 
 <?php include_once(VIEWS_PATH."footer.php"); ?>

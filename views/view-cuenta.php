@@ -34,6 +34,9 @@
     </tr>
     
   </tbody>
+
+  
 </table>
+  <a href="<?= FRONT_ROOT ?>CuentasController/editarCuenta" type="button">Editar Cuenta</a>
 </div>
 </div>

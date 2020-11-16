@@ -178,4 +178,51 @@ class CuentasController
         }
     }
 
+    public function editarCuenta(){
+        include ROOT . VIEWS_PATH . "UpdateCuenta.php";
+    }
+
+    public function updateCuenta($password, $rPassword, $nombre, $apellido, $telefono, $direccion){
+        
+        $daoProfile = DaoProfiles::GetInstance();
+
+        $cuentaOriginal = $_SESSION['cuenta'];
+ 
+
+        $_SESSION['updateValidator']['password'] = ($password != $rPassword) ? 'is-invalid' : 'is-valid';
+    
+
+        if($_SESSION['updateValidator']['password'] == 'is-invalid'){
+            //Muestro el editar cuenta
+            $this->editarCuenta();
+
+        }else{
+
+            //borro la sesion de register
+            unset($_SESSION['updateValidator']);
+
+            //Seteo los datos a cuentaOriginal
+            $cuentaOriginal->setPassword($password);
+            $cuentaOriginal->getProfile()->setNombre($nombre);
+            $cuentaOriginal->getProfile()->setApellido($apellido);
+            $cuentaOriginal->getProfile()->setTelefono($telefono);
+            $cuentaOriginal->getProfile()->setDireccion($direccion);
+
+            
+
+            try {
+                        
+                $this->daoCuenta->update($cuentaOriginal);
+               
+                //sete la session de cuenta
+                $_SESSION['cuenta'] = $cuentaOriginal;
+
+                $this->viewPerfil();
+                      
+            } catch (PDOException $p) {
+                //Mostrar una vista de error de base de datos
+            }
+        }            
+    }
+
 }

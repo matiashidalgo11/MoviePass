@@ -5,6 +5,7 @@ use daos\DaoCines as DaoCines;
 use daos\DaoFunciones;
 use daos\DaoRooms as DaoRoom;
 use models\room as Room;
+use models\cine as Cine;
 
 class RoomController{
 
@@ -34,16 +35,26 @@ class RoomController{
     }
 
     public function remove($idRoom){
-        //Agregar estado enabled y setear el valor como false
+        $this->DaoRoom->remove($idRoom);
+        $this->DaoRoom->GetAll();
     } 
 
-    public function update(){
-        //Desarrollar
+    public function Update($idRoom, $nombre, $precio, $capacidad, $idCine){
+        $cine = $this->DaoCine->getById($idCine);
+        $room = new Room($nombre, $precio, $capacidad, $cine);
+        $room->setId($idRoom);
+        $this->DaoRoom->Update($room);
+    }
+
+    public function showUpdate($idRoom){
+        $room = $this->DaoRoom->getById($idRoom);
+        require_once(VIEWS_PATH."updateRoom.php");
+
     }
 
     public function showList($idCine)
     {
-      
+       
         $roomList=array();
 
         $roomList = $this->DaoRoom->getRoomsXcinema($idCine);

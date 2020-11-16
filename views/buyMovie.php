@@ -60,5 +60,4 @@ require_once(VIEWS_PATH."header.php");
 
 
 
-
 <?php require_once(VIEWS_PATH."footer.php"); ?>

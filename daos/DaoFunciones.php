@@ -42,37 +42,6 @@ class DaoFunciones {
         }
     }
 
-   /* public function GetById($id) {
-        $funcion = null;
-        try
-        {
-            $parameters['id'] = $id;
-            $sql = "SELECT * from funciones where idFuncion = $id";
-            $this->connection = Connection::getInstance();
-            $resultSet = $this->connection->Execute($sql, $parameters);
-            if(!empty($resultSet)) {
-                $funcion = $this->mapeo($resultSet[0]);
-                $idRoom = $resultSet[0]["idRoom"];
-                $idMovie = $resultSet[0]["idMovie"];
-                $DaoRoom = new roomDao();
-                $room = $DaoRoom->GetById($idRoom);
-                $DaoMovie = new movieDao();
-                $movie = $DaoMovie->GetById($idMovie);
-                $funcion->setRoom($room);
-                $funcion->setMovie($movie);
-            }
-            return $funcion_list;
-        }
-        catch(Exception $ex){
-            throw $ex;
-        }
-    } */
-
-
- 
-
-
-
     public function GetAll() {
        
         $funcionesList=array();
@@ -216,23 +185,6 @@ class DaoFunciones {
             throw $e;
         }
     }
-    
-
-    public function cheackSeats ($id,$totalTickets){
-        $value = false;
-        // crear una capacidad actual que empiece con 0 y se vaya sumando cada ves que haya una compra, ir comparando constantemente con la capcidad total
-        //, al llegar al limite retornar falso
-        try{
-          /*  if(capacidadTotal >= capacidadActual + TotalTickets){
-                $value = true;
-            }*/
-        }
-        catch (PDOException $e)
-        {
-            throw $e;
-        }
-        return $value;
-    }
 
     public function checkSeats($idFuncion,$totalTicket)
     {
@@ -304,6 +256,32 @@ class DaoFunciones {
         {
             $this->connection=Connection::GetInstance();
             $value=$this->connection->Execute($sql);
+    public function getAllByDateRoom($date,$idRoom){
+        $sql="SELECT f.id, f.date ,f.time, r.id, r.capacidad, r.precio, m.popularity, m.video, m.id, m.original_language, m.genre_ids, m.title, m.overview, m.release_date, m.enabled from funciones f inner join movies m on f.idMovie = m.id inner join rooms r on r.idRoom = f.idRoom where f.date = :date and r.idRoom = :idRoom";
+        try {
+            $this->connection = Connection::getInstance();
+            $resultSet = $this->connection->Execute($sql);
+            if(!empty($resultSet)) {
+                foreach ($resultSet as $row) {
+                    $funcion =$this->parseToObject($row);
+                    $idRoom = $row["idRoom"];
+                    $idMovie = $row["idMovie"];
+                    $DaoRoom = new roomDao();
+                    $room = $DaoRoom->GetById($idRoom);
+                    $DaoMovie = new movieDao();
+                    $movie = $DaoMovie->GetById($idMovie);
+                    $funcion->setRoom($room);
+                    $funcion->setMovie($movie);
+                    array_push($funcion_list,$funcion);
+                }
+            }
+        }
+        catch (PDOException $e)
+        {
+            throw $e;
+        }
+        return $funcion_list;
+    }
 
             foreach($value as $valueArray)
             {
@@ -400,6 +378,7 @@ class DaoFunciones {
 
         
    }
+
 
 
 }

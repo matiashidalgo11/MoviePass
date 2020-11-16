@@ -161,6 +161,7 @@ class CuentasController
 
         session_destroy();
 
+        unset($_SESSION['loginValidator']); 
 
         $loginController = new LoginController();
         $loginController->init();

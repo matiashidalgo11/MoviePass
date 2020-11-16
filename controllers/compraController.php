@@ -47,8 +47,9 @@ class compraController
                  try{
                          $this->compraDao->Add($compra);
                          $this->DaoFuncion->upDateSale($idFuncion,$totalTickets);
-                         $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
                          $compra->setIdCompra($this->compraDao->getidBypayCode($codigoPago));
+                         
+                         $this->DaoPagos->Add(($funcion->getRoom()->getPrecio()*$totalTickets),$codigoPago);
                          $this->ControllerTicket->add($compra,$funcion);
                          $this->ControllerFunciones->listFunciones();
 

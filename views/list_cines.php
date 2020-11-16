@@ -36,11 +36,14 @@
                         <div class="card-body">
                         
                         <span class="h5 card-title">Direccion: <?php echo $cine->getDireccion(); ?></span></br>
-                        <form class="" action="<?php echo FRONT_ROOT?>cine/remove" method="POST">
+                        <form class="" action="<?php echo FRONT_ROOT?>cineController/Delete" method="POST">
                             <button type="submit" name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId() ?>">Eliminar</button>
                         </form>
                         <form action="<?php echo FRONT_ROOT?>RoomController/showList" method="POST">
                             <button type="submit"  name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId(); ?>">Ver Salas</button>
+                        </form>
+                        <form action="<?php echo FRONT_ROOT?>cineController/showUpdate" method="POST">
+                            <button type="submit"  name="idCine" class="btn-dark btn-sm" value="<?php echo $cine->getId(); ?>">Actualizar</button>
                         </form>
                         </div>
                     </div>

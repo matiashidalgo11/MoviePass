@@ -1,10 +1,8 @@
 <?php
-
 namespace controllers;
 
 use daos\DaoCompra as DaoCompra;
 use daos\DaoFunciones as DaoFunciones;
-use daos\DaoPagos as DaoPagos;
 use daos\DaoCuentas as DaoCuentas;
 use models\compra as Compra;
 use models\pago as Pago;
@@ -36,11 +34,10 @@ class compraController
 
     public function add($idFuncion,$totalTickets,$descuento)
     {
-       
         $funcion=$this->DaoFuncion->GetById($idFuncion);
         $cuenta=$this->DaoCuenta->getById($_SESSION['cuenta']->getId());
-        $codigoPago= $_SESSION['cuenta']->getId()."/".$idFuncion."/".$funcion->getDate()."/".$totalTickets;
-        $compra= new Compra($funcion->getDate(),$funcion,$totalTickets,$descuento,$cuenta,$codigoPago);
+
+        $compra= new Compra($funcion->getDate(),$totalTickets,$descuento,$cuenta);
 
         if($this->DaoFuncion->checkSeats($idFuncion,$totalTickets))
         {
@@ -84,8 +81,4 @@ class compraController
         $funcion=$this->DaoFuncion->GetById($idFuncion);
         require_once(VIEWS_PATH."buyMovie.php");
     }
-
-
-
-
 }

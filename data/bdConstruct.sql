@@ -90,7 +90,6 @@ create table IF NOT EXISTS funciones(
     dayFuncion varchar(30) not null,
     hour TIME(4),
 	primary key (idFuncion),
-    soldTickets int,
     constraint fk_idMovief foreign key (idMovie) references movies(idMovie),
     constraint fk_idRoom foreign key (idRoom) references rooms(idRoom)
 

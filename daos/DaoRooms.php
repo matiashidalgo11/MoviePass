@@ -100,13 +100,13 @@ class DaoRooms {
     }
     
     //faltaria testear
-    public function Update($idRoom){
-        $sql = "UPDATE rooms (:nombre,:capacidad,:precio,:cine) where idRoom=:idRoom";
+    public function Update($room){
+        $sql = "UPDATE rooms set nombre= :nombre, capacidad= :capacidad, precio= :precio where idRoom= " . $room->getId() . ";";
+        echo $sql;
         try{
         $parameters['nombre'] = $room->getNombre(); 
         $parameters['capacidad'] = $room->getCapacidad(); 
         $parameters['precio'] = $room->getPrecio(); 
-        $parameters['cine'] = $room->getCine(); 
             $this->connection = Connection::GetInstance(); 
             return $this->connection->ExecuteNonQuery($sql, $parameters); 
         } catch (Exception $ex) { 

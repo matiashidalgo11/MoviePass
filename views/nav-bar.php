@@ -1,7 +1,7 @@
 <div class='container-fluid'>
 
   <nav id="menuNav" class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="<?= FRONT_ROOT ?>StatusController/typeSession">
       <i class="fas fa-video"> MoviePass</i>
     </a>
 
@@ -16,6 +16,10 @@
         <?php if ($_SESSION['cuenta']->getPrivilegios() == 0) { ?>
           <li class="nav-item">
             <a class="nav-link" href="<?= FRONT_ROOT ?>CineController/showList">Administrar Cines</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="<?= FRONT_ROOT ?>MoviesController/listMovies">Administrar Movies</a>
           </li>
 
           <li class="nav-item">

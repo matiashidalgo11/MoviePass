@@ -19,6 +19,10 @@
           </li>
 
           <li class="nav-item">
+            <a class="nav-link" href="<?= FRONT_ROOT ?>MoviesController/listMovies">Administrar Movies</a>
+          </li>
+
+          <li class="nav-item">
             <a class="nav-link" href="<?= FRONT_ROOT ?>#">Administrar Usuarios</a>
           </li>
 

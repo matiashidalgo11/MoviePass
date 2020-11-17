@@ -30,14 +30,18 @@
             <a class="nav-link" href="<?= FRONT_ROOT ?>#">Actualizar Cartelera</a>
           </li>
 
-          <li class="nav-item">
-                        <a href="" class = "x">Consultar ventas</a>
-                                  <ul>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo FRONT_ROOT;?>CineController/consult">Por cine</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="<?php echo FRONT_ROOT;?>FuncionController/consult">Por funcion </a></li>
-                                    
-                                   </ul>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Consultar Ventas
+            </a>
+
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="<?php echo FRONT_ROOT;?>CineController/consult">Por Cine</a>
+              <a class="dropdown-item" href="<?php echo FRONT_ROOT;?>FuncionController/consult">Por Funcion</a>
+            </div>
           </li>
+
         <?php } else { ?>
 
 

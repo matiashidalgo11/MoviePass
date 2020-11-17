@@ -91,7 +91,7 @@ public function GetAll(){
 }
 
 public function GetEnabled(){
-    $sql = "SELECT * FROM cines where" . DaoCines::COLUMN_ENABLED . "=1";
+    $sql = "SELECT c.idCine, c.nombre, c.direccion from cines c where c.enabled=1";
     $cineList = array();
     try{
         $this->connection = Connection::GetInstance();
@@ -114,7 +114,7 @@ public function remove($idCine){
     try
     {
         $parameters['idCine'] = $idCine;
-        $sql = "UPDATE cines set" . DaoCines::COLUMN_ENABLED . " = 0 where idCine= $idCine";  
+        $sql = "UPDATE cines set " . DaoCines::COLUMN_ENABLED . " = 0 where idCine= $idCine";  
          $this->connection=Connection::getInstance();
          $value = $this->connection->ExecuteNonQuery($sql,$parameters);
     }

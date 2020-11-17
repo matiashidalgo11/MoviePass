@@ -236,7 +236,7 @@ class DaoFunciones {
 
 
     public function GetEnabled(){
-        $sql = "SELECT * FROM funciones where" . DaoFunciones::COLUMN_ENABLED . "=1";
+        $sql = "SELECT * FROM funciones where " . DaoFunciones::COLUMN_ENABLED . "=1";
         $funcionList = array();
         try{
             $this->connection = Connection::GetInstance();
@@ -259,7 +259,7 @@ class DaoFunciones {
         try
         {
 
-            $sql = "UPDATE funcion set " . DaoRooms::COLUMN_ENABLED . " = 0 where idFuncion = $idFuncion";  
+            $sql = "UPDATE funcion set " . DaoRooms::COLUMN_ENABLED . " = 0 where idFuncion = :idFuncion";  
              
             $this->connection=Connection::getInstance();
 
@@ -276,7 +276,7 @@ class DaoFunciones {
 	{
         try
         {
-            $sql = "DELETE from funciones where idRoom = $idRoom";  
+            $sql = "DELETE from funciones where idRoom = :idRoom";  
             $this->connection=Connection::getInstance();
             $value = $this->connection->ExecuteNonQuery($sql);
 

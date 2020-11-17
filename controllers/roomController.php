@@ -36,7 +36,7 @@ class RoomController{
 
     public function remove($idRoom){
         $this->DaoRoom->remove($idRoom);
-        $this->DaoRoom->GetAll();
+        $this->DaoRoom->getEnabled();
     } 
 
     public function Update($idRoom, $nombre, $precio, $capacidad, $idCine){

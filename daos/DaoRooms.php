@@ -141,7 +141,7 @@ class DaoRooms {
 
     
     public function GetEnabled(){
-        $sql = "SELECT * FROM rooms where" . DaoRooms::COLUMN_ENABLED . "=1";
+        $sql = "SELECT r.idRoom, r.nombre, r.precio, r.capacidad, c.nombre from rooms r inner join cine c on c.idCine=r.idCine where r.enabled=1";
         $roomList = array();
         try{
             $this->connection = Connection::GetInstance();

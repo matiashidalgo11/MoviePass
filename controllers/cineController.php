@@ -44,14 +44,14 @@
 
         public function Delete($id){
             $this->cineDao->remove($id);
-            $this->GetAll();
+            $this->getEnabled();
         }
 
         public function showList(){
 
 
             
-            $arrayCine = $this->cineDao->getAll();
+            $arrayCine = $this->cineDao->getEnabled();
 
             
             require_once(VIEWS_PATH."list_cines.php");

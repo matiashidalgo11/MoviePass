@@ -5,6 +5,7 @@
     use daos\DaoRooms as roomDao;
     use models\Funcion as funcion;
     use daos\DaoGenres as DaoGenders;
+    use controllers\MoviesController as MoviesController;
 use PDOException;
 
 class funcionController
@@ -38,6 +39,8 @@ class funcionController
             $this->listFunciones();
         }
 
+    
+
         public function GetAll(){
             return  $this->funcionDao->GetAll();
             
@@ -57,12 +60,28 @@ class funcionController
 
             require_once(VIEWS_PATH."addFuncion.php");
         }
+        public function showAddMovie($idMovie)
+        {
+            $movie=$this->movieDao->getById($idMovie);
+            $roomList=$this->roomDao->GetAll();
+            require_once(VIEWS_PATH."addFuncionMovie.php");
+            
+        }
 
         public function listFunciones(){
 
-            $funcionesList = $this->funcionDao->getAll();
-            $listGenres= $this->genderDao->getAll();
-            require_once(VIEWS_PATH."cine.php");
+            if($_SESSION['cuenta']->getPrivilegios()==1)
+            {
+                $funcionesList = $this->funcionDao->getAll();
+                $listGenres= $this->genderDao->getAll();
+                require_once(VIEWS_PATH."cine.php");
+            }else
+            {
+                $movieController= new MoviesController();
+                $movieController->listMovies();
+               
+            }
+            
 
         }
 

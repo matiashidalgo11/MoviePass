@@ -212,8 +212,8 @@ textbox {
 
                     <?php if($_SESSION['cuenta']->getPrivilegios() == 0) {?>
 
-                    <form action="<?php echo FRONT_ROOT ?>/funcionController/#" method="Post">
-                      <input type="hidden" value='<?= $movie->getId(); ?>'>
+                    <form action="<?php echo FRONT_ROOT ?>funcionController/showAddMovie" method="Post">
+                      <input type="hidden" name="idMovie" value='<?= $movie->getId(); ?>'>
                       <button type="submit" class='btn text-light' style="background-color: red; font-size: 17px; border-radius: 4px; " enabled>Agregar Funcion</button>
                     </form>
 

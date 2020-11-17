@@ -4,6 +4,7 @@ use config\ConfigFb as ConfigFb;
 use daos\DaoCuentas;
 use models\Cuenta;
 use daos\DaoGenres as DaoGenres;
+use controllers\MoviesController as MoviesController;
 
 class StatusController {
 
@@ -26,6 +27,8 @@ class StatusController {
 
                         if ($_SESSION['cuenta']->getPrivilegios()==0)
                         {
+                            $movieController= new MoviesController();
+                            $movieController->listMovies();
                             echo "Estoy logeado como admin";
                             
                         }else if ($_SESSION['cuenta']->getPrivilegios()==1)

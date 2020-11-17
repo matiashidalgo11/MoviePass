@@ -371,7 +371,6 @@ class DaoFunciones {
    {
        $funcionesList=array();
        $sql="SELECT * FROM funciones as f INNER JOIN movies as m ON f.idMovie=m.idMovie WHERE m.title LIKE '%". $nameMovie . "%';";
-       echo $sql;
        try
        {
             $this->connection=Connection::GetInstance();

@@ -1,3 +1,8 @@
+<?php require_once(VIEWS_PATH."nav-bar.php");
+        require_once(VIEWS_PATH."header.php");
+
+?>
+
 <div class="row justify-content-center">
 <div class="card" style="width: 35rem;">
 <table class="table table-hover">
@@ -40,3 +45,5 @@
   <a href="<?= FRONT_ROOT ?>CuentasController/editarCuenta" type="button">Editar Cuenta</a>
 </div>
 </div>
+
+<?php require_once(VIEWS_PATH."footer.php");?>

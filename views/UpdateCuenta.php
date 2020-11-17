@@ -1,3 +1,8 @@
+<?php require_once(VIEWS_PATH."nav-bar.php");
+    require_once(VIEWS_PATH."header.php");
+
+?>
+
 <div class="container-fluid">
 
     <div class="row justify-content-center">
@@ -88,3 +93,5 @@
     </div>
 
 </div>
+
+<?php require_once(VIEWS_PATH."footer.php");?>

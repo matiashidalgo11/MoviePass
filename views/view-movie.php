@@ -1,3 +1,7 @@
+<?php require_once(VIEWS_PATH."nav-bar.php");
+        require_once(VIEWS_PATH."header.php");
+?>
+
 <style>
 body {
     height: 100%;
@@ -212,8 +216,8 @@ textbox {
 
                     <?php if($_SESSION['cuenta']->getPrivilegios() == 0) {?>
 
-                    <form action="<?php echo FRONT_ROOT ?>/funcionController/#" method="Post">
-                      <input type="hidden" value='<?= $movie->getId(); ?>'>
+                    <form action="<?php echo FRONT_ROOT ?>funcionController/showAddMovie" method="Post">
+                      <input type="hidden" name="idMovie" value='<?= $movie->getId(); ?>'>
                       <button type="submit" class='btn text-light' style="background-color: red; font-size: 17px; border-radius: 4px; " enabled>Agregar Funcion</button>
                     </form>
 
@@ -286,7 +290,7 @@ textbox {
     </div>
 </div>                       
 
-
+<?php require_once(VIEWS_PATH."footer.php");?>
 
 
 

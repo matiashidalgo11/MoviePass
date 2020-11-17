@@ -1,3 +1,6 @@
+<?php require_once(VIEWS_PATH."nav-bar.php");
+        require_once(VIEWS_PATH."header.php");
+?>
 <style>
 body {
     height: 100%;
@@ -226,6 +229,7 @@ textbox {
                                 <td><br>
                                     <div>
                                         <form action="<?php echo FRONT_ROOT; ?>funcionController/Add" method="POST"> 
+                                        <input type = "hidden" name = "idMovie" id = "idCine" required value="<?php echo $movie->getId();?>">
                                             <div>
                                                 <label class="text-light">Seleccione Sala</label>
                                                 <select name="idRoom" id="funcionMovie" required>
@@ -244,6 +248,10 @@ textbox {
                                                 <label class="text-light" for="funcionHour">Hora</label>
                                                 <input type="time" name="hour" id="funcionHour" placeholder="Ingrese una fecha" required>
                                             </div>
+                                                <div>
+                                                    <button type="submit" class='btn text-light' style="background-color: red; font-size: 17px; border-radius: 4px; width: 150px">Agregar</button>
+                                                </div>
+                                        </form>
 	                                </div>
                                 </td>
                             </tr>
@@ -252,3 +260,5 @@ textbox {
          </div><!--container-->  
     </div>
 </div>                       
+
+<?php require_once(VIEWS_PATH."footer.php");?>

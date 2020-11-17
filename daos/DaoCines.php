@@ -179,6 +179,7 @@ public function remove($idCine){
                 $valueArray['recaudacion']=$value['recaudacion'];
                 array_push($parameters,$valueArray);
             }
+            return $parameters;
         }catch(PDOException $e)
         {
             throw $e;

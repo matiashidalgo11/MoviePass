@@ -122,4 +122,12 @@ class funcionController
             require_once(VIEWS_PATH."cine.php");
         }
 
+        public function consult()
+        {
+            $funcionTickets=array();
+            $funcionTickets=$this->funcionDao->consultSales();
+            require_once(VIEWS_PATH."salesFunciones.php");
+
+        }
+
     }

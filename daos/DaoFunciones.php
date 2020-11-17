@@ -267,7 +267,7 @@ class DaoFunciones {
             $value = $this->connection->ExecuteNonQuery($sql);
 
         }
-            catch(Exception $ex){
+            catch(PDOException $ex){
             throw $ex;
         }
        

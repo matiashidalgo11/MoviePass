@@ -30,6 +30,14 @@
             <a class="nav-link" href="<?= FRONT_ROOT ?>#">Actualizar Cartelera</a>
           </li>
 
+          <li class="nav-item">
+                        <a href="" class = "x">Consultar ventas</a>
+                                  <ul>
+                                        <li class="nav-item"><a class="nav-link" href="<?php echo FRONT_ROOT;?>CineController/consult">Por cine</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="<?php echo FRONT_ROOT;?>FuncionController/consult">Por funcion </a></li>
+                                    
+                                   </ul>
+          </li>
         <?php } else { ?>
 
 
@@ -45,7 +53,7 @@
             <a class="nav-link" href="<?= FRONT_ROOT ?>MoviesController/listMovies">Funciones</a>
           </li>
 
-          
+
 
         <?php } }?>
 
@@ -71,6 +79,7 @@
               <a class="dropdown-item" href="#">Todo</a>
             </div>
           </li>
+
           
       </ul>
 

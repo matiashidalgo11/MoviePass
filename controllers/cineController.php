@@ -59,4 +59,14 @@
             require_once(VIEWS_PATH."addCine.php");
         }
 
+        public function consult()
+        {
+            $cineEntradas=array();
+            $cineDinero=array();
+            $cineEntradas=$this->cineDao->consultSales();
+            $cineDinero=$this->cineDao->consultTotal();
+            echo var_dump($cineDinero);
+            require_once(VIEWS_PATH."salesCine.php");
+        }
+
     }

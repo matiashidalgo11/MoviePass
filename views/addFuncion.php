@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html>
-    <head>
+
 <?php require_once(VIEWS_PATH."nav-bar.php");
         require_once(VIEWS_PATH."header.php");
 ?>
 <title>Actualiza Cines</title>
-    </head>
+   
 <body>
     <table border="2" align="center" cellspacing="5px">
         <div>
@@ -54,3 +52,4 @@
         </form>
     </table>
 </body>
+<?php require_once(VIEWS_PATH."footer.php");?>

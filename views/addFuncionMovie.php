@@ -1,3 +1,6 @@
+<?php require_once(VIEWS_PATH."nav-bar.php");
+        require_once(VIEWS_PATH."header.php");
+?>
 <style>
 body {
     height: 100%;
@@ -257,3 +260,5 @@ textbox {
          </div><!--container-->  
     </div>
 </div>                       
+
+<?php require_once(VIEWS_PATH."footer.php");?>

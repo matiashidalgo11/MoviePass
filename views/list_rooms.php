@@ -64,6 +64,7 @@ include_once(VIEWS_PATH."header.php");
         </table>
         <?php }?>
     </div>
+    <?php require_once(VIEWS_PATH."footer.php");?>
 
 
 

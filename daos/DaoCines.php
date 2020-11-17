@@ -95,7 +95,7 @@ public function Update($cine){
         }
 
 public function GetEnabled(){
-    $sql = "SELECT * FROM cines where" . DaoCines::COLUMN_ENABLED . "=1";
+    $sql = "SELECT * FROM cines where enabled=1";
     $cineList = array();
     try{
         $this->connection = Connection::GetInstance();

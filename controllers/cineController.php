@@ -50,7 +50,7 @@
 
         public function showList(){
 
-            $arrayCine = $this->cineDao->getAll();
+            $arrayCine = $this->cineDao->GetEnabled();
 
             require_once(VIEWS_PATH."list_cines.php");
         }

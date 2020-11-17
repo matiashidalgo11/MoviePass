@@ -79,10 +79,9 @@ class funcionController
             {
                 $movieController= new MoviesController();
                 $movieController->listMovies();
-               
+  
             }
             
-
         }
 
         public function SearchByName($nameMovie)

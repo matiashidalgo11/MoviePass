@@ -54,9 +54,7 @@ class RoomController{
 
     public function showList($idCine)
     {
-       
         $roomList=array();
-
         $roomList = $this->DaoRoom->getRoomsXcinema($idCine);
 
  

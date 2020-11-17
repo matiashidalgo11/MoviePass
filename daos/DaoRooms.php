@@ -48,19 +48,13 @@ class DaoRooms {
        public function getRoomsXcinema($idCine)
        {
 
-        $sql = "SELECT * FROM  rooms WHERE idCine = " . $idCine ." ;"; 
-        echo $sql;
+        $sql = "SELECT * FROM  rooms WHERE idCine = " . $idCine ." AND enabled=1 ;"; 
         $roomList=array();
-
         try 
         { 
-          
             $this->connection = Connection::GetInstance();
- 
             $resultSet = $this->connection->Execute($sql);
             
-            
-
             foreach($resultSet as $value)
             {
                 array_push($roomList,$this->parseToObject($value));
@@ -143,7 +137,7 @@ class DaoRooms {
 
     
     public function GetEnabled(){
-        $sql = "SELECT * FROM rooms where" . DaoRooms::COLUMN_ENABLED . "=1";
+        $sql = "SELECT * FROM rooms where enabled=1;";
         $roomList = array();
         try{
             $this->connection = Connection::GetInstance();

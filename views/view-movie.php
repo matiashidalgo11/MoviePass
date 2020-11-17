@@ -197,8 +197,8 @@ textbox {
 </style>
 
 <div class="container-fluid">
-
-    <div class="row justify-content-center">
+    
+    <div class="row justify-content-center ">
 
         <div class="card bg-dark text-white ">
             
@@ -209,11 +209,27 @@ textbox {
                 <div class="list-group">
                     <h5 class="card-title "><?= $movie->getTitle()?></h5>
                     <p class="card-text"><?= $movie->getRelease_date()?></p>
+
+                    <?php if($_SESSION['cuenta']->getPrivilegios() == 0) {?>
+
+                    <form action="<?php echo FRONT_ROOT ?>/funcionController/#" method="Post">
+                      <input type="hidden" value='<?= $movie->getId(); ?>'>
+                      <button type="submit" class='btn text-light' style="background-color: red; font-size: 17px; border-radius: 4px; " enabled>Agregar Funcion</button>
+                    </form>
+
+                    <?php }?>
+
                 </div>
+
+                 
 
             </div>
 
+           
         </div>
+        
+              
+        
 
         <div id="box" class="container" style="background-color: rgba(230, 230, 230, 0.5);">
        
@@ -253,7 +269,12 @@ textbox {
                                        <span><?php echo $funcion->getRoom()->getCine()->getDireccion(); ?></span>
                                      </div><!--seat-->
                                      <div class="card-body">
+
+                                     <?php if($_SESSION['cuenta']->getPrivilegios() == 1) {?>
+
                                        <form action="<?php echo FRONT_ROOT?>CompraController/buyMovie" method="POST">  <button type="submit" class="btn btn-primary" name="idFuncion" value="<?php echo $funcion->getId()?>" >Tickets</button> </form>                 
+                                       </div>
+                                       <?php }?>
                                       </div>
                          </div>
                        </div><!--movie-content-->

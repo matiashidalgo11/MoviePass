@@ -27,7 +27,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="<?= FRONT_ROOT ?>#">Actualizar Cartelera</a>
+            <a class="nav-link" href="<?= FRONT_ROOT ?>MoviesController/updateFromApi">Actualizar Cartelera</a>
           </li>
 
 
@@ -54,7 +54,7 @@
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="<?= FRONT_ROOT ?>MoviesController/listMovies">Funciones</a>
+            <a class="nav-link" href="<?= FRONT_ROOT ?>funcionController/listFunciones">Funciones</a>
           </li>
 
 

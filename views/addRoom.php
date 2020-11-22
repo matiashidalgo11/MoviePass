@@ -31,6 +31,10 @@
                                                 <input type="number" name="capacidad"  id="capacity" placeholder="Ingrese una capacidad" required>
                                             </div>
                                             <input type = "hidden" name = "idCine" id = "idCine" required value="<?= $idCine?>">
+
+                                            <div>
+                                            <button type="submit">Agregar</button>
+                                            </div>
 	                                </div>
                                 </td>
                             </tr>

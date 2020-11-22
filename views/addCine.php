@@ -26,6 +26,9 @@
                                           <label for="cine" class="text-light">Direccion</label>
                                           <input type="text" name="direccion" id="direccion" required>
                                         </div>
+                                        <div>
+                                            <button type="submit">Agregar</button>
+                                        </div>
 	                                </div>
                                 </td>
                             </tr>

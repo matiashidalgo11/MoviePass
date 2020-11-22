@@ -67,7 +67,6 @@ create table IF NOT EXISTS cines(
     primary key (idCine)
 
 );
-
 #drop table IF NOT EXISTS cines;
 
 create table IF NOT EXISTS rooms(
@@ -123,8 +122,9 @@ create table IF NOT EXISTS tickets(
 
 create table IF NOT EXISTS pagos(
     idPago int NOT null auto_increment,
-    codigoPago varchar(100),
+    idCompra int ,
     total int,
+    constraint foreign key (idCompra) references compras(idCompra),
     primary key (idPago)
 
 );
